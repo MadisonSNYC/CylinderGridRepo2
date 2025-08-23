@@ -3,6 +3,7 @@
 @import "./styles/helix-safe.css";
 @import "./styles/effects-compat.css";
 @import "./styles/lab-ghost.css";
+@import "./styles/lab-dof.css";
 
 @custom-variant dark (&:is(.dark *));
 

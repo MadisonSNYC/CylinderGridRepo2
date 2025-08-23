@@ -185,7 +185,20 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
           visibility: 'visible'
         }}
       >
-        <div className="tile-content flex items-center justify-center">
+        {/* Media layer that receives blur */}
+        {project?.thumbnail && (
+          <div 
+            className="media-3d absolute inset-0 rounded-xl overflow-hidden"
+            style={{
+              backgroundImage: `url(${project.thumbnail})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          />
+        )}
+        
+        {/* Content layer stays crisp */}
+        <div className="tile-content flex items-center justify-center relative">
           <div className="text-center">
             <div className="text-white text-xs font-medium">
               Project {String((effectiveIndex + 1)).padStart(2, '0')}

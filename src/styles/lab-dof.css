@@ -1,0 +1,45 @@
+/* ======================================
+   LAB DEPTH OF FIELD (DoF)
+   Blur only the media layer; keep overlays crisp
+   ====================================== */
+
+/* Lab DoF: blur only the media layer; keep overlays crisp */
+.lab-compat.fx-lab-dof[data-dof="on"] .helix-tile .media-3d {
+  /* Desktop slope: max ~4.5px */
+  filter: blur(calc(var(--d, 0) * 4.5px)) !important; /* override any legacy blur */
+  opacity: var(--front-o, 1);
+  transition: filter .5s ease-out, opacity .5s ease-out;
+  will-change: filter, opacity;
+}
+
+/* Mobile: gentler blur */
+@media (max-width: 640px) {
+  .lab-compat.fx-lab-dof[data-dof="on"] .helix-tile .media-3d {
+    filter: blur(calc(var(--d, 0) * 2px)) !important;
+  }
+}
+
+/* Ensure the card UI remains sharp above the media */
+.tile-content { 
+  position: relative; 
+  z-index: 1; 
+  filter: none !important; /* UI layer never blurs */
+}
+
+/* If legacy depth-blur is also on, our DoF wins */
+.fx-lab-dof.fx-depth-blur[data-dof="on"] .helix-tile .media-3d {
+  filter: blur(calc(var(--d, 0) * 4.5px)) !important;
+}
+
+/* For cards without media, apply to the card background */
+.lab-compat.fx-lab-dof[data-dof="on"] .helix-tile .tile-card {
+  opacity: var(--front-o, 1);
+  transition: opacity .5s ease-out;
+}
+
+/* Prevent blur on active/hover cards for better UX */
+.lab-compat.fx-lab-dof[data-dof="on"] .helix-tile.active .media-3d,
+.lab-compat.fx-lab-dof[data-dof="on"] .helix-tile:hover .media-3d {
+  filter: blur(0px) !important;
+  transition: filter .2s ease-out;
+}
