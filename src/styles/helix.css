@@ -1,0 +1,70 @@
+/* ---- Helix tile sizing: kill CLS with fixed aspect ratio ---- */
+
+:root {
+  /* centralize width so we don't hardcode magic numbers everywhere */
+  --tile-w: 80px; /* matches current audit; adjust later via config */
+}
+
+.helix-tile {
+  position: absolute;
+  width: var(--tile-w);
+  /* 9:16 portrait — reserves height while media loads */
+  aspect-ratio: 9 / 16;
+  /* keep 3D context; transforms applied at the node level elsewhere */
+  transform-style: preserve-3d;
+}
+
+.helix-tile img,
+.helix-tile .tile-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Optional: a minimal placeholder background to mask progressive image load */
+.helix-tile {
+  background: #111; /* or a dominant color; safe on dark theme */
+}
+
+/* Tile card for counter-rotation to face camera */
+.tile-card {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  outline: 1px solid rgba(255,255,255,.15); /* Temporary visual aid */
+  /* CSS-driven face-the-camera using calc */
+  transform: rotateY(calc(-1 * var(--theta) - var(--sceneDeg)));
+}
+
+/* --- sticky section --- */
+.helix-section { 
+  height: 250svh; /* scroll runway */
+}
+
+.helix-sticky { 
+  position: sticky; 
+  top: 0; 
+  height: 100svh; 
+  overflow: visible; 
+}
+
+/* --- 3D scene container --- */
+.helix-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Drive scene by CSS vars derived from --t */
+  transform:
+    rotateY(var(--sceneDeg))    /* spin ~2 turns over the section */
+    translateY(var(--lift));    /* climb one pitch */
+}
