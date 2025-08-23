@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "./styles/helix-safe.css";
 @import "./styles/effects-compat.css";
+@import "./styles/lab-ghost.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -1,0 +1,62 @@
+/* ======================================
+   LAB GHOST BACK - Adapted to Helix
+   100% sizing to match tile box
+   ====================================== */
+
+/* Ghost back pseudo-element */
+.lab-compat.fx-lab-ghost .helix-tile[data-ghost="on"]::after {
+  content: "";
+  position: absolute;
+  left: 50%; 
+  top: 50%;
+  width: 100%; 
+  height: 100%;  /* use 100% instead of --panel-w/h */
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* mirror the front */
+  transform: translate(-50%, -50%) rotateY(180deg) translateZ(0.01px);
+  background-image: var(--tile-bg, none);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  /* ghost look (Lab formula: uses --back for blur, --ghost-o for opacity) */
+  filter: grayscale(1) blur(calc(1px + var(--back, 0) * 2px)) brightness(0.8);
+  opacity: var(--ghost-o, 0);
+  pointer-events: none;
+
+  z-index: 0; /* sit behind .tile-content (z:1) */
+  transition: opacity 0.3s ease-out;
+  border-radius: 12px; /* match tile card radius */
+}
+
+/* video fallback (no image): faint gradient ghost */
+.lab-compat.fx-lab-ghost .helix-tile.ghost-fallback::after {
+  content: "";
+  position: absolute; 
+  inset: 0; 
+  pointer-events: none;
+  background: radial-gradient(80% 70% at 50% 50%,
+               rgba(255,255,255,.08), rgba(0,0,0,0) 60%, rgba(0,0,0,.45));
+  opacity: var(--ghost-o, 0);
+  border-radius: 12px;
+}
+
+/* make sure content sits above the pseudo; don't clip */
+.helix-assembly, 
+.helix-scene { 
+  overflow: visible !important; 
+}
+
+.tile-content { 
+  position: relative; 
+  z-index: 1; 
+}
+
+/* Ensure tile-card doesn't clip the ghost */
+.tile-card {
+  overflow: visible;
+}

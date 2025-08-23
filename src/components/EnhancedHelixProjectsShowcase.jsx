@@ -85,10 +85,36 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
   // clamped front opacity
   const frontO = Math.max(FRONT_FLOOR, 1 - depth * DOF_SLOPE);
   
-  // ghost (delayed gate)
-  const GHOST_GATE = 0.40;
-  const ghostPhase = depth <= GHOST_GATE ? 0 : (depth - GHOST_GATE) / (1 - GHOST_GATE);
-  const ghostO = Math.min(0.7, 0.12 + ghostPhase * 0.58);
+  // --- LAB GHOST BACK CALCULATION (55-75° window) ---
+  // signed angle relative to camera, degrees
+  const signedDelta = normalizeSignedDeg(thetaDeg + sceneYaw);
+  const absDelta = Math.abs(signedDelta);
+  
+  // === Lab fade window ===
+  const FADE_START = 55;
+  const FADE_END = 75;
+  
+  // Desktop/mobile ghost ceilings
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  const GHOST_MAX = isMobile ? 0.22 : 0.28;
+  
+  // Compute --back and --ghost-o exactly like Lab
+  let backFade = 0;
+  let ghostO = 0;
+  
+  if (absDelta < FADE_START) {
+    backFade = 0;
+    ghostO = 0;
+  } else if (absDelta >= FADE_END) {
+    backFade = 1;
+    ghostO = GHOST_MAX;
+  } else {
+    backFade = (absDelta - FADE_START) / (FADE_END - FADE_START);
+    // delayed ghost start (Lab GHOST_GATE = 0.40)
+    const GHOST_GATE = 0.40;
+    const ghostPhase = backFade <= GHOST_GATE ? 0 : (backFade - GHOST_GATE) / (1 - GHOST_GATE);
+    ghostO = Math.min(GHOST_MAX, ghostPhase * GHOST_MAX);
+  }
   
   // bias (size & inward tilt)
   const SCALE_FRONT = 0.03;
@@ -98,14 +124,18 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
   const biasScale = 1 + SCALE_FRONT * (1 - depth) - SCALE_SIDE * depth;
   const biasTilt = -BIAS_TILT_MAX * depth;
   
+  // Determine if this is a video (no image available for ghost)
+  const isVideo = !project?.thumbnail;
+  
   // Prepare tile CSS variables
   const tileVars = {
     '--d': depth.toFixed(3),
     '--front-o': frontO.toFixed(3),
     '--ghost-o': ghostO.toFixed(3),
+    '--back': backFade.toFixed(3),
     '--bias-scale': biasScale.toFixed(3),
     '--bias-tilt-deg': `${biasTilt.toFixed(2)}deg`,
-    // For image ghost (EP4) - using project thumbnail if available
+    // For image ghost - using project thumbnail if available
     ...(project?.thumbnail ? { '--tile-bg': `url(${project.thumbnail})` } : {})
   };
   
@@ -115,6 +145,7 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
         helix-node helix-tile absolute cursor-pointer
         ${isActive ? 'active z-20' : 'z-10'}
         ${depthClass}
+        ${isVideo ? 'ghost-fallback' : ''}
       `}
       style={{
         width: '80px',  // 9:16 aspect ratio
