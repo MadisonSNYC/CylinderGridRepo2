@@ -382,6 +382,13 @@ export const EnhancedHelixProjectsShowcase = ({
   };
   const handleSkipIntro = () => setEnhanced(false);
 
+  // Update CSS sizing variables and section height - MUST be before any conditional returns
+  useEffect(() => {
+    document.documentElement.style.setProperty('--tile-w', `${effects.tileW}px`);
+    document.documentElement.style.setProperty('--tile-h', `${effects.tileH}px`);
+    document.documentElement.style.setProperty('--section-svh', `${effects.sectionSVH}svh`);
+  }, [effects.tileW, effects.tileH, effects.sectionSVH]);
+
   // Fallback to 2D grid for reduced motion or unsupported browsers
   if (prefersReducedMotion || !enhanced) {
     return (
@@ -395,13 +402,6 @@ export const EnhancedHelixProjectsShowcase = ({
       </div>
     );
   }
-
-  // Update CSS sizing variables and section height
-  useEffect(() => {
-    document.documentElement.style.setProperty('--tile-w', `${effects.tileW}px`);
-    document.documentElement.style.setProperty('--tile-h', `${effects.tileH}px`);
-    document.documentElement.style.setProperty('--section-svh', `${effects.sectionSVH}svh`);
-  }, [effects.tileW, effects.tileH, effects.sectionSVH]);
 
   return (
     <ColorSchemeEffects effects={effects}>
@@ -491,6 +491,22 @@ export const EnhancedHelixProjectsShowcase = ({
                           // Lab variables for this tile
                           const nodeVars = getLabVars(thetaDeg, sceneDeg, project, window);
 
+                          // Tile's z relative to camera for rotateY(theta) translateZ(radius)
+                          const rad = (thetaDeg + sceneDeg) * Math.PI / 180;
+                          const z = radius * Math.cos(rad);
+
+                          // Compensation factor: cancel perspective scale ≈ (1 - z/persp)
+                          // blend with compStrength so it's not jarring
+                          const p = 1200; // must match assembly perspective
+                          const s = effects.compStrength ?? 0.85;
+                          const sizeComp = 1 - s * (z / p);
+
+                          // Add to CSS vars (keep existing vars too)
+                          const enhancedNodeVars = {
+                            ...(nodeVars || {}),
+                            '--size-comp': Number.isFinite(sizeComp) ? sizeComp.toFixed(3) : '1',
+                          };
+
                           // Info card content
                           const infoNode = (
                             <div className="media-3d flex flex-col justify-between p-2 text-white">
@@ -533,7 +549,7 @@ export const EnhancedHelixProjectsShowcase = ({
                               sceneYaw={sceneDeg}
                               media={mediaNode}
                               info={infoNode}
-                              nodeVars={nodeVars}
+                              nodeVars={enhancedNodeVars}
                               className={`depth-${i % 3 === 0 ? 'near' : i % 3 === 1 ? 'mid' : 'far'}`}
                               onClick={() => handleProjectClick(projectIndex)}
                             />

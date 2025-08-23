@@ -44,6 +44,10 @@ const defaultEffects = {
   navigationDots: false,
   minimalistControls: false,
   
+  // Constant Tile Size
+  constantTileSize: true,    // ON by default for double-helix test
+  compStrength: 0.85,        // 0..1 (1 = full compensation)
+  
   // Typography
   ashfallTypography: false,
   subtleText: false,

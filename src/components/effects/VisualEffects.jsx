@@ -11,6 +11,9 @@ export const VisualEffects = ({ effects, children }) => {
   const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches;
   const trackTilt = isMobile ? (effects.trackTiltMobileDeg ?? -3) : (effects.trackTiltDeg ?? -10);
   
+  // Perspective for constant tile size calculation
+  const persp = 1200; // keep in sync with assembly style
+  
   return (
     <div 
       className={`visual-effects-wrapper lab-compat
@@ -27,11 +30,14 @@ export const VisualEffects = ({ effects, children }) => {
                   ${effects.chromaticAberration ? 'fx-lab-chroma' : ''}
                   ${effects.atmosphericGrain ? 'fx-lab-grain' : ''}
                   ${effects.filmNoise ? 'fx-lab-film' : ''}
-                  ${effects.cinematicLighting ? 'fx-lab-light' : ''}`}
+                  ${effects.cinematicLighting ? 'fx-lab-light' : ''}
+                  ${effects.constantTileSize ? 'fx-const-size' : ''}`}
       style={{
         '--rgb-alpha': alpha,
         '--rgb-offset': `${offset}px`,
         '--track-tilt-deg': `${trackTilt}`,  // degrees (numeric string)
+        '--persp': `${persp}`,                // used by our calc (reference only)
+        '--comp-strength': `${effects.compStrength ?? 0.85}`,
       }}
       data-chromatic-aberration={effects.chromaticAberration}
       data-depth-blur={effects.depthBlur}

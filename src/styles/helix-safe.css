@@ -492,6 +492,21 @@
 }
 
 /* ======================================
+   CONSTANT TILE SIZE COMPENSATION
+   ====================================== */
+
+/* Constant-size tiles (compensate perspective) */
+.fx-const-size .helix-tile .tile-content {
+  /* Apply compensation scale at the end of transform chain */
+  transform: scale(var(--size-comp, 1));
+}
+
+/* Damp Lab bias scale when const-size is ON to avoid double-scaling */
+.fx-const-size.fx-lab-bias .helix-tile .tile-content {
+  --bias-scale: calc(1 + (var(--bias-scale-raw, 1) - 1) * 0.25); /* 75% reduction */
+}
+
+/* ======================================
    DOUBLE HELIX PAIR GROUPS
    ====================================== */
 
