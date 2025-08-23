@@ -435,7 +435,7 @@ export const EnhancedHelixProjectsShowcase = ({
                         perspective: '1200px',
                         // Combine rotation and vertical translation for scroll effect
                         transform: `
-                          rotateX(-10deg) 
+                          rotateX(calc(var(--track-tilt-deg, -10) * 1deg))
                           rotateY(${scrollOffset * (360 / projects.length)}deg)
                           translateY(${-scrollOffset * 20}px)
                         `,

@@ -290,13 +290,50 @@ export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrengt
                 </div>
               )}
 
-              {/* Add Repeat Turns slider for Structure section */}
+              {/* Add Track Tilt slider for Structure section */}
               {group.hasRepeatTurns && group.title === 'Structure' && (
-                <div className="mt-3 px-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="text-xs font-medium text-gray-600">Repeat Turns</label>
-                    <span className="text-xs font-medium text-gray-700">{effects.repeatTurns?.toFixed(1) || '2.0'}</span>
+                <>
+                  <div className="mt-3 px-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-medium text-gray-600">Track Tilt</label>
+                      <span className="text-xs font-medium text-gray-700">{effects.trackTiltDeg}°</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={-20}
+                      max={0}
+                      step={1}
+                      value={effects.trackTiltDeg}
+                      onChange={(e) => onEffectToggle('trackTiltDeg', Number(e.target.value))}
+                      className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      style={{
+                        background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((effects.trackTiltDeg + 20) / 20) * 100}%, #e5e7eb ${((effects.trackTiltDeg + 20) / 20) * 100}%, #e5e7eb 100%)`
+                      }}
+                    />
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        type="button"
+                        onClick={() => onEffectToggle('trackTiltDeg', -10)}
+                        className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"
+                      >
+                        Reset −10°
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onEffectToggle('trackTiltDeg', -6)}
+                        className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"
+                      >
+                        Lab −6°
+                      </button>
+                    </div>
                   </div>
+
+                  {/* Add Repeat Turns slider for Structure section */}
+                  <div className="mt-3 px-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-medium text-gray-600">Repeat Turns</label>
+                      <span className="text-xs font-medium text-gray-700">{effects.repeatTurns?.toFixed(1) || '2.0'}</span>
+                    </div>
                   <input
                     type="range"
                     min={0}
@@ -313,7 +350,8 @@ export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrengt
                     <span className="text-xs text-gray-400">0</span>
                     <span className="text-xs text-gray-400">5</span>
                   </div>
-                </div>
+                  </div>
+                </>
               )}
             </div>
           ))}

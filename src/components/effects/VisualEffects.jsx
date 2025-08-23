@@ -7,6 +7,10 @@ export const VisualEffects = ({ effects, children }) => {
   const alpha = Math.max(0, Math.min(100, effects.rgbIntensity ?? 30)) / 100; // 0..1
   const offset = Math.max(0, Math.min(2, effects.rgbOffsetPx ?? 1));          // px
   
+  // Derive responsive tilt in JS for clarity
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches;
+  const trackTilt = isMobile ? (effects.trackTiltMobileDeg ?? -3) : (effects.trackTiltDeg ?? -10);
+  
   return (
     <div 
       className={`visual-effects-wrapper lab-compat
@@ -27,6 +31,7 @@ export const VisualEffects = ({ effects, children }) => {
       style={{
         '--rgb-alpha': alpha,
         '--rgb-offset': `${offset}px`,
+        '--track-tilt-deg': `${trackTilt}`,  // degrees (numeric string)
       }}
       data-chromatic-aberration={effects.chromaticAberration}
       data-depth-blur={effects.depthBlur}

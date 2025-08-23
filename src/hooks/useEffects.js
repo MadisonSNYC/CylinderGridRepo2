@@ -59,6 +59,10 @@ const defaultEffects = {
   
   // FS2: Single-Source Scroll Mode
   scrollMode: 'wheel',       // 'wheel' | 'sticky' - select scroll mode
+  
+  // Track Tilt Control
+  trackTiltDeg: -10,         // desktop default (your current look)
+  trackTiltMobileDeg: -3,    // gentle on mobile (Lab often uses -3..-6)
 };
 
 export const useEffects = () => {
