@@ -153,6 +153,31 @@ export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrengt
             >
               Ashfall
             </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => {
+                const madisonPreset = {
+                  depthOfField: true,
+                  ghostBack: true,
+                  centerLogo: true,
+                  centerLogoMode: 'billboard',
+                  enhancedWireframe: true,
+                  centralWireframe: true,
+                  trackTiltDeg: -10,
+                  trackTiltMobileDeg: -3,
+                  rgbEdge: true,
+                  rgbIntensity: 30,
+                  rgbOffsetPx: 1,
+                };
+                Object.entries(madisonPreset).forEach(([key, value]) => {
+                  onEffectToggle(key, value);
+                });
+              }}
+              className="text-xs px-2 py-1 h-6 bg-purple-50 text-purple-600 border-purple-200 hover:bg-purple-100"
+            >
+              Madison
+            </Button>
           </div>
         </div>
 

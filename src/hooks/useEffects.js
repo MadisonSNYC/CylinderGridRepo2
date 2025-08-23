@@ -14,10 +14,10 @@ const defaultEffects = {
   rgbIntensity: 30,          // 0..100 (% alpha)
   rgbOffsetPx: 1,            // 0..2 (px offset)
   
-  // Lab-compatible effects
-  depthOfField: false,       // Lab DoF blur
-  ghostBack: false,          // Lab ghost back cards
-  biasEffect: false,         // Lab bias (scale & tilt) - default OFF
+  // Lab-compatible effects - MADISON PRESET DEFAULTS
+  depthOfField: true,        // DoF ON
+  ghostBack: true,           // Ghost ON
+  biasEffect: false,         // Lab bias OFF (already have placement)
   monitorStyle: false,       // Lab monitor CRT style
   screenGlow: false,         // Lab screen glow effect
   scanLines: false,          // Lab scan lines
@@ -30,13 +30,14 @@ const defaultEffects = {
   cardShadows: false,
   cardBorders: false,
   
-  // Structure
-  centralWireframe: false,
-  centerLogo: true,          // Show logo in center by default
-  centerLogoMode: 'billboard', // 'rotate' | 'billboard'
+  // Structure - MADISON PRESET DEFAULTS
+  centralWireframe: true,    // Wireframe ON
+  enhancedWireframe: true,   // Carousel-style component ON
+  centerLogo: true,          // Logo ON
+  centerLogoMode: 'billboard', // Billboard default
   smoothRotation: false,
   depthHierarchy: false,
-  repeatTurns: 4.0,          // Extra turns for endless feel (+2.0 for better continuity)
+  repeatTurns: 2.0,          // Endless feel baseline
   
   // Navigation
   projectCounter: false,
@@ -60,9 +61,9 @@ const defaultEffects = {
   // FS2: Single-Source Scroll Mode
   scrollMode: 'wheel',       // 'wheel' | 'sticky' - select scroll mode
   
-  // Track Tilt Control
-  trackTiltDeg: -10,         // desktop default (your current look)
-  trackTiltMobileDeg: -3,    // gentle on mobile (Lab often uses -3..-6)
+  // Track Tilt Control - MADISON PRESET DEFAULTS
+  trackTiltDeg: -10,         // desktop default
+  trackTiltMobileDeg: -3,    // gentle on mobile
 };
 
 export const useEffects = () => {
