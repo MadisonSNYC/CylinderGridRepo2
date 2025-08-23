@@ -65,14 +65,29 @@ const defaultEffects = {
   trackTiltDeg: -10,         // desktop default
   trackTiltMobileDeg: -3,    // gentle on mobile
   
-  // Sizing/Spacing - Double Helix
-  tileW: 120,                // px
-  tileH: 200,                // px
-  gutterPx: 12,              // px spacing between neighbors (min)
+  // Readability Mode
+  readabilityMode: true,
+  
+  // Geometry/spacing (readability-first defaults)
+  tileW: 140,                // px
+  tileH: 220,                // px
+  gutterPx: 24,              // px, min gap between neighbors
+  radiusPx: 340,             // wider ring
+  pitchPerTurnPx: 1100,      // more vertical distance per 360°
+  tilesPerTurn: 12,          // fallback; autoSpacing will override
   autoSpacing: true,         // compute tilesPerTurn from R + W + gutter
-  radiusPx: 250,             // radius for helix
-  pitchPerTurnPx: 800,       // vertical spacing per full turn
-  tilesPerTurn: 16,          // will be overridden when autoSpacing = true
+
+  // Motion feel (softer)
+  smoothing: 0.16,
+  friction: 0.95,
+  maxDegPerTick: 1.5,
+  pixelsPerDeg: 4,
+
+  // Section length (svh)
+  sectionSVH: 360,           // sticky section height in svh
+  visibleTurns: 2.8,         // we'll show more turns
+  bufferTurns: 0.7,
+  repeatTurns: 3.0,          // richer band, still performant
 };
 
 export const useEffects = () => {

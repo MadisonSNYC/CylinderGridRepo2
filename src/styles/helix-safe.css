@@ -523,3 +523,18 @@
   height: var(--tile-h);
   aspect-ratio: unset; /* Override previous aspect-ratio for explicit height */
 }
+
+/* ======================================
+   READABILITY MODE - Longer sections
+   ====================================== */
+
+.helix-section { 
+  height: var(--section-svh, 360svh); 
+}
+
+.helix-sticky { 
+  position: sticky; 
+  top: 0; 
+  height: 100svh; 
+  overflow: visible; 
+}

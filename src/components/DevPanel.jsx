@@ -459,6 +459,57 @@ export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrengt
                       )}
                     </div>
                   </div>
+
+                  {/* Readability Mode Controls */}
+                  <div className="mt-3 px-1 border-t border-gray-200 pt-3">
+                    <div className="mb-2">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={effects.readabilityMode}
+                          onChange={(e) => onEffectToggle('readabilityMode', e.target.checked)}
+                          className="w-3 h-3"
+                        />
+                        <label className="text-xs font-medium text-gray-600">Readability Mode</label>
+                      </div>
+                    </div>
+                    
+                    {effects.readabilityMode && (
+                      <div className="space-y-2">
+                        <div>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="text-xs font-medium text-gray-600">Section Height</label>
+                            <span className="text-xs font-medium text-gray-700">{effects.sectionSVH}svh</span>
+                          </div>
+                          <input
+                            type="range"
+                            min={200}
+                            max={500}
+                            step={10}
+                            value={effects.sectionSVH}
+                            onChange={(e) => onEffectToggle('sectionSVH', Number(e.target.value))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>
+                        
+                        <div>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="text-xs font-medium text-gray-600">Motion Smoothing</label>
+                            <span className="text-xs font-medium text-gray-700">{effects.smoothing.toFixed(2)}</span>
+                          </div>
+                          <input
+                            type="range"
+                            min={0.1}
+                            max={0.3}
+                            step={0.01}
+                            value={effects.smoothing}
+                            onChange={(e) => onEffectToggle('smoothing', Number(e.target.value))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </>
               )}
             </div>

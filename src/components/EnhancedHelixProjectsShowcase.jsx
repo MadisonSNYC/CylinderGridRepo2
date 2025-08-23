@@ -396,11 +396,12 @@ export const EnhancedHelixProjectsShowcase = ({
     );
   }
 
-  // Update CSS sizing variables
+  // Update CSS sizing variables and section height
   useEffect(() => {
     document.documentElement.style.setProperty('--tile-w', `${effects.tileW}px`);
     document.documentElement.style.setProperty('--tile-h', `${effects.tileH}px`);
-  }, [effects.tileW, effects.tileH]);
+    document.documentElement.style.setProperty('--section-svh', `${effects.sectionSVH}svh`);
+  }, [effects.tileW, effects.tileH, effects.sectionSVH]);
 
   return (
     <ColorSchemeEffects effects={effects}>
@@ -462,13 +463,21 @@ export const EnhancedHelixProjectsShowcase = ({
                         const radius = effects.radiusPx ?? 250;
                         const pitchPerTurn = effects.pitchPerTurnPx ?? 800;
                         const baseTilesPerTurn = effects.autoSpacing
-                          ? suggestTilesPerTurn(radius, effects.tileW, effects.gutterPx)
+                          ? suggestTilesPerTurn(radius, effects.tileW, effects.gutterPx, 24)
                           : (effects.tilesPerTurn ?? 16);
 
                         const deltaDeg = 360 / baseTilesPerTurn;
-                        const visibleTurns = window.innerWidth <= 768 ? 1.5 : 2.0;
-                        const bufferTurns = 0.5;
-                        const repeatTurns = effects.repeatTurns ?? 2.0;
+                        
+                        // Readability mode overrides
+                        const visibleTurns = effects.readabilityMode 
+                          ? (effects.visibleTurns ?? 2.8) 
+                          : (window.innerWidth <= 768 ? 1.5 : 2.0);
+                        const bufferTurns = effects.readabilityMode 
+                          ? (effects.bufferTurns ?? 0.7) 
+                          : 0.5;
+                        const repeatTurns = effects.readabilityMode 
+                          ? (effects.repeatTurns ?? 3.0) 
+                          : (effects.repeatTurns ?? 2.0);
                         const neededPairs = Math.ceil((visibleTurns + bufferTurns + repeatTurns) * baseTilesPerTurn);
 
                         const sceneDeg = scrollOffset * (360 / projects.length);

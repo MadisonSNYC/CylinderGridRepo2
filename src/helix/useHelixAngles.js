@@ -78,12 +78,12 @@ export function getLabVars(angle, currentRotation, project, window) {
   };
 }
 
-export function suggestTilesPerTurn(radius, cardW, gutter) {
+export function suggestTilesPerTurn(radius, cardW, gutter, minDegGap = 24) {
   const span = (cardW + gutter) / (2 * radius);
   if (span >= 1) return 8; // degenerate: very tight radius; fall back safe
   const alphaRad = 2 * Math.asin(span);
   const alphaDeg = toDeg(alphaRad);
-  const raw = Math.max(4, Math.floor(360 / alphaDeg));
+  const raw = Math.max(4, Math.floor(360 / Math.max(alphaDeg, minDegGap)));
   // force even for pairing
   return raw % 2 === 0 ? raw : raw - 1;
 }
