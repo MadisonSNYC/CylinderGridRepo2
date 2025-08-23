@@ -29,6 +29,20 @@ export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrengt
       ]
     },
     {
+      title: 'Lab FX',
+      icon: <Sparkles className="w-3 h-3" />,
+      effects: [
+        { key: 'depthOfField', label: 'DoF', description: 'Depth blur' },
+        { key: 'ghostBack', label: 'Ghost', description: 'Back cards' },
+        { key: 'monitorStyle', label: 'Monitor', description: 'CRT style' },
+        { key: 'screenGlow', label: 'Glow', description: 'Screen glow' },
+        { key: 'scanLines', label: 'Scan', description: 'TV lines' },
+        { key: 'atmosphericGrain', label: 'Grain', description: 'Film grain' },
+        { key: 'filmNoise', label: 'Noise', description: 'Film noise' },
+        { key: 'cinematicLighting', label: 'Cinematic', description: 'Pro lighting' }
+      ]
+    },
+    {
       title: 'Cards',
       icon: <Box className="w-3 h-3" />,
       effects: [

@@ -12,6 +12,16 @@ const defaultEffects = {
   ambientLighting: false,
   rgbEdge: true,             // RGB edge effect on cards
   
+  // Lab-compatible effects
+  depthOfField: false,       // Lab DoF blur
+  ghostBack: false,          // Lab ghost back cards
+  monitorStyle: false,       // Lab monitor CRT style
+  screenGlow: false,         // Lab screen glow effect
+  scanLines: false,          // Lab scan lines
+  atmosphericGrain: false,   // Lab atmospheric grain
+  filmNoise: false,          // Lab film noise
+  cinematicLighting: false,  // Lab cinematic lighting
+  
   // Card Design
   ashfallCards: false,
   cardShadows: false,

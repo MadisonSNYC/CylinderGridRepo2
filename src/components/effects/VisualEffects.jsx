@@ -35,7 +35,20 @@ export const VisualEffects = ({ effects, children }) => {
 
   return (
     <div 
-      className={`visual-effects-wrapper fx-depth-placement ${effects.depthBlur ? 'fx-depth-blur' : ''} ${effects.outwardTurn ? 'fx-outward' : ''} ${effects.centerLogo ? 'fx-center-logo' : ''} ${effects.rgbEdge ? 'fx-rgb-edge' : ''}`}
+      className={`visual-effects-wrapper lab-compat fx-depth-placement
+                  ${effects.depthBlur ? 'fx-depth-blur' : ''} 
+                  ${effects.outwardTurn ? 'fx-outward' : ''} 
+                  ${effects.centerLogo ? 'fx-center-logo' : ''} 
+                  ${effects.rgbEdge ? 'fx-rgb-edge' : ''}
+                  ${effects.depthOfField ? 'fx-lab-dof' : ''}
+                  ${effects.ghostBack ? 'fx-lab-ghost' : ''}
+                  ${effects.monitorStyle ? 'fx-lab-monitor' : ''}
+                  ${effects.screenGlow ? 'fx-lab-glow' : ''}
+                  ${effects.scanLines ? 'fx-lab-scan' : ''}
+                  ${effects.chromaticAberration ? 'fx-lab-chroma' : ''}
+                  ${effects.atmosphericGrain ? 'fx-lab-grain' : ''}
+                  ${effects.filmNoise ? 'fx-lab-film' : ''}
+                  ${effects.cinematicLighting ? 'fx-lab-light' : ''}`}
       style={placementVars}
       data-chromatic-aberration={effects.chromaticAberration}
       data-depth-blur={effects.depthBlur}
@@ -46,6 +59,8 @@ export const VisualEffects = ({ effects, children }) => {
       data-ashfall-colors={effects.ashfallColors}
       data-typography={effects.ashfallTypography}
       data-center-logo-mode={effects.centerLogoMode}
+      data-dof={effects.depthOfField ? 'on' : 'off'}
+      data-ghost={effects.ghostBack ? 'on' : 'off'}
     >
       <style jsx="true">{`
         /* Chromatic Aberration Effect */
