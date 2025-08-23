@@ -1,0 +1,45 @@
+/* ======================================
+   LAB BIAS EFFECT
+   Per-tile scale and inward tilt for extra 3D depth
+   ====================================== */
+
+/* Apply bias transforms to tile content */
+.lab-compat.fx-lab-bias[data-bias="on"] .helix-tile .tile-content {
+  /* Apply bias scale and tilt on top of existing transforms */
+  transform: 
+    scale(var(--bias-scale, 1)) 
+    rotateX(var(--bias-tilt-deg, 0deg));
+  transform-origin: center center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* Enhance the effect on active tiles */
+.lab-compat.fx-lab-bias[data-bias="on"] .helix-tile.active .tile-content {
+  transform: 
+    scale(calc(var(--bias-scale, 1) * 1.05)) 
+    rotateX(calc(var(--bias-tilt-deg, 0deg) * 0.5));
+  transition: transform 0.2s ease-out;
+}
+
+/* Subtle enhancement on hover */
+.lab-compat.fx-lab-bias[data-bias="on"] .helix-tile:hover .tile-content {
+  transform: 
+    scale(calc(var(--bias-scale, 1) * 1.02)) 
+    rotateX(calc(var(--bias-tilt-deg, 0deg) * 0.8));
+}
+
+/* Mobile: reduce the effect for performance */
+@media (max-width: 640px) {
+  .lab-compat.fx-lab-bias[data-bias="on"] .helix-tile .tile-content {
+    transform: 
+      scale(calc(1 + (var(--bias-scale, 1) - 1) * 0.5)) 
+      rotateX(calc(var(--bias-tilt-deg, 0deg) * 0.5));
+  }
+}
+
+/* Ensure proper stacking with other transforms */
+.lab-compat.fx-lab-bias[data-bias="on"] .tile-card {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}

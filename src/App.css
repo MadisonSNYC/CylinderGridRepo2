@@ -4,6 +4,7 @@
 @import "./styles/effects-compat.css";
 @import "./styles/lab-ghost.css";
 @import "./styles/lab-dof.css";
+@import "./styles/lab-bias.css";
 
 @custom-variant dark (&:is(.dark *));
 

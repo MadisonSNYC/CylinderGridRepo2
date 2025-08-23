@@ -15,6 +15,7 @@ const defaultEffects = {
   // Lab-compatible effects
   depthOfField: false,       // Lab DoF blur
   ghostBack: false,          // Lab ghost back cards
+  biasEffect: false,         // Lab bias (scale & tilt) - default OFF
   monitorStyle: false,       // Lab monitor CRT style
   screenGlow: false,         // Lab screen glow effect
   scanLines: false,          // Lab scan lines

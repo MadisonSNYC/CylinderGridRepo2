@@ -42,6 +42,7 @@ export const VisualEffects = ({ effects, children }) => {
                   ${effects.rgbEdge ? 'fx-rgb-edge' : ''}
                   ${effects.depthOfField ? 'fx-lab-dof' : ''}
                   ${effects.ghostBack ? 'fx-lab-ghost' : ''}
+                  ${effects.biasEffect ? 'fx-lab-bias' : ''}
                   ${effects.monitorStyle ? 'fx-lab-monitor' : ''}
                   ${effects.screenGlow ? 'fx-lab-glow' : ''}
                   ${effects.scanLines ? 'fx-lab-scan' : ''}
@@ -61,6 +62,7 @@ export const VisualEffects = ({ effects, children }) => {
       data-center-logo-mode={effects.centerLogoMode}
       data-dof={effects.depthOfField ? 'on' : 'off'}
       data-ghost={effects.ghostBack ? 'on' : 'off'}
+      data-bias={effects.biasEffect ? 'on' : 'off'}
     >
       <style jsx="true">{`
         /* Chromatic Aberration Effect */

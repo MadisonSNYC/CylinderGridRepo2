@@ -34,6 +34,7 @@ export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrengt
       effects: [
         { key: 'depthOfField', label: 'DoF', description: 'Depth blur' },
         { key: 'ghostBack', label: 'Ghost', description: 'Back cards' },
+        { key: 'biasEffect', label: 'Bias', description: '3D depth accent' },
         { key: 'monitorStyle', label: 'Monitor', description: 'CRT style' },
         { key: 'screenGlow', label: 'Glow', description: 'Screen glow' },
         { key: 'scanLines', label: 'Scan', description: 'TV lines' },
