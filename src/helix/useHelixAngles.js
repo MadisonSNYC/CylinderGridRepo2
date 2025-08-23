@@ -1,11 +1,16 @@
 // Pure math utilities for helix calculations
+import { safeNumber, safeClamp } from '../utils/guards.js';
+
+export const toRad = (deg) => deg * Math.PI / 180;
+export const toDeg = (rad) => rad * 180 / Math.PI;
 
 export const normalizeSignedDeg = (a) => {
-  let x = ((a % 360) + 360) % 360; 
+  const angle = safeNumber(a, 0);
+  let x = ((angle % 360) + 360) % 360; 
   return x >= 180 ? x - 360 : x;
 };
 
-export const clamp01 = (v) => Math.max(0, Math.min(1, v));
+export const clamp01 = (v) => safeClamp(v, 0, 1);
 
 export function getDepth(thetaDeg, sceneYaw) {
   const delta = Math.abs(normalizeSignedDeg(thetaDeg + sceneYaw));
@@ -71,4 +76,14 @@ export function getLabVars(angle, currentRotation, project, window) {
     '--bias-tilt-deg': `${biasTilt.toFixed(2)}deg`,
     ...(project?.thumbnail ? { '--tile-bg': `url(${project.thumbnail})` } : {})
   };
+}
+
+export function suggestTilesPerTurn(radius, cardW, gutter) {
+  const span = (cardW + gutter) / (2 * radius);
+  if (span >= 1) return 8; // degenerate: very tight radius; fall back safe
+  const alphaRad = 2 * Math.asin(span);
+  const alphaDeg = toDeg(alphaRad);
+  const raw = Math.max(4, Math.floor(360 / alphaDeg));
+  // force even for pairing
+  return raw % 2 === 0 ? raw : raw - 1;
 }

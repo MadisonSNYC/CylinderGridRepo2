@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './ui/button.jsx';
 import { Pause, Play, SkipForward, Square } from 'lucide-react';
 import { projects } from '../data/projects.js';
+import HelixPairGroup from '../helix/HelixPairGroup.jsx';
+import { suggestTilesPerTurn, getLabVars } from '../helix/useHelixAngles.js';
 
 // Effect components
 import { ColorSchemeEffects } from './effects/ColorSchemeEffects.jsx';
@@ -394,6 +396,12 @@ export const EnhancedHelixProjectsShowcase = ({
     );
   }
 
+  // Update CSS sizing variables
+  useEffect(() => {
+    document.documentElement.style.setProperty('--tile-w', `${effects.tileW}px`);
+    document.documentElement.style.setProperty('--tile-h', `${effects.tileH}px`);
+  }, [effects.tileW, effects.tileH]);
+
   return (
     <ColorSchemeEffects effects={effects}>
       <VisualEffects effects={effects}>
@@ -449,25 +457,80 @@ export const EnhancedHelixProjectsShowcase = ({
                         position: 'relative'
                       }}
                     >
-                      {/* Render multiple sets of cards for infinite scroll */}
-                      {/* Use repeatTurns to control number of card sets */}
-                      {Array.from({ length: Math.ceil(effects.repeatTurns || 2) + 1 }, (_, setIndex) => 
-                        projects.map((project, index) => {
-                          const globalIndex = setIndex * projects.length + index;
+                      {(() => {
+                        // Double-helix calculation
+                        const radius = effects.radiusPx ?? 250;
+                        const pitchPerTurn = effects.pitchPerTurnPx ?? 800;
+                        const baseTilesPerTurn = effects.autoSpacing
+                          ? suggestTilesPerTurn(radius, effects.tileW, effects.gutterPx)
+                          : (effects.tilesPerTurn ?? 16);
+
+                        const deltaDeg = 360 / baseTilesPerTurn;
+                        const visibleTurns = window.innerWidth <= 768 ? 1.5 : 2.0;
+                        const bufferTurns = 0.5;
+                        const repeatTurns = effects.repeatTurns ?? 2.0;
+                        const neededPairs = Math.ceil((visibleTurns + bufferTurns + repeatTurns) * baseTilesPerTurn);
+
+                        const sceneDeg = scrollOffset * (360 / projects.length);
+
+                        return Array.from({ length: neededPairs }, (_, i) => {
+                          const thetaDeg = i * deltaDeg;
+                          const yOffset = (pitchPerTurn / 360) * thetaDeg;
+                          const projectIndex = i % projects.length;
+                          const project = projects[projectIndex];
+
+                          // Lab variables for this tile
+                          const nodeVars = getLabVars(thetaDeg, sceneDeg, project, window);
+
+                          // Info card content
+                          const infoNode = (
+                            <div className="media-3d flex flex-col justify-between p-2 text-white">
+                              <div className="text-xs opacity-80">{project?.title || 'Project'}</div>
+                              <div className="text-[10px] opacity-60">Click to view details</div>
+                            </div>
+                          );
+
+                          // Media node (existing BowedCard logic)
+                          const mediaNode = (
+                            <div className="media-3d">
+                              <div 
+                                className="tile-media-wrapper"
+                                style={{
+                                  background: project?.thumbnail ? `url(${project.thumbnail})` : 'rgba(255,255,255,0.1)',
+                                  backgroundSize: 'cover',
+                                  backgroundPosition: 'center',
+                                  width: '100%',
+                                  height: '100%',
+                                  borderRadius: '8px'
+                                }}
+                              >
+                                {project?.type === 'video' && (
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                      <div className="w-0 h-0 border-l-[6px] border-l-white border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent ml-1"></div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+
                           return (
-                            <HelixNode
-                              key={`${setIndex}-${project.id}`}
-                              project={project}
-                              index={globalIndex}
-                              totalProjects={projects.length}
-                              isActive={Math.abs((globalIndex % projects.length) - (Math.floor(scrollOffset) % projects.length)) < 0.5}
-                              onClick={() => handleProjectClick(globalIndex)}
-                              effects={effects}
-                              scrollOffset={scrollOffset}
+                            <HelixPairGroup
+                              key={`pair-${i}`}
+                              thetaDeg={thetaDeg}
+                              yOffset={yOffset}
+                              radius={radius}
+                              sceneYaw={sceneDeg}
+                              media={mediaNode}
+                              info={infoNode}
+                              nodeVars={nodeVars}
+                              className={`depth-${i % 3 === 0 ? 'near' : i % 3 === 1 ? 'mid' : 'far'}`}
+                              onClick={() => handleProjectClick(projectIndex)}
                             />
                           );
-                        })
-                      )}
+                        });
+                      })()}
                       
                       {/* Center Logo (when enabled, replaces wireframe) */}
                       {effects.centerLogo && (

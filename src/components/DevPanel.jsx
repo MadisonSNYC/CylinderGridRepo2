@@ -376,6 +376,89 @@ export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrengt
                     <span className="text-xs text-gray-400">5</span>
                   </div>
                   </div>
+
+                  {/* Spacing Controls */}
+                  <div className="mt-3 px-1 border-t border-gray-200 pt-3">
+                    <div className="mb-2">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={effects.autoSpacing}
+                          onChange={(e) => onEffectToggle('autoSpacing', e.target.checked)}
+                          className="w-3 h-3"
+                        />
+                        <label className="text-xs font-medium text-gray-600">Auto Spacing</label>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-xs font-medium text-gray-600">Card W</label>
+                          <span className="text-xs font-medium text-gray-700">{effects.tileW}px</span>
+                        </div>
+                        <input
+                          type="range"
+                          min={96}
+                          max={200}
+                          step={4}
+                          value={effects.tileW}
+                          onChange={(e) => onEffectToggle('tileW', Number(e.target.value))}
+                          className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                      </div>
+                      
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-xs font-medium text-gray-600">Card H</label>
+                          <span className="text-xs font-medium text-gray-700">{effects.tileH}px</span>
+                        </div>
+                        <input
+                          type="range"
+                          min={160}
+                          max={320}
+                          step={4}
+                          value={effects.tileH}
+                          onChange={(e) => onEffectToggle('tileH', Number(e.target.value))}
+                          className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                      </div>
+                      
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-xs font-medium text-gray-600">Gutter</label>
+                          <span className="text-xs font-medium text-gray-700">{effects.gutterPx}px</span>
+                        </div>
+                        <input
+                          type="range"
+                          min={8}
+                          max={32}
+                          step={2}
+                          value={effects.gutterPx}
+                          onChange={(e) => onEffectToggle('gutterPx', Number(e.target.value))}
+                          className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                      </div>
+                      
+                      {!effects.autoSpacing && (
+                        <div>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="text-xs font-medium text-gray-600">Tiles / Turn</label>
+                            <span className="text-xs font-medium text-gray-700">{effects.tilesPerTurn}</span>
+                          </div>
+                          <input
+                            type="range"
+                            min={8}
+                            max={32}
+                            step={2}
+                            value={effects.tilesPerTurn}
+                            onChange={(e) => onEffectToggle('tilesPerTurn', Number(e.target.value))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </>
               )}
             </div>

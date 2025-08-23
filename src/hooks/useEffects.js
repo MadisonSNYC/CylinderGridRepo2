@@ -64,6 +64,15 @@ const defaultEffects = {
   // Track Tilt Control - MADISON PRESET DEFAULTS
   trackTiltDeg: -10,         // desktop default
   trackTiltMobileDeg: -3,    // gentle on mobile
+  
+  // Sizing/Spacing - Double Helix
+  tileW: 120,                // px
+  tileH: 200,                // px
+  gutterPx: 12,              // px spacing between neighbors (min)
+  autoSpacing: true,         // compute tilesPerTurn from R + W + gutter
+  radiusPx: 250,             // radius for helix
+  pitchPerTurnPx: 800,       // vertical spacing per full turn
+  tilesPerTurn: 16,          // will be overridden when autoSpacing = true
 };
 
 export const useEffects = () => {

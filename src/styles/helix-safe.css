@@ -490,3 +490,36 @@
     display: none;
   }
 }
+
+/* ======================================
+   DOUBLE HELIX PAIR GROUPS
+   ====================================== */
+
+.pair-group {
+  transform-style: preserve-3d;
+}
+
+.pair-connector {
+  background: linear-gradient(90deg, rgba(255,255,255,.35), rgba(255,255,255,.15));
+  box-shadow: 0 0 8px rgba(255,255,255,.18);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.pair-info .tile-card {
+  /* Simple info card look. Same box; content is text. */
+  background: rgba(18,18,20,.75);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+/* Update tile sizing variables */
+:root {
+  --tile-w: 120px;
+  --tile-h: 200px;
+}
+
+.helix-tile {
+  width: var(--tile-w);
+  height: var(--tile-h);
+  aspect-ratio: unset; /* Override previous aspect-ratio for explicit height */
+}
