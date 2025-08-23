@@ -375,7 +375,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 69px;  /* 15% bigger than 60px */
+  width: 104px;  /* 50% bigger than 69px */
   height: auto;
   transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px));
   opacity: var(--logo-opacity, 0.85);

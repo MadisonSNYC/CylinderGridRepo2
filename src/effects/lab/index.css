@@ -1,0 +1,10 @@
+/* ======================================
+   LAB EFFECTS AGGREGATOR
+   Single entry point for all lab effects
+   ====================================== */
+
+@import './compat.css';
+@import './dof.css';
+@import './ghost.css';
+@import './bias.css';
+@import './visual.css';

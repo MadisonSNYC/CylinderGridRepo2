@@ -17,8 +17,8 @@ export const StructureEffects = ({ effects, children }) => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 138px;  /* 15% bigger than 120px */
-          height: 138px;  /* 15% bigger than 120px */
+          width: 207px;  /* 50% bigger than 138px */
+          height: 207px;  /* 50% bigger than 138px */
           border: 2px solid rgba(255, 255, 255, 0.2);
           border-radius: 50%;
           z-index: 5;
@@ -30,8 +30,8 @@ export const StructureEffects = ({ effects, children }) => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%) rotateX(90deg);
-          width: 138px;  /* 15% bigger than 120px */
-          height: 138px;  /* 15% bigger than 120px */
+          width: 207px;  /* 50% bigger than 138px */
+          height: 207px;  /* 50% bigger than 138px */
           border: 2px solid rgba(255, 255, 255, 0.1);
           border-radius: 50%;
           z-index: 5;
