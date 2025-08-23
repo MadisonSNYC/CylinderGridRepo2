@@ -35,3 +35,29 @@
 .fx-lab-light {
   /* Pro lighting effects */
 }
+
+/* Desktop-only RGB edge fringe (subtle) */
+@media (min-width: 1024px){
+  .lab-compat.fx-rgb-edge .tile-card::before,
+  .lab-compat.fx-rgb-edge .tile-card::after{
+    content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
+  }
+  /* Red-left */
+  .lab-compat.fx-rgb-edge .tile-card::before{
+    background: linear-gradient(90deg, rgba(255,0,0, var(--rgb-alpha, .30)) 0%, transparent 35%);
+    transform: translateX(calc(-1 * var(--rgb-offset, 1px)));
+  }
+  /* Blue-right + green center fringe */
+  .lab-compat.fx-rgb-edge .tile-card::after{
+    background:
+      linear-gradient(90deg, transparent 65%, rgba(0,255,0, calc(var(--rgb-alpha, .30) * .66)) 80%, transparent 90%),
+      linear-gradient(90deg, transparent 65%, rgba(0,0,255, var(--rgb-alpha, .30)) 100%, transparent);
+    transform: translateX(var(--rgb-offset, 1px));
+  }
+}
+
+/* Mobile: off by default */
+@media (max-width: 1023px){
+  .lab-compat.fx-rgb-edge .tile-card::before,
+  .lab-compat.fx-rgb-edge .tile-card::after{ display:none; }
+}

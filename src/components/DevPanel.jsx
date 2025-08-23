@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button.jsx';
 import { Switch } from '@/components/ui/switch.jsx';
-import { Separator } from '@/components/ui/separator.jsx';
 import { Settings, Palette, Sparkles, Box, RotateCw, Navigation, Type, Mouse } from 'lucide-react';
 
 export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrength, setRepeatTurns }) => {
@@ -187,6 +186,48 @@ export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrengt
                   </div>
                 ))}
               </div>
+              
+              {/* RGB Edge Controls */}
+              {group.title === 'Effects' && effects.rgbEdge && (
+                <div className="mt-3 px-1 space-y-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-medium text-gray-600">RGB Intensity</label>
+                      <span className="text-xs font-medium text-gray-700">{effects.rgbIntensity}%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      step={5}
+                      value={effects.rgbIntensity}
+                      onChange={(e) => onEffectToggle('rgbIntensity', Number(e.target.value))}
+                      className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      style={{
+                        background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${effects.rgbIntensity}%, #e5e7eb ${effects.rgbIntensity}%, #e5e7eb 100%)`
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-medium text-gray-600">RGB Offset</label>
+                      <span className="text-xs font-medium text-gray-700">{effects.rgbOffsetPx}px</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={0}
+                      max={2}
+                      step={1}
+                      value={effects.rgbOffsetPx}
+                      onChange={(e) => onEffectToggle('rgbOffsetPx', Number(e.target.value))}
+                      className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      style={{
+                        background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${effects.rgbOffsetPx * 50}%, #e5e7eb ${effects.rgbOffsetPx * 50}%, #e5e7eb 100%)`
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
               
               {/* Add mode selector for Input section */}
               {group.hasMode && group.title === 'Input' && (

@@ -10,7 +10,9 @@ const defaultEffects = {
   depthBlur: false,
   glitchEffects: false,
   ambientLighting: false,
-  rgbEdge: true,             // RGB edge effect on cards
+  rgbEdge: true,             // desktop edge fringe
+  rgbIntensity: 30,          // 0..100 (% alpha)
+  rgbOffsetPx: 1,            // 0..2 (px offset)
   
   // Lab-compatible effects
   depthOfField: false,       // Lab DoF blur
