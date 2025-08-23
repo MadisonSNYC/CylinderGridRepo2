@@ -8,7 +8,7 @@ export const NavigationEffects = ({ effects, currentProject, totalProjects, onPr
       data-navigation-dots={effects.navigationDots}
       data-minimalist-controls={effects.minimalistControls}
     >
-      <style jsx>{`
+      <style jsx="true">{`
         /* Project Counter */
         .project-counter {
           position: absolute;

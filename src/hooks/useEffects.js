@@ -10,6 +10,7 @@ const defaultEffects = {
   depthBlur: false,
   glitchEffects: false,
   ambientLighting: false,
+  rgbEdge: true,             // RGB edge effect on cards
   
   // Card Design
   ashfallCards: false,
@@ -18,8 +19,11 @@ const defaultEffects = {
   
   // Structure
   centralWireframe: false,
+  centerLogo: true,          // Show logo in center by default
+  centerLogoMode: 'billboard', // 'rotate' | 'billboard'
   smoothRotation: false,
   depthHierarchy: false,
+  repeatTurns: 2.0,          // Extra turns for endless feel
   
   // Navigation
   projectCounter: false,
@@ -28,7 +32,20 @@ const defaultEffects = {
   
   // Typography
   ashfallTypography: false,
-  subtleText: false
+  subtleText: false,
+  
+  // NEW: Depth Placement (always-on)
+  // depthPlacement: true,      // no longer needed - always enabled
+  placementStrength: 6,      // 0..10; maps to CSS vars (stronger default)
+  
+  // S6: Outward Turn + Ghost Back
+  outwardTurn: true,         // default ON for dynamic scroll effects
+  
+  // FS1: Wheel Scroll Direction
+  invertScroll: false,       // default: normal scroll direction
+  
+  // FS2: Single-Source Scroll Mode
+  scrollMode: 'wheel',       // 'wheel' | 'sticky' - select scroll mode
 };
 
 export const useEffects = () => {
@@ -52,11 +69,27 @@ export const useEffects = () => {
     }));
   }, []);
 
+  const setPlacementStrength = useCallback((n) => {
+    setEffects(prev => ({
+      ...prev,
+      placementStrength: n
+    }));
+  }, []);
+
+  const setRepeatTurns = useCallback((n) => {
+    setEffects(prev => ({
+      ...prev,
+      repeatTurns: n
+    }));
+  }, []);
+
   return {
     effects,
     toggleEffect,
     resetEffects,
-    applyPreset
+    applyPreset,
+    setPlacementStrength,
+    setRepeatTurns
   };
 };
 

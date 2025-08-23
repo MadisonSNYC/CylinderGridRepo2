@@ -7,7 +7,7 @@ export const TypographyEffects = ({ effects, children }) => {
       data-ashfall-typography={effects.ashfallTypography}
       data-subtle-text={effects.subtleText}
     >
-      <style jsx>{`
+      <style jsx="true">{`
         /* Ashfall Typography */
         .typography-effects-wrapper[data-ashfall-typography="true"] {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

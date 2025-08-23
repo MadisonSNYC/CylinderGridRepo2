@@ -5,7 +5,7 @@ import { useEffects } from './hooks/useEffects.js';
 import './App.css';
 
 function App() {
-  const { effects, toggleEffect, resetEffects } = useEffects();
+  const { effects, toggleEffect, resetEffects, setPlacementStrength, setRepeatTurns } = useEffects();
 
   return (
     <div className="App relative">
@@ -13,6 +13,8 @@ function App() {
         effects={effects}
         onEffectToggle={toggleEffect}
         onReset={resetEffects}
+        setPlacementStrength={setPlacementStrength}
+        setRepeatTurns={setRepeatTurns}
       />
       
       <EnhancedHelixProjectsShowcase 

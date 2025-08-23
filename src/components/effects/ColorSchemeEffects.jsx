@@ -32,7 +32,7 @@ export const ColorSchemeEffects = ({ effects, children }) => {
       data-ashfall-colors={effects.ashfallColors}
       data-monochrome={effects.monochrome}
     >
-      <style jsx>{`
+      <style jsx="true">{`
         .color-scheme-wrapper {
           transition: all 0.5s ease;
         }

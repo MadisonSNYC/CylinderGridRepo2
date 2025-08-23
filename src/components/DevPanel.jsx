@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button.jsx';
 import { Switch } from '@/components/ui/switch.jsx';
 import { Separator } from '@/components/ui/separator.jsx';
-import { Settings, Palette, Sparkles, Box, RotateCw, Navigation, Type } from 'lucide-react';
+import { Settings, Palette, Sparkles, Box, RotateCw, Navigation, Type, Mouse } from 'lucide-react';
 
-export const DevPanel = ({ effects, onEffectToggle, onReset }) => {
+export const DevPanel = ({ effects, onEffectToggle, onReset, setPlacementStrength, setRepeatTurns }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const effectGroups = [
@@ -23,7 +23,9 @@ export const DevPanel = ({ effects, onEffectToggle, onReset }) => {
         { key: 'chromaticAberration', label: 'Chromatic', description: 'RGB separation' },
         { key: 'depthBlur', label: 'Depth Blur', description: 'Distance blur' },
         { key: 'glitchEffects', label: 'Glitch', description: 'Hover glitch' },
-        { key: 'ambientLighting', label: 'Lighting', description: 'Soft shadows' }
+        { key: 'ambientLighting', label: 'Lighting', description: 'Soft shadows' },
+        { key: 'outwardTurn', label: 'Outward Turn', description: 'Scroll-based opening + ghost' },
+        { key: 'rgbEdge', label: 'RGB Edge', description: 'Chromatic card edges' }
       ]
     },
     {
@@ -40,9 +42,12 @@ export const DevPanel = ({ effects, onEffectToggle, onReset }) => {
       icon: <RotateCw className="w-3 h-3" />,
       effects: [
         { key: 'centralWireframe', label: 'Wireframe', description: 'Center structure' },
+        { key: 'centerLogo', label: 'Center Logo', description: 'Ravie logo in center' },
         { key: 'smoothRotation', label: 'Smooth', description: 'Better easing' },
         { key: 'depthHierarchy', label: 'Depth', description: 'Scale by distance' }
-      ]
+      ],
+      hasLogoMode: true,
+      hasRepeatTurns: true
     },
     {
       title: 'Nav',
@@ -60,6 +65,22 @@ export const DevPanel = ({ effects, onEffectToggle, onReset }) => {
         { key: 'ashfallTypography', label: 'Typography', description: 'Ashfall fonts' },
         { key: 'subtleText', label: 'Subtle', description: 'Muted colors' }
       ]
+    },
+    {
+      title: 'Placement',
+      icon: <Settings className="w-3 h-3" />,
+      effects: [
+        // No toggle needed - placement is always-on
+      ],
+      hasSlider: true
+    },
+    {
+      title: 'Input',
+      icon: <Mouse className="w-3 h-3" />,
+      effects: [
+        { key: 'invertScroll', label: 'Invert Scroll', description: 'Flip wheel direction' }
+      ],
+      hasMode: true
     }
   ];
 
@@ -107,7 +128,8 @@ export const DevPanel = ({ effects, onEffectToggle, onReset }) => {
                   depthHierarchy: true,
                   projectCounter: true,
                   ashfallTypography: true,
-                  subtleText: true
+                  subtleText: true,
+                  outwardTurn: true
                 };
                 Object.entries(ashfallPreset).forEach(([key, value]) => {
                   onEffectToggle(key, value);
@@ -121,7 +143,7 @@ export const DevPanel = ({ effects, onEffectToggle, onReset }) => {
         </div>
 
         <div className="space-y-4">
-          {effectGroups.map((group, groupIndex) => (
+          {effectGroups.map((group) => (
             <div key={group.title} className="bg-gray-50 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
                 {group.icon}
@@ -150,6 +172,93 @@ export const DevPanel = ({ effects, onEffectToggle, onReset }) => {
                   </div>
                 ))}
               </div>
+              
+              {/* Add mode selector for Input section */}
+              {group.hasMode && group.title === 'Input' && (
+                <div className="mt-3 px-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-medium text-gray-600">Mode</label>
+                    <span className="text-xs font-medium text-gray-700">{effects.scrollMode}</span>
+                  </div>
+                  <select
+                    value={effects.scrollMode || 'wheel'}
+                    onChange={(e) => onEffectToggle('scrollMode', e.target.value)}
+                    className="w-full text-xs bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="wheel">Wheel (manual)</option>
+                    <option value="sticky">Sticky (scroll timeline)</option>
+                  </select>
+                </div>
+              )}
+
+              {/* Add slider for Placement section - always show (placement always-on) */}
+              {group.hasSlider && group.title === 'Placement' && (
+                <div className="mt-3 px-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-medium text-gray-600">Strength</label>
+                    <span className="text-xs font-medium text-gray-700">{effects.placementStrength}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={10}
+                    step={1}
+                    value={effects.placementStrength}
+                    onChange={(e) => setPlacementStrength?.(Number(e.target.value))}
+                    className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                    style={{
+                      background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${effects.placementStrength * 10}%, #e5e7eb ${effects.placementStrength * 10}%, #e5e7eb 100%)`
+                    }}
+                  />
+                  <div className="flex justify-between mt-1">
+                    <span className="text-xs text-gray-400">0</span>
+                    <span className="text-xs text-gray-400">10</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Add Logo Mode selector for Structure section */}
+              {group.hasLogoMode && group.title === 'Structure' && effects.centerLogo && (
+                <div className="mt-3 px-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-medium text-gray-600">Logo Mode</label>
+                  </div>
+                  <select
+                    value={effects.centerLogoMode || 'billboard'}
+                    onChange={(e) => onEffectToggle('centerLogoMode', e.target.value)}
+                    className="w-full text-xs bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="billboard">Billboard (always forward)</option>
+                    <option value="rotate">Rotate with scene</option>
+                  </select>
+                </div>
+              )}
+
+              {/* Add Repeat Turns slider for Structure section */}
+              {group.hasRepeatTurns && group.title === 'Structure' && (
+                <div className="mt-3 px-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-medium text-gray-600">Repeat Turns</label>
+                    <span className="text-xs font-medium text-gray-700">{effects.repeatTurns?.toFixed(1) || '2.0'}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={5}
+                    step={0.5}
+                    value={effects.repeatTurns || 2}
+                    onChange={(e) => setRepeatTurns?.(Number(e.target.value))}
+                    className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                    style={{
+                      background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(effects.repeatTurns || 2) * 20}%, #e5e7eb ${(effects.repeatTurns || 2) * 20}%, #e5e7eb 100%)`
+                    }}
+                  />
+                  <div className="flex justify-between mt-1">
+                    <span className="text-xs text-gray-400">0</span>
+                    <span className="text-xs text-gray-400">5</span>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>

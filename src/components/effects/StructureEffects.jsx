@@ -5,10 +5,11 @@ export const StructureEffects = ({ effects, children }) => {
     <div 
       className="structure-effects-wrapper"
       data-central-wireframe={effects.centralWireframe}
+      data-wireframe-lines={effects.centralWireframe && !effects.centerLogo}
       data-smooth-rotation={effects.smoothRotation}
       data-depth-hierarchy={effects.depthHierarchy}
     >
-      <style jsx>{`
+      <style jsx="true">{`
         /* Central Wireframe Structure */
         .structure-effects-wrapper[data-central-wireframe="true"] .helix-assembly::before {
           content: '';
@@ -16,8 +17,8 @@ export const StructureEffects = ({ effects, children }) => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 120px;
-          height: 120px;
+          width: 138px;  /* 15% bigger than 120px */
+          height: 138px;  /* 15% bigger than 120px */
           border: 2px solid rgba(255, 255, 255, 0.2);
           border-radius: 50%;
           z-index: 5;
@@ -29,8 +30,8 @@ export const StructureEffects = ({ effects, children }) => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%) rotateX(90deg);
-          width: 120px;
-          height: 120px;
+          width: 138px;  /* 15% bigger than 120px */
+          height: 138px;  /* 15% bigger than 120px */
           border: 2px solid rgba(255, 255, 255, 0.1);
           border-radius: 50%;
           z-index: 5;
@@ -45,8 +46,8 @@ export const StructureEffects = ({ effects, children }) => {
           border-color: rgba(0, 0, 0, 0.08);
         }
 
-        /* Tripod structure lines */
-        .structure-effects-wrapper[data-central-wireframe="true"] .wireframe-tripod {
+        /* Tripod structure lines - only show when data-wireframe-lines is true */
+        .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-tripod {
           position: absolute;
           top: 50%;
           left: 50%;
@@ -57,13 +58,13 @@ export const StructureEffects = ({ effects, children }) => {
           z-index: 4;
         }
 
-        .structure-effects-wrapper[data-central-wireframe="true"] .wireframe-line {
+        .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line {
           position: absolute;
           background: rgba(255, 255, 255, 0.1);
           transform-origin: center;
         }
 
-        .structure-effects-wrapper[data-central-wireframe="true"] .wireframe-line:nth-child(1) {
+        .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line:nth-child(1) {
           top: 50%;
           left: 50%;
           width: 100px;
@@ -71,7 +72,7 @@ export const StructureEffects = ({ effects, children }) => {
           transform: translate(-50%, -50%) rotate(0deg);
         }
 
-        .structure-effects-wrapper[data-central-wireframe="true"] .wireframe-line:nth-child(2) {
+        .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line:nth-child(2) {
           top: 50%;
           left: 50%;
           width: 100px;
@@ -79,7 +80,7 @@ export const StructureEffects = ({ effects, children }) => {
           transform: translate(-50%, -50%) rotate(120deg);
         }
 
-        .structure-effects-wrapper[data-central-wireframe="true"] .wireframe-line:nth-child(3) {
+        .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line:nth-child(3) {
           top: 50%;
           left: 50%;
           width: 100px;
@@ -88,7 +89,7 @@ export const StructureEffects = ({ effects, children }) => {
         }
 
         /* Ashfall-style wireframe lines */
-        .color-scheme-wrapper[data-ashfall-colors="true"] .structure-effects-wrapper[data-central-wireframe="true"] .wireframe-line {
+        .color-scheme-wrapper[data-ashfall-colors="true"] .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line {
           background: rgba(0, 0, 0, 0.1);
         }
 
@@ -136,8 +137,8 @@ export const StructureEffects = ({ effects, children }) => {
           perspective-origin: center center;
         }
 
-        /* Subtle floating animation for wireframe */
-        .structure-effects-wrapper[data-central-wireframe="true"] .wireframe-tripod {
+        /* Subtle floating animation for wireframe lines */
+        .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-tripod {
           animation: wireframe-float 8s ease-in-out infinite alternate;
         }
 
@@ -147,8 +148,8 @@ export const StructureEffects = ({ effects, children }) => {
         }
       `}</style>
       
-      {/* Wireframe Tripod Structure */}
-      {effects.centralWireframe && (
+      {/* Wireframe Tripod Structure - only show if centerLogo is OFF */}
+      {effects.centralWireframe && !effects.centerLogo && (
         <div className="wireframe-tripod">
           <div className="wireframe-line"></div>
           <div className="wireframe-line"></div>

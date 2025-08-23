@@ -1,15 +1,53 @@
 import React from 'react';
 
 export const VisualEffects = ({ effects, children }) => {
+  // Compute CSS variables from strength value
+  const s = effects.placementStrength ?? 6;     // 0..10 (stronger default)
+
+  // --- BASE scales that mimic the Depth Blur look (no blur) ---
+  const baseNearScale = 1.060;   // near ≈ +6%
+  const baseMidScale  = 1.000;   // mid = 0%
+  const baseFarScale  = 0.940;   // far ≈ -6%
+
+  // keep Z and tilt the same
+  const nearZ     = 4 + s * 0.8;                // px
+  const farZ      = -(7 + s * 1.1);             // px (negative = pushed back)
+  const farTilt   = -(0.18 + s * 0.022);        // deg
+
+  // OPTIONAL: small modulation from strength (subtle extra 0..±1%)
+  const mod = (s - 5) * 0.001; // -0.005..+0.005 around mid
+  const nearScale = baseNearScale + mod;    // ≈ 1.055..1.065
+  const midScale  = baseMidScale;           // keep 1.000
+  const farScale  = baseFarScale  - mod;    // ≈ 0.935..0.945
+
+  // Always apply placement vars (placement is now always-on)
+  const placementVars = {
+    '--pp-near-z'    : `${Math.round(nearZ)}px`,
+    '--pp-mid-z'     : `0px`,
+    '--pp-far-z'     : `${Math.round(farZ)}px`,
+    '--pp-near-scale': nearScale,
+    '--pp-mid-scale' : midScale,
+    '--pp-far-scale' : farScale,
+    '--pp-near-tilt' : `0deg`,
+    '--pp-mid-tilt'  : `-0.10deg`,
+    '--pp-far-tilt'  : `${farTilt.toFixed(2)}deg`,
+  };
+
   return (
     <div 
-      className="visual-effects-wrapper"
+      className={`visual-effects-wrapper fx-depth-placement ${effects.depthBlur ? 'fx-depth-blur' : ''} ${effects.outwardTurn ? 'fx-outward' : ''} ${effects.centerLogo ? 'fx-center-logo' : ''} ${effects.rgbEdge ? 'fx-rgb-edge' : ''}`}
+      style={placementVars}
       data-chromatic-aberration={effects.chromaticAberration}
       data-depth-blur={effects.depthBlur}
       data-glitch-effects={effects.glitchEffects}
       data-ambient-lighting={effects.ambientLighting}
+      data-depth-hierarchy={effects.depthHierarchy}
+      data-ashfall-cards={effects.ashfallCards}
+      data-ashfall-colors={effects.ashfallColors}
+      data-typography={effects.ashfallTypography}
+      data-center-logo-mode={effects.centerLogoMode}
     >
-      <style jsx>{`
+      <style jsx="true">{`
         /* Chromatic Aberration Effect */
         .visual-effects-wrapper[data-chromatic-aberration="true"] .helix-node::before {
           content: '';

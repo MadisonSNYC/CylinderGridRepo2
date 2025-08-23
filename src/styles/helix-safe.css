@@ -1,0 +1,453 @@
+/* Step S2 - Kill CLS (reserve card height) */
+:root { 
+  --tile-w: 80px;  /* matches current card width */
+}
+
+.helix-tile {
+  position: absolute;
+  width: var(--tile-w);
+  aspect-ratio: 9 / 16;  /* reserves height => prevents CLS */
+  transform-style: preserve-3d;
+}
+
+.helix-tile img,
+.helix-tile .tile-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Step S4 - Curved Cards + Depth Opacity */
+/* --- Curved card surface (rounded + subtle shading) --- */
+.tile-card {
+  position: relative;              /* for ::before mask */
+  border-radius: 12px;             /* "curve the card" visual */
+  overflow: hidden;                /* keep media inside rounded edges */
+  transition: opacity 120ms linear;/* smooth depth fade */
+}
+
+/* Note: Previous S4 lateral highlights replaced by S4.2 symmetric bow effect */
+
+/* --- Depth opacity tiers (front -> back) --- */
+.helix-tile.depth-near  .tile-card { opacity: var(--opacity-near, 1);   }
+.helix-tile.depth-mid   .tile-card { opacity: var(--opacity-mid, .82);  }
+.helix-tile.depth-far   .tile-card { opacity: var(--opacity-far, .62);  }
+
+/* Keep the backface safety from S1 (repeat here in case) */
+.tile-card {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* ======================================
+   STEP S4.2 - BOWED SURFACE (convex) — additive only
+   ====================================== */
+
+/* Tuning knobs (safe defaults) */
+:root {
+  --bow-highlight: .14;   /* central specular line intensity */
+  --bow-vignette : .18;   /* edge darkening amount */
+  --bow-radius   : 12px;  /* keep your rounded corners */
+}
+
+/* Ensure .tile-card clips its contents */
+.tile-card {
+  position: relative;
+  border-radius: var(--bow-radius);
+  overflow: hidden;
+}
+
+/* Symmetric central specular highlight — vertical, not left/right */
+.tile-card::before {
+  content: '';
+  position: absolute; 
+  inset: 0;
+  pointer-events: none;
+  /* vertical highlight that fades to edges */
+  background:
+    linear-gradient(90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,var(--bow-highlight)) 50%,
+      rgba(255,255,255,0) 100%
+    );
+  opacity: 1;               /* keep blend normal to avoid tilt illusion */
+  mix-blend-mode: normal;   /* no overlay/screen here */
+}
+
+/* Symmetric edge vignette to suggest curvature toward edges */
+.tile-card::after {
+  content: '';
+  position: absolute; 
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(110% 80% at 50% 50%,
+      rgba(0,0,0,0) 45%,
+      rgba(0,0,0,var(--bow-vignette)) 95%
+    );
+  opacity: 1;
+}
+
+/* Keep depth fade from S4 (ensure it applies to the whole card) */
+.helix-tile.depth-near  .tile-card { opacity: var(--opacity-near, 1);   }
+.helix-tile.depth-mid   .tile-card { opacity: var(--opacity-mid,  .82); }
+.helix-tile.depth-far   .tile-card { opacity: var(--opacity-far,  .62); }
+
+/* Optional: dial back on small screens */
+@media (max-width: 768px) {
+  :root {
+    --bow-highlight: .10;
+    --bow-vignette : .14;
+    --bow-radius   : 10px;
+  }
+}
+
+/* Sanity check media clipping (no square edges poking out) */
+.tile-card > img,
+.tile-card > .tile-media {
+  width: 100%; 
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ======================================
+   STEP S4.3b - BOWED CARD (convex slicing)
+   ====================================== */
+
+.bow {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.bow-slices {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transform-style: preserve-3d;
+}
+
+.bow-slice {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  background-size: calc(var(--bow-slices, 9) * 100%) 100%;
+  background-repeat: no-repeat;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Optional edge enhancement */
+.bow-slice.edge {
+  opacity: 0.98; /* Subtle edge fade for realism */
+}
+
+/* ======================================
+   STEP S5 - DEPTH-AWARE BLUR (media only)
+   ====================================== */
+
+/* ---------- Depth blur amounts (tunable) ---------- */
+:root {
+  --blur-near: 0px;
+  --blur-mid : 0.6px;
+  --blur-far : 1.6px;   /* keep <= ~2px for perf */
+}
+
+/* Mobile: lighten the load */
+@media (max-width: 768px) {
+  :root {
+    --blur-mid : 0.4px;
+    --blur-far : 1.0px;
+  }
+}
+
+/* Media wrapper to receive the blur (NOT the whole card) */
+.tile-card .media-3d {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  will-change: filter;         /* but only where used (tiers below) */
+  transition: filter 120ms linear; /* smooth blur transitions */
+}
+
+/* Apply blur by tier. Overlays remain crisp. */
+.helix-tile.depth-near  .media-3d { filter: blur(var(--blur-near)); }
+.helix-tile.depth-mid   .media-3d { filter: blur(var(--blur-mid));  }
+.helix-tile.depth-far   .media-3d { filter: blur(var(--blur-far));  }
+
+/* Keep card UI crisp (titles, badges, etc.) above the media layer */
+.tile-card .ui-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* if purely decorative labels */
+  z-index: 10; /* ensure it's above media */
+  display: flex;
+  align-items: flex-end;
+  padding: 0.5rem;
+}
+
+/* ======================================
+   STEP S5.3 - PREFERRED TILT/PLACEMENT PRESET
+   ====================================== */
+
+/* Ensure tile-content fills parent */
+.tile-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Gate with a class on your effects wrapper */
+.fx-depth-placement .tile-content {
+  transform-origin: center center;
+  will-change: transform;
+  transition: transform 120ms linear;
+}
+
+/* Desktop preset — tuned to match preferred look */
+@media (min-width: 769px) {
+  :root {
+    /* Z bias pushes / pulls content; scale adds fullness; tilt adds attitude */
+    --pp-near-z:  5px;  --pp-near-scale: 1.020; --pp-near-tilt:  0deg;
+    --pp-mid-z:   0px;  --pp-mid-scale:  1.000; --pp-mid-tilt:  -0.1deg;
+    --pp-far-z:  -9px;  --pp-far-scale:  0.980; --pp-far-tilt:  -0.25deg;
+  }
+}
+
+/* Mobile: lighter values */
+@media (max-width: 768px) {
+  :root {
+    --pp-near-z:  3px;  --pp-near-scale: 1.010; --pp-near-tilt: 0deg;
+    --pp-mid-z:   0px;  --pp-mid-scale:  1.000; --pp-mid-tilt: -0.05deg;
+    --pp-far-z:  -6px;  --pp-far-scale:  0.990; --pp-far-tilt: -0.15deg;
+  }
+}
+
+/* Apply per-tier; yaw cancel stays on .tile-card */
+.fx-depth-placement .helix-tile.depth-near .tile-content {
+  transform:
+    translateZ(var(--pp-near-z))
+    scale(var(--pp-near-scale))
+    rotateX(var(--pp-near-tilt));
+}
+.fx-depth-placement .helix-tile.depth-mid .tile-content {
+  transform:
+    translateZ(var(--pp-mid-z))
+    scale(var(--pp-mid-scale))
+    rotateX(var(--pp-mid-tilt));
+}
+.fx-depth-placement .helix-tile.depth-far .tile-content {
+  transform:
+    translateZ(var(--pp-far-z))
+    scale(var(--pp-far-scale))
+    rotateX(var(--pp-far-tilt));
+}
+
+/* Ensure blur stays media-only and placement doesn't blur UI */
+.helix-tile .media-3d { filter: inherit; }
+.helix-tile .ui-layer { filter: none; }
+
+/* Legacy S5.2 classes for backwards compatibility */
+.fx-pref-placement .tile-content {
+  /* Redirect to new preset */
+  transform-origin: center center;
+  will-change: transform;
+}
+.fx-pref-placement .helix-tile.depth-near  .tile-content,
+.fx-pref-placement .helix-tile.depth-mid   .tile-content,
+.fx-pref-placement .helix-tile.depth-far   .tile-content {
+  /* Override handled by fx-depth-placement now */
+  transform: none;
+}
+
+/* ======================================
+   STEP S6 - OUTWARD TURN + GHOST BACK (gated by fx-outward)
+   ====================================== */
+
+/* Gate the feature so you can toggle it */
+.fx-outward .tile-content {
+  transform-origin: center center;
+}
+
+/* Add outward opening on top of placement transforms */
+.fx-outward .helix-tile.depth-near .tile-content {
+  transform:
+    translateZ(var(--pp-near-z))
+    scale(var(--pp-near-scale))
+    rotateX(var(--pp-near-tilt))
+    rotateY(var(--pp-yaw, 0deg))
+    rotateZ(var(--pp-roll, 0deg))
+    rotateY(var(--pp-open, 0deg)) !important;
+}
+.fx-outward .helix-tile.depth-mid .tile-content {
+  transform:
+    translateZ(var(--pp-mid-z))
+    scale(var(--pp-mid-scale))
+    rotateX(var(--pp-mid-tilt))
+    rotateY(var(--pp-yaw, 0deg))
+    rotateZ(var(--pp-roll, 0deg))
+    rotateY(var(--pp-open, 0deg)) !important;
+}
+.fx-outward .helix-tile.depth-far .tile-content {
+  transform:
+    translateZ(var(--pp-far-z))
+    scale(var(--pp-far-scale))
+    rotateX(var(--pp-far-tilt))
+    rotateY(var(--pp-yaw, 0deg))
+    rotateZ(var(--pp-roll, 0deg))
+    rotateY(var(--pp-open, 0deg)) !important;
+}
+
+/* Ghost: mirrored backside behind the card (images) */
+.tile-ghost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  opacity: var(--ghost, 0);
+  filter: blur(2px) saturate(0.9);
+  transform: translateZ(calc(-1 * var(--ghost-z, 12px))) rotateY(180deg) scale(0.98);
+  transition: opacity 120ms linear, transform 120ms linear;
+}
+
+/* Video fallback: gradient "ghost" */
+.tile-ghost.ghost-fallback {
+  background: radial-gradient(80% 70% at 50% 50%, rgba(255,255,255,0.08), rgba(0,0,0,0.0) 60%, rgba(0,0,0,0.5));
+}
+
+/* Safety: when not scrolling (ghost ~0), place content baseline */
+.fx-outward .helix-tile .tile-content {
+  will-change: transform;
+}
+
+/* Ensure our placement transform wins only in placement mode */
+.fx-depth-placement .helix-tile .tile-content {
+  transform: translateZ(0) scale(1) rotateX(0); /* baseline */
+}
+
+/* ======================================
+   STEP FS2 - SCROLL STABILIZERS
+   ====================================== */
+
+/* Prevent bounce / momentum from propagating */
+.helix-section, .helix-scene {
+  overscroll-behavior: contain;
+}
+.fx-depth-placement .helix-tile.depth-near .tile-content {
+  transform:
+    translateZ(var(--pp-near-z))
+    scale(var(--pp-near-scale))
+    rotateX(var(--pp-near-tilt))
+    rotateY(var(--pp-yaw, 0deg))
+    rotateZ(var(--pp-roll, 0deg)) !important;
+}
+.fx-depth-placement .helix-tile.depth-mid .tile-content {
+  transform:
+    translateZ(var(--pp-mid-z))
+    scale(var(--pp-mid-scale))
+    rotateX(var(--pp-mid-tilt))
+    rotateY(var(--pp-yaw, 0deg))
+    rotateZ(var(--pp-roll, 0deg)) !important;
+}
+.fx-depth-placement .helix-tile.depth-far .tile-content {
+  transform:
+    translateZ(var(--pp-far-z))
+    scale(var(--pp-far-scale))
+    rotateX(var(--pp-far-tilt))
+    rotateY(var(--pp-yaw, 0deg))
+    rotateZ(var(--pp-roll, 0deg)) !important;
+}
+/* ======================================
+   STEP CL1 - CENTER LOGO (replaces wireframe)
+   ====================================== */
+
+/* Center logo replacement for wireframe */
+.center-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 69px;  /* 15% bigger than 60px */
+  height: auto;
+  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px));
+  opacity: var(--logo-opacity, 0.85);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+  pointer-events: none;  /* don't block interactions */
+  will-change: transform, opacity;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Only hide wireframe lines (star pattern) when logo is shown, keep circles */
+.fx-center-logo .wireframe-tripod {
+  display: none !important;
+}
+
+/* Billboard mode - always faces forward */
+.center-logo.billboard {
+  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px)) rotateY(calc(-1 * var(--sceneDeg, 0deg)));
+}
+
+/* Rotate mode - rotates with scene */
+.center-logo.rotate {
+  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px));
+}
+
+/* Subtle rotation animation (optional) */
+@media (prefers-reduced-motion: no-preference) {
+  .center-logo.rotate {
+    animation: gentle-float 20s ease-in-out infinite;
+  }
+}
+
+@keyframes gentle-float {
+  0%, 100% { transform: translate(-50%, -50%) translateZ(0px) rotateY(0deg); }
+  50% { transform: translate(-50%, -50%) translateZ(10px) rotateY(180deg); }
+}
+
+/* ======================================
+   RGB EDGE EFFECT - Chromatic card edges
+   ====================================== */
+
+.fx-rgb-edge .helix-node > div {
+  position: relative;
+}
+
+/* RGB edge effect using pseudo-elements */
+.fx-rgb-edge .helix-node > div::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, 
+    #ff0066 0%, 
+    #00ffcc 25%, 
+    #0066ff 50%, 
+    #ff00cc 75%, 
+    #ff0066 100%
+  );
+  border-radius: 12px;
+  z-index: -1;
+  opacity: 0.6;
+  filter: blur(2px);
+  animation: rgb-shift 3s linear infinite;
+}
+
+@keyframes rgb-shift {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Enhance on hover */
+.fx-rgb-edge .helix-node:hover > div::before {
+  opacity: 0.9;
+  filter: blur(3px);
+  animation-duration: 1s;
+}

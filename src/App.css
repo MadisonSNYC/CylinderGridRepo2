@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./styles/helix-safe.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -317,5 +318,14 @@
 .helix-node {
   /* Ensure consistent proportions */
   aspect-ratio: 9 / 16;
+}
+
+/* Step S1 - Face-the-camera additive CSS */
+.tile-card {
+  /* Ensure proper 3D rendering and backface handling */
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
 }
 

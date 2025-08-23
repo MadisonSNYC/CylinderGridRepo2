@@ -8,7 +8,7 @@ export const CardDesignEffects = ({ effects, children }) => {
       data-card-shadows={effects.cardShadows}
       data-card-borders={effects.cardBorders}
     >
-      <style jsx>{`
+      <style jsx="true">{`
         /* Ashfall Card Style */
         .card-design-wrapper[data-ashfall-cards="true"] .helix-node > div {
           background: rgba(255, 255, 255, 0.95) !important;

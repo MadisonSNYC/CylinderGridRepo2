@@ -12,14 +12,21 @@ import { NavigationEffects } from './effects/NavigationEffects.jsx';
 import { TypographyEffects } from './effects/TypographyEffects.jsx';
 
 const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0 }) => {
-  // Use modulo to create infinite repetition
+  // Calculate position along the extended helix
+  const repeatTurns = effects.repeatTurns || 2;
+  const totalCards = totalProjects * Math.ceil(repeatTurns + 1);
+  
+  // Use modulo for display purposes
   const effectiveIndex = index % totalProjects;
-  const angle = (effectiveIndex / totalProjects) * 360;
+  
+  // Position calculation for extended helix
+  const normalizedIndex = index / totalProjects;
+  const angle = normalizedIndex * 360;
   const radius = 250; // Good radius for helix
   
-  // DNA Helix arrangement - proper vertical spiral
-  const verticalSpan = 400; // Restore helix vertical spread
-  const yOffset = (effectiveIndex / (totalProjects - 1)) * verticalSpan - (verticalSpan / 2);
+  // DNA Helix arrangement - extend vertical span based on repeat turns
+  const verticalSpan = 800 * repeatTurns; // Much taller helix
+  const yOffset = (index / (totalCards - 1)) * verticalSpan - (verticalSpan / 2);
   
   // Calculate the current rotation to always face forward
   const currentRotation = scrollOffset * (360 / totalProjects);
@@ -335,6 +342,8 @@ export const EnhancedHelixProjectsShowcase = ({
                           rotateY(${scrollOffset * (360 / projects.length)}deg)
                           translateY(${-scrollOffset * 20}px)
                         `,
+                        // Pass scene rotation as CSS variable for billboard mode
+                        '--sceneDeg': `${scrollOffset * (360 / projects.length)}deg`,
                         transition: effects.smoothRotation 
                           ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' 
                           : 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -344,7 +353,8 @@ export const EnhancedHelixProjectsShowcase = ({
                       }}
                     >
                       {/* Render multiple sets of cards for infinite scroll */}
-                      {Array.from({ length: 5 }, (_, setIndex) => 
+                      {/* Use repeatTurns to control number of card sets */}
+                      {Array.from({ length: Math.ceil(effects.repeatTurns || 2) + 1 }, (_, setIndex) => 
                         projects.map((project, index) => {
                           const globalIndex = setIndex * projects.length + index;
                           return (
@@ -360,6 +370,16 @@ export const EnhancedHelixProjectsShowcase = ({
                             />
                           );
                         })
+                      )}
+                      
+                      {/* Center Logo (when enabled, replaces wireframe) */}
+                      {effects.centerLogo && (
+                        <img
+                          src="/Ravielogo1.png"
+                          alt="Ravie logo"
+                          className={`center-logo no-select ${effects.centerLogoMode || 'billboard'}`}
+                          aria-hidden="true"
+                        />
                       )}
                     </div>
 
