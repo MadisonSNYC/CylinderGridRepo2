@@ -1,0 +1,107 @@
+/* ======================================
+   EFFECTS COMPATIBILITY LAYER
+   Helix <-> Lab alias glue (no rewrites)
+   ====================================== */
+
+/* Core 3D structure aliases */
+.helix-node { 
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.helix-tile { 
+  position: absolute; 
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.tile-card { 
+  position: relative; 
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.tile-content { 
+  position: relative; 
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+}
+
+/* Lab staples we'll drive from Helix math */
+:root {
+  /* Depth positioning (0 = front, 1 = back) */
+  --d: 0;                      /* depth 0..1 */
+  --front-o: 1;                /* clamped front opacity */
+  --ghost-o: 0;                /* ghost back opacity */
+  
+  /* Per-tile adjustments */
+  --bias-scale: 1;             /* per-tile scale factor */
+  --bias-tilt-deg: 0deg;       /* inward tilt (deg) */
+  
+  /* Global track lean */
+  --track-tilt-deg: -6;        /* Lab default global lean */
+  
+  /* Billboard rotation for logo */
+  --sceneDeg: 0deg;            /* scene rotation for billboard counter-rotation */
+  
+  /* Logo positioning */
+  --logo-z: 0px;               /* logo Z depth */
+  --logo-opacity: 0.85;        /* logo opacity */
+}
+
+/* Namespaced marker for scoped rules */
+.lab-compat {
+  /* Marker class for lab-compatible effects */
+}
+
+/* Depth-based opacity tiers (matching lab behavior) */
+.depth-near {
+  --d: 0.1;
+  --front-o: 1;
+  --ghost-o: 0;
+}
+
+.depth-mid {
+  --d: 0.5;
+  --front-o: 0.82;
+  --ghost-o: 0.1;
+}
+
+.depth-far {
+  --d: 0.9;
+  --front-o: 0.62;
+  --ghost-o: 0.2;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  :root {
+    --track-tilt-deg: -3;      /* Reduced lean on mobile */
+  }
+  
+  .depth-mid {
+    --front-o: 0.85;           /* Less aggressive fade */
+  }
+  
+  .depth-far {
+    --front-o: 0.7;            /* Keep cards more visible */
+    --ghost-o: 0.15;           /* Lighter ghost on mobile */
+  }
+}
+
+/* Performance hints */
+.helix-tile,
+.tile-card,
+.tile-content {
+  will-change: transform, opacity;
+}
+
+/* Ensure smooth transitions */
+.helix-tile {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease;
+}

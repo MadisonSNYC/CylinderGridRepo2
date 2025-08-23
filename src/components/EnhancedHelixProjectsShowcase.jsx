@@ -64,7 +64,7 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
   return (
     <div
       className={`
-        helix-node absolute cursor-pointer
+        helix-node helix-tile absolute cursor-pointer
         ${isActive ? 'active z-20' : 'z-10'}
         ${depthClass}
       `}
@@ -89,7 +89,7 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
       onClick={() => onClick(index)}
     >
       <div 
-        className="w-full h-full bg-gray-700 border border-gray-500 hover:border-gray-400 transition-colors flex items-center justify-center"
+        className="tile-card w-full h-full bg-gray-700 border border-gray-500 hover:border-gray-400 transition-colors"
         style={{
           // Always face the viewer - counter-rotate by the card's angle
           transform: `rotateY(${-angle}deg)`,
@@ -103,9 +103,11 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
           visibility: 'visible'
         }}
       >
-        <div className="text-center">
-          <div className="text-white text-xs font-medium">
-            Project {String((effectiveIndex + 1)).padStart(2, '0')}
+        <div className="tile-content flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-white text-xs font-medium">
+              Project {String((effectiveIndex + 1)).padStart(2, '0')}
+            </div>
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ const defaultEffects = {
   centerLogoMode: 'billboard', // 'rotate' | 'billboard'
   smoothRotation: false,
   depthHierarchy: false,
-  repeatTurns: 2.0,          // Extra turns for endless feel
+  repeatTurns: 4.0,          // Extra turns for endless feel (+2.0 for better continuity)
   
   // Navigation
   projectCounter: false,
