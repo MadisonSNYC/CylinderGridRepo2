@@ -61,6 +61,54 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
     else depthClass = 'depth-medium';
   }
   
+  // --- LAB VARIABLES CALCULATION (EP2) ---
+  // Helper to clamp values 0-1
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  
+  // Normalize angle to signed degrees (-180 to 180)
+  const normalizeSignedDeg = (deg) => {
+    deg = deg % 360;
+    if (deg > 180) deg -= 360;
+    if (deg < -180) deg += 360;
+    return deg;
+  };
+  
+  // depth 0..1 (0 front, 1 back)
+  const thetaDeg = normalizeSignedDeg(angle);
+  const sceneYaw = normalizeSignedDeg(currentRotation);
+  const depth = clamp01(Math.abs(normalizeSignedDeg(thetaDeg + sceneYaw)) / 180);
+  
+  // Lab front floors (desktop/mobile)
+  const FRONT_FLOOR = window.innerWidth <= 768 ? 0.48 : 0.42;
+  const DOF_SLOPE = window.innerWidth <= 768 ? 0.35 : 0.45;
+  
+  // clamped front opacity
+  const frontO = Math.max(FRONT_FLOOR, 1 - depth * DOF_SLOPE);
+  
+  // ghost (delayed gate)
+  const GHOST_GATE = 0.40;
+  const ghostPhase = depth <= GHOST_GATE ? 0 : (depth - GHOST_GATE) / (1 - GHOST_GATE);
+  const ghostO = Math.min(0.7, 0.12 + ghostPhase * 0.58);
+  
+  // bias (size & inward tilt)
+  const SCALE_FRONT = 0.03;
+  const SCALE_SIDE = 0.08;
+  const BIAS_TILT_MAX = 5; // deg inward
+  
+  const biasScale = 1 + SCALE_FRONT * (1 - depth) - SCALE_SIDE * depth;
+  const biasTilt = -BIAS_TILT_MAX * depth;
+  
+  // Prepare tile CSS variables
+  const tileVars = {
+    '--d': depth.toFixed(3),
+    '--front-o': frontO.toFixed(3),
+    '--ghost-o': ghostO.toFixed(3),
+    '--bias-scale': biasScale.toFixed(3),
+    '--bias-tilt-deg': `${biasTilt.toFixed(2)}deg`,
+    // For image ghost (EP4) - using project thumbnail if available
+    ...(project?.thumbnail ? { '--tile-bg': `url(${project.thumbnail})` } : {})
+  };
+  
   return (
     <div
       className={`
@@ -84,9 +132,12 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
         backfaceVisibility: 'visible',
         WebkitBackfaceVisibility: 'visible',
         opacity: opacity,
-        transition: effects.smoothRotation ? 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'all 0.3s ease'
+        transition: effects.smoothRotation ? 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'all 0.3s ease',
+        // Apply Lab CSS variables
+        ...tileVars
       }}
       onClick={() => onClick(index)}
+      data-ghost={effects.ghostBack ? 'on' : 'off'}
     >
       <div 
         className="tile-card w-full h-full bg-gray-700 border border-gray-500 hover:border-gray-400 transition-colors"
