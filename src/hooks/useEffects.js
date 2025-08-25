@@ -10,7 +10,7 @@ const defaultEffects = {
   depthBlur: false,
   glitchEffects: false,
   ambientLighting: false,
-  rgbEdge: true,             // RGB edge effect on cards
+  rgbEdge: false,            // RGB edge effect on cards (turned off by default)
   
   // Card Design
   ashfallCards: false,
@@ -18,7 +18,7 @@ const defaultEffects = {
   cardBorders: false,
   
   // Structure
-  centralWireframe: false,
+  centralWireframe: true,   // Show wireframe circles
   centerLogo: true,          // Show logo in center by default
   centerLogoMode: 'billboard', // 'rotate' | 'billboard'
   smoothRotation: false,

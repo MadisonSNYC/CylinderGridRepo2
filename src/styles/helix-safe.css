@@ -375,7 +375,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 69px;  /* 15% bigger than 60px */
+  width: 97px;  /* 40% bigger than 69px (69 * 1.4 ≈ 97) */
   height: auto;
   transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px));
   opacity: var(--logo-opacity, 0.85);
@@ -391,14 +391,19 @@
   display: none !important;
 }
 
-/* Billboard mode - always faces forward */
+/* Billboard mode - always faces forward but moves with scroll */
 .center-logo.billboard {
-  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px)) rotateY(calc(-1 * var(--sceneDeg, 0deg)));
+  transform: translate(-50%, -50%) 
+    translateZ(var(--logo-z, 0px)) 
+    translateY(var(--logo-scroll-y, 0px))
+    rotateY(calc(-1 * var(--sceneDeg, 0deg)));
 }
 
-/* Rotate mode - rotates with scene */
+/* Rotate mode - rotates with scene and moves with scroll */
 .center-logo.rotate {
-  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px));
+  transform: translate(-50%, -50%) 
+    translateZ(var(--logo-z, 0px))
+    translateY(var(--logo-scroll-y, 0px));
 }
 
 /* Subtle rotation animation (optional) */

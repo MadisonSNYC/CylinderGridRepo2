@@ -10,32 +10,8 @@ export const StructureEffects = ({ effects, children }) => {
       data-depth-hierarchy={effects.depthHierarchy}
     >
       <style jsx="true">{`
-        /* Central Wireframe Structure */
-        .structure-effects-wrapper[data-central-wireframe="true"] .helix-assembly::before {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 138px;  /* 15% bigger than 120px */
-          height: 138px;  /* 15% bigger than 120px */
-          border: 2px solid rgba(255, 255, 255, 0.2);
-          border-radius: 50%;
-          z-index: 5;
-        }
-
-        .structure-effects-wrapper[data-central-wireframe="true"] .helix-assembly::after {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) rotateX(90deg);
-          width: 138px;  /* 15% bigger than 120px */
-          height: 138px;  /* 15% bigger than 120px */
-          border: 2px solid rgba(255, 255, 255, 0.1);
-          border-radius: 50%;
-          z-index: 5;
-        }
+        /* Central Wireframe Structure - Disabled as it's now in the center container */
+        /* Wireframe circles are now rendered directly in the component for better control */
 
         /* Ashfall-style wireframe for light theme */
         .color-scheme-wrapper[data-ashfall-colors="true"] .structure-effects-wrapper[data-central-wireframe="true"] .helix-assembly::before {
@@ -51,9 +27,9 @@ export const StructureEffects = ({ effects, children }) => {
           position: absolute;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%);
-          width: 200px;
-          height: 200px;
+          transform: translate(-50%, -50%) translateY(var(--wireframe-scroll-y, 0px));
+          width: 280px;  /* 40% bigger than 200px */
+          height: 280px;  /* 40% bigger than 200px */
           pointer-events: none;
           z-index: 4;
         }
@@ -67,7 +43,7 @@ export const StructureEffects = ({ effects, children }) => {
         .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line:nth-child(1) {
           top: 50%;
           left: 50%;
-          width: 100px;
+          width: 140px;  /* 40% bigger than 100px */
           height: 1px;
           transform: translate(-50%, -50%) rotate(0deg);
         }
@@ -75,7 +51,7 @@ export const StructureEffects = ({ effects, children }) => {
         .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line:nth-child(2) {
           top: 50%;
           left: 50%;
-          width: 100px;
+          width: 140px;  /* 40% bigger than 100px */
           height: 1px;
           transform: translate(-50%, -50%) rotate(120deg);
         }
@@ -83,7 +59,7 @@ export const StructureEffects = ({ effects, children }) => {
         .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line:nth-child(3) {
           top: 50%;
           left: 50%;
-          width: 100px;
+          width: 140px;  /* 40% bigger than 100px */
           height: 1px;
           transform: translate(-50%, -50%) rotate(240deg);
         }
@@ -143,8 +119,8 @@ export const StructureEffects = ({ effects, children }) => {
         }
 
         @keyframes wireframe-float {
-          0% { transform: translate(-50%, -50%) rotateZ(0deg); }
-          100% { transform: translate(-50%, -50%) rotateZ(5deg); }
+          0% { transform: translate(-50%, -50%) translateY(var(--wireframe-scroll-y, 0px)) rotateZ(0deg); }
+          100% { transform: translate(-50%, -50%) translateY(var(--wireframe-scroll-y, 0px)) rotateZ(5deg); }
         }
       `}</style>
       

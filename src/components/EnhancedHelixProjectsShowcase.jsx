@@ -84,7 +84,7 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
         backfaceVisibility: 'visible',
         WebkitBackfaceVisibility: 'visible',
         opacity: opacity,
-        transition: effects.smoothRotation ? 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'all 0.3s ease'
+        transition: 'opacity 0.3s ease, transform 0.05s linear' // Quick transform updates for smooth scroll
       }}
       onClick={() => onClick(index)}
     >
@@ -187,6 +187,13 @@ export const EnhancedHelixProjectsShowcase = ({
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [scrollOffset, setScrollOffset] = useState(0); // For endless scroll
+  
+  // Smooth scroll state
+  const scrollVelocity = useRef(0);
+  const targetScrollOffset = useRef(0);
+  const animationFrameId = useRef(null);
+  const lastWheelTime = useRef(0);
+  const wheelTimeout = useRef(null)
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -207,20 +214,89 @@ export const EnhancedHelixProjectsShowcase = ({
     }
   }, [prefersReducedMotion]);
 
-  // Mouse wheel / trackpad scroll support
+  // Smooth animation loop
+  useEffect(() => {
+    if (!enhanced) return;
+    
+    const animate = () => {
+      const dampening = 0.95; // Higher friction for slower, smoother stop
+      const snapThreshold = 0.0005; // Lower threshold for smoother stop
+      
+      // Apply velocity to target
+      targetScrollOffset.current += scrollVelocity.current;
+      
+      // Apply dampening to velocity
+      scrollVelocity.current *= dampening;
+      
+      // Stop if velocity is very small
+      if (Math.abs(scrollVelocity.current) < snapThreshold) {
+        scrollVelocity.current = 0;
+      }
+      
+      // Smoothly interpolate actual scroll to target
+      setScrollOffset(prev => {
+        const diff = targetScrollOffset.current - prev;
+        const smoothing = 0.15; // Lower = smoother but slower response
+        return prev + diff * smoothing;
+      });
+      
+      animationFrameId.current = requestAnimationFrame(animate);
+    };
+    
+    animationFrameId.current = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  }, [enhanced]);
+
+  // Mouse wheel / trackpad scroll support with momentum
   useEffect(() => {
     if (!enhanced) return;
 
     const handleWheel = (e) => {
       e.preventDefault();
-      const delta = e.deltaY > 0 ? 1 : -1;
-      setScrollOffset(prev => prev + delta * 0.2); // Slower scroll increment
+      
+      const now = Date.now();
+      const timeDelta = now - lastWheelTime.current;
+      lastWheelTime.current = now;
+      
+      // Calculate scroll speed based on deltaY and time between events
+      let speed = e.deltaY * 0.0003; // Even smaller multiplier for slower, smoother motion
+      
+      // Apply acceleration for quick scrolls
+      if (timeDelta < 50) {
+        speed *= 1.2; // Less acceleration
+      }
+      
+      // Clamp speed to prevent too fast scrolling
+      speed = Math.max(-0.2, Math.min(0.2, speed)); // Lower max speed
+      
+      // Add to velocity for momentum
+      scrollVelocity.current += speed;
+      
+      // Clear existing timeout
+      if (wheelTimeout.current) {
+        clearTimeout(wheelTimeout.current);
+      }
+      
+      // Set timeout to gradually stop momentum after scrolling stops
+      wheelTimeout.current = setTimeout(() => {
+        scrollVelocity.current *= 0.5; // Quick deceleration when user stops scrolling
+      }, 150);
     };
 
     const helixElement = helixRef.current?.parentElement;
     if (helixElement) {
       helixElement.addEventListener('wheel', handleWheel, { passive: false });
-      return () => helixElement.removeEventListener('wheel', handleWheel);
+      return () => {
+        helixElement.removeEventListener('wheel', handleWheel);
+        if (wheelTimeout.current) {
+          clearTimeout(wheelTimeout.current);
+        }
+      };
     }
   }, [enhanced]);
 
@@ -248,16 +324,17 @@ export const EnhancedHelixProjectsShowcase = ({
         case 'ArrowRight':
         case 'ArrowDown':
           e.preventDefault();
-          setScrollOffset(prev => prev + 0.5); // Slower keyboard navigation
+          scrollVelocity.current = 0.15; // Slower keyboard navigation
           break;
         case 'ArrowLeft':
         case 'ArrowUp':
           e.preventDefault();
-          setScrollOffset(prev => prev - 0.5); // Slower keyboard navigation
+          scrollVelocity.current = -0.15; // Slower keyboard navigation
           break;
         case 'Home':
           e.preventDefault();
-          setScrollOffset(0);
+          targetScrollOffset.current = 0;
+          scrollVelocity.current = 0;
           break;
         case 'Escape':
           e.preventDefault();
@@ -271,8 +348,8 @@ export const EnhancedHelixProjectsShowcase = ({
   }, [enhanced]);
 
   const handleProjectClick = (index) => {
-    const targetOffset = index;
-    setScrollOffset(targetOffset);
+    targetScrollOffset.current = index;
+    scrollVelocity.current = 0; // Stop momentum when clicking
   };
 
   const handlePause = () => setIsPaused(true);
@@ -344,9 +421,8 @@ export const EnhancedHelixProjectsShowcase = ({
                         `,
                         // Pass scene rotation as CSS variable for billboard mode
                         '--sceneDeg': `${scrollOffset * (360 / projects.length)}deg`,
-                        transition: effects.smoothRotation 
-                          ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' 
-                          : 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                        '--wireframe-scroll-y': `${-scrollOffset * 20}px`, // Move wireframe with scroll
+                        transition: 'none', // Remove transition for smoother animation loop
                         width: '600px',
                         height: '600px',
                         position: 'relative'
@@ -372,12 +448,61 @@ export const EnhancedHelixProjectsShowcase = ({
                         })
                       )}
                       
-                      {/* Center Logo (when enabled, replaces wireframe) */}
+                      {/* Wireframe Circles */}
+                      {effects.centralWireframe && (
+                        <>
+                          <div 
+                            className="wireframe-circle-1"
+                            style={{
+                              position: 'absolute',
+                              left: '50%',
+                              top: '50%',
+                              transform: `translate(-50%, -50%) translateY(${-scrollOffset * 20}px)`,
+                              width: '193px',
+                              height: '193px',
+                              border: '2px solid rgba(255, 255, 255, 0.2)',
+                              borderRadius: '50%',
+                              pointerEvents: 'none',
+                              zIndex: 150
+                            }}
+                          />
+                          <div 
+                            className="wireframe-circle-2"
+                            style={{
+                              position: 'absolute',
+                              left: '50%',
+                              top: '50%',
+                              transform: `translate(-50%, -50%) translateY(${-scrollOffset * 20}px) rotateX(90deg)`,
+                              width: '193px',
+                              height: '193px',
+                              border: '2px solid rgba(255, 255, 255, 0.1)',
+                              borderRadius: '50%',
+                              pointerEvents: 'none',
+                              zIndex: 150
+                            }}
+                          />
+                        </>
+                      )}
+                      
+                      {/* Center Logo */}
                       {effects.centerLogo && (
                         <img
                           src="/Ravielogo1.png"
                           alt="Ravie logo"
-                          className={`center-logo no-select ${effects.centerLogoMode || 'billboard'}`}
+                          style={{
+                            position: 'absolute',
+                            left: '50%',
+                            top: '50%',
+                            width: '97px',
+                            height: 'auto',
+                            transform: `translate(-50%, -50%) translateY(${-scrollOffset * 20}px) ${effects.centerLogoMode === 'billboard' ? `rotateY(${-scrollOffset * (360 / projects.length)}deg)` : ''}`,
+                            opacity: 1,
+                            zIndex: 200,
+                            filter: 'drop-shadow(0 2px 6px rgba(0,0,0,.25))',
+                            pointerEvents: 'none',
+                            userSelect: 'none',
+                            WebkitUserSelect: 'none'
+                          }}
                           aria-hidden="true"
                         />
                       )}
