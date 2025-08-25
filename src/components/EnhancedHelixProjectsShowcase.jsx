@@ -11,25 +11,30 @@ import { StructureEffects } from './effects/StructureEffects.jsx';
 import { NavigationEffects } from './effects/NavigationEffects.jsx';
 import { TypographyEffects } from './effects/TypographyEffects.jsx';
 
-const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0 }) => {
+// Advanced controls
+import { AdvancedHelixPanel } from './AdvancedHelixPanel.jsx';
+import { EffectsControlPanel } from './EffectsControlPanel.jsx';
+import { useHelixConfig } from '../hooks/useHelixConfig.js';
+import { useLockedEffects } from '../hooks/useLockedEffects.js';
+
+const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0, helixConfig, showAsOrb = false }) => {
   // Calculate position along the extended helix
-  const repeatTurns = effects.repeatTurns || 2;
+  const repeatTurns = helixConfig?.repeatTurns || effects.repeatTurns || 2;
   const totalCards = totalProjects * Math.ceil(repeatTurns + 1);
   
   // Use modulo for display purposes
   const effectiveIndex = index % totalProjects;
   
-  // Position calculation for extended helix
-  const normalizedIndex = index / totalProjects;
-  const angle = normalizedIndex * 360;
-  const radius = 250; // Good radius for helix
+  // Position calculation for extended helix - ensure even spacing
+  const angle = (index / totalCards) * 360 * repeatTurns; // Evenly distribute across all cards
+  const radius = helixConfig?.radius || 250; // Use config radius
   
   // DNA Helix arrangement - extend vertical span based on repeat turns
-  const verticalSpan = 800 * repeatTurns; // Much taller helix
+  const verticalSpan = (helixConfig?.verticalSpan || 800) * repeatTurns;
   const yOffset = (index / (totalCards - 1)) * verticalSpan - (verticalSpan / 2);
   
   // Calculate the current rotation to always face forward
-  const currentRotation = scrollOffset * (360 / totalProjects);
+  const currentRotation = scrollOffset * (360 * repeatTurns / totalProjects);
   const cardFaceAngle = angle - currentRotation;
   
   // Calculate depth-based opacity like Ashfall Studio
@@ -37,20 +42,20 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
   let opacity = 1;
   let scale = 1;
   
-  // Front cards (facing viewer) - full opacity
+  // Front cards (facing viewer) - use config opacity
   if (normalizedAngle < 45 || normalizedAngle > 315) {
-    opacity = 1;
-    scale = 1;
+    opacity = helixConfig?.opacityFront || 1;
+    scale = helixConfig?.cardScale || 1;
   }
   // Side cards - medium opacity
   else if ((normalizedAngle >= 45 && normalizedAngle < 135) || (normalizedAngle >= 225 && normalizedAngle < 315)) {
-    opacity = 0.7;
-    scale = 0.9;
+    opacity = helixConfig?.opacitySide || 0.7;
+    scale = (helixConfig?.cardScale || 1) * 0.9;
   }
   // Back cards - low opacity for depth
   else {
-    opacity = 0.3;
-    scale = 0.8;
+    opacity = helixConfig?.opacityBack || 0.3;
+    scale = (helixConfig?.cardScale || 1) * 0.8;
   }
   
   // Calculate depth for hierarchy effects
@@ -69,8 +74,8 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
         ${depthClass}
       `}
       style={{
-        width: '80px',  // 9:16 aspect ratio
-        height: '142px', // 80 * 16/9 ≈ 142
+        width: showAsOrb ? '20px' : `${helixConfig?.cardWidth || 80}px`,
+        height: showAsOrb ? '20px' : `${helixConfig?.cardHeight || 142}px`,
         left: '50%',
         top: '50%',
         transform: `
@@ -88,27 +93,52 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
       }}
       onClick={() => onClick(index)}
     >
-      <div 
-        className="w-full h-full bg-gray-700 border border-gray-500 hover:border-gray-400 transition-colors flex items-center justify-center"
-        style={{
-          // Always face the viewer - counter-rotate by the card's angle
-          transform: `rotateY(${-angle}deg)`,
-          transformStyle: 'preserve-3d',
-          backfaceVisibility: 'visible',
-          WebkitBackfaceVisibility: 'visible',
-          transition: 'all 0.3s ease',
-          // Consistent curved appearance like depth blur
-          borderRadius: '12px',
-          // Force visibility
-          visibility: 'visible'
-        }}
-      >
-        <div className="text-center">
-          <div className="text-white text-xs font-medium">
-            Project {String((effectiveIndex + 1)).padStart(2, '0')}
+      {showAsOrb ? (
+        // Orb visualization for placement debugging
+        <div 
+          className="w-full h-full rounded-full flex items-center justify-center shadow-lg"
+          style={{
+            background: `radial-gradient(circle at 30% 30%, 
+              hsl(${(index * 360 / totalCards) % 360}, 70%, 60%), 
+              hsl(${(index * 360 / totalCards) % 360}, 70%, 40%))`,
+            border: '2px solid rgba(255, 255, 255, 0.3)',
+            boxShadow: `
+              0 0 15px hsl(${(index * 360 / totalCards) % 360}, 70%, 50%),
+              inset 0 0 10px rgba(255, 255, 255, 0.2)
+            `,
+            transformStyle: 'preserve-3d',
+            backfaceVisibility: 'visible',
+            WebkitBackfaceVisibility: 'visible'
+          }}
+        >
+          <div className="text-white text-xs font-bold drop-shadow-lg">
+            {index}
           </div>
         </div>
-      </div>
+      ) : (
+        // Normal card view
+        <div 
+          className="w-full h-full bg-gray-700 border border-gray-500 hover:border-gray-400 transition-colors flex items-center justify-center"
+          style={{
+            // Always face the viewer - counter-rotate by the card's angle
+            transform: `rotateY(${-angle}deg)`,
+            transformStyle: 'preserve-3d',
+            backfaceVisibility: 'visible',
+            WebkitBackfaceVisibility: 'visible',
+            transition: 'all 0.3s ease',
+            // Consistent curved appearance like depth blur
+            borderRadius: '12px',
+            // Force visibility
+            visibility: 'visible'
+          }}
+        >
+          <div className="text-center">
+            <div className="text-white text-xs font-medium">
+              Project {String((effectiveIndex + 1)).padStart(2, '0')}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -179,7 +209,15 @@ const MotionControls = ({ isPaused, onPause, onResume, onEmergencyStop, onSkipIn
 export const EnhancedHelixProjectsShowcase = ({ 
   autoRotate = true,
   scrollDriven = false,
-  effects = {}
+  effects = {},
+  onEffectToggle,
+  onReset,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
+  setPlacementStrength,
+  setRepeatTurns
 }) => {
   const helixRef = useRef(null);
   const [currentProject, setCurrentProject] = useState(0);
@@ -187,6 +225,37 @@ export const EnhancedHelixProjectsShowcase = ({
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [scrollOffset, setScrollOffset] = useState(0); // For endless scroll
+  
+  // Advanced helix configuration
+  const { 
+    config: helixConfig, 
+    updateConfig: updateHelixConfig, 
+    resetConfig: resetHelixConfig, 
+    undoConfig: undoHelixConfig,
+    redoConfig: redoHelixConfig,
+    canUndo: canUndoHelix,
+    canRedo: canRedoHelix,
+    updateRuntimeInfo 
+  } = useHelixConfig();
+  
+  // Locked effects management
+  const { lockedEffects, toggleLock } = useLockedEffects();
+
+  // Protected effect toggle function that respects locks
+  const handleEffectToggle = (effectKey, value) => {
+    if (!lockedEffects[effectKey]) {
+      onEffectToggle?.(effectKey, value);
+    }
+  };
+
+  // Update runtime info for the panel
+  useEffect(() => {
+    updateRuntimeInfo({
+      totalProjects: projects.length,
+      scrollOffset: scrollOffset,
+      visibleCards: Math.ceil((helixConfig.repeatTurns || 2) + 1) * projects.length
+    });
+  }, [scrollOffset, projects.length, helixConfig.repeatTurns, updateRuntimeInfo]);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -214,7 +283,8 @@ export const EnhancedHelixProjectsShowcase = ({
     const handleWheel = (e) => {
       e.preventDefault();
       const delta = e.deltaY > 0 ? 1 : -1;
-      setScrollOffset(prev => prev + delta * 0.2); // Slower scroll increment
+      const sensitivity = helixConfig.scrollSensitivity || 1;
+      setScrollOffset(prev => prev + delta * 0.2 * sensitivity); // Apply scroll sensitivity
     };
 
     const helixElement = helixRef.current?.parentElement;
@@ -222,7 +292,7 @@ export const EnhancedHelixProjectsShowcase = ({
       helixElement.addEventListener('wheel', handleWheel, { passive: false });
       return () => helixElement.removeEventListener('wheel', handleWheel);
     }
-  }, [enhanced]);
+  }, [enhanced, helixConfig.scrollSensitivity]);
 
   // Auto-rotation logic - DISABLED by default
   useEffect(() => {
@@ -244,16 +314,17 @@ export const EnhancedHelixProjectsShowcase = ({
     if (!enhanced) return;
 
     const handleKeyDown = (e) => {
+      const sensitivity = helixConfig.scrollSensitivity || 1;
       switch (e.key) {
         case 'ArrowRight':
         case 'ArrowDown':
           e.preventDefault();
-          setScrollOffset(prev => prev + 0.5); // Slower keyboard navigation
+          setScrollOffset(prev => prev + 0.5 * sensitivity); // Apply scroll sensitivity
           break;
         case 'ArrowLeft':
         case 'ArrowUp':
           e.preventDefault();
-          setScrollOffset(prev => prev - 0.5); // Slower keyboard navigation
+          setScrollOffset(prev => prev - 0.5 * sensitivity); // Apply scroll sensitivity
           break;
         case 'Home':
           e.preventDefault();
@@ -268,7 +339,7 @@ export const EnhancedHelixProjectsShowcase = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [enhanced]);
+  }, [enhanced, helixConfig.scrollSensitivity]);
 
   const handleProjectClick = (index) => {
     const targetOffset = index;
@@ -335,20 +406,22 @@ export const EnhancedHelixProjectsShowcase = ({
                       ref={helixRef}
                       style={{
                         transformStyle: 'preserve-3d',
-                        perspective: '1200px',
+                        perspective: `${helixConfig.perspective}px`,
+                        perspectiveOrigin: `${helixConfig.perspectiveOriginX}% ${helixConfig.perspectiveOriginY}%`,
                         // Combine rotation and vertical translation for scroll effect
                         transform: `
-                          rotateX(-10deg) 
-                          rotateY(${scrollOffset * (360 / projects.length)}deg)
-                          translateY(${-scrollOffset * 20}px)
+                          rotateX(${helixConfig.rotateX}deg) 
+                          rotateY(${(scrollOffset * (360 * (helixConfig.repeatTurns || 2) / projects.length)) + helixConfig.rotateY}deg)
+                          rotateZ(${helixConfig.rotateZ}deg)
+                          translateY(${-scrollOffset * 20 * helixConfig.scrollSensitivity}px)
                         `,
                         // Pass scene rotation as CSS variable for billboard mode
-                        '--sceneDeg': `${scrollOffset * (360 / projects.length)}deg`,
+                        '--sceneDeg': `${scrollOffset * (360 * (helixConfig.repeatTurns || 2) / projects.length)}deg`,
                         transition: effects.smoothRotation 
                           ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' 
                           : 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                        width: '600px',
-                        height: '600px',
+                        width: `${helixConfig.containerWidth}px`,
+                        height: `${helixConfig.containerHeight}px`,
                         position: 'relative'
                       }}
                     >
@@ -357,6 +430,13 @@ export const EnhancedHelixProjectsShowcase = ({
                       {Array.from({ length: Math.ceil(effects.repeatTurns || 2) + 1 }, (_, setIndex) => 
                         projects.map((project, index) => {
                           const globalIndex = setIndex * projects.length + index;
+                          const showEveryNth = helixConfig.showEveryNth || 1;
+                          
+                          
+                          // Always render all cards, but decide if they should be orbs or full cards
+                          const isNthCard = globalIndex % showEveryNth === 0;
+                          const shouldShowAsOrb = showEveryNth > 1 && !isNthCard;
+                          
                           return (
                             <HelixNode
                               key={`${setIndex}-${project.id}`}
@@ -367,6 +447,8 @@ export const EnhancedHelixProjectsShowcase = ({
                               onClick={() => handleProjectClick(globalIndex)}
                               effects={effects}
                               scrollOffset={scrollOffset}
+                              helixConfig={helixConfig}
+                              showAsOrb={shouldShowAsOrb} // Show as orb if not an Nth card
                             />
                           );
                         })
@@ -404,6 +486,32 @@ export const EnhancedHelixProjectsShowcase = ({
                     <ProjectsGrid projects={projects} />
                   </div>
                 </section>
+                
+                {/* Effects Control Panel */}
+                <EffectsControlPanel
+                  effects={effects}
+                  onEffectToggle={handleEffectToggle}
+                  onReset={onReset}
+                  onUndo={onUndo}
+                  onRedo={onRedo}
+                  canUndo={canUndo}
+                  canRedo={canRedo}
+                  setPlacementStrength={setPlacementStrength}
+                  setRepeatTurns={setRepeatTurns}
+                  lockedEffects={lockedEffects}
+                  onToggleLock={toggleLock}
+                />
+
+                {/* Advanced Helix Control Panel */}
+                <AdvancedHelixPanel
+                  helixConfig={helixConfig}
+                  onConfigChange={updateHelixConfig}
+                  onReset={resetHelixConfig}
+                  onUndo={undoHelixConfig}
+                  onRedo={redoHelixConfig}
+                  canUndo={canUndoHelix}
+                  canRedo={canRedoHelix}
+                />
               </TypographyEffects>
             </NavigationEffects>
           </StructureEffects>
