@@ -160,31 +160,52 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
   // Use cached opacity
   const opacity = cachedOpacity;
   
-  // Detect front-facing cards and apply compensation
+  // Calculate perspective-corrected dimensions for accurate aspect ratios
   const isFrontFacing = normalizedAngle < 45 || normalizedAngle > 315;
-  const isNearFront = normalizedAngle < 90 || normalizedAngle > 270;
-  
-  // For front-facing cards, use fixed 9:16 ratio with counter-scaling
   const baseWidth = 180;
   const baseHeight = 320;
   
-  // Apply inverse perspective compensation for visual correction
+  // Get container perspective settings
+  const containerPerspective = helixConfig.perspective || 3000;
+  const perspectiveOriginX = (helixConfig.perspectiveOriginX || 71) / 100;
+  const perspectiveOriginY = (helixConfig.perspectiveOriginY || 32) / 100;
+  
+  // Calculate card's position relative to perspective origin
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const perspectiveOriginXPx = viewportWidth * perspectiveOriginX;
+  const perspectiveOriginYPx = viewportHeight * perspectiveOriginY;
+  
+  // Card position (center of viewport + helix offset)
+  const cardX = viewportWidth / 2;
+  const cardY = viewportHeight / 2 + scrollY;
+  
+  // Distance from perspective origin
+  const deltaX = cardX - perspectiveOriginXPx;
+  const deltaY = cardY - perspectiveOriginYPx;
+  
+  // Calculate Z-distance considering helix radius and transforms
+  const zDistance = containerPerspective + radius;
+  
+  // Calculate perspective foreshortening factors
+  const perspectiveScaleX = containerPerspective / zDistance;
+  const perspectiveScaleY = containerPerspective / zDistance;
+  
+  // For front-facing cards, counter-transform to maintain exact 9:16 ratio
   let correctedWidth = baseWidth;
   let correctedHeight = baseHeight;
   let perspectiveTransform = '';
   
   if (isFrontFacing) {
-    // For front cards, use exact dimensions and add perspective counter-transform
-    correctedWidth = baseWidth;
-    correctedHeight = baseHeight;
-    perspectiveTransform = `scaleX(1.0) scaleY(1.0)`;
-  } else if (isNearFront) {
-    // For near-front cards, apply slight correction
-    const angle = Math.min(normalizedAngle, 360 - normalizedAngle);
-    const correction = 1 + (angle / 90) * 0.2;
-    correctedWidth = baseWidth;
-    correctedHeight = baseHeight * correction;
-    perspectiveTransform = `scaleY(${1 / correction})`;
+    // Apply inverse scaling to counter perspective distortion
+    const inverseScaleX = 1 / perspectiveScaleX;
+    const inverseScaleY = 1 / perspectiveScaleY;
+    
+    correctedWidth = baseWidth * inverseScaleX;
+    correctedHeight = baseHeight * inverseScaleY;
+    
+    // Add transform to ensure visual dimensions are exactly 180x320
+    perspectiveTransform = `scaleX(${perspectiveScaleX}) scaleY(${perspectiveScaleY})`;
   }
   
   // Calculate depth for hierarchy effects
