@@ -3,6 +3,7 @@ import { Button } from './ui/button.jsx';
 import { Pause, Play, SkipForward, Square } from 'lucide-react';
 import { projects } from '../data/projects.js';
 import { helixPositionCache } from '../utils/helixPositionCache.js';
+import { performanceMonitor } from '../utils/performanceMonitor.js';
 import { useHelixScroll, useHelixConfig } from '../contexts/HelixContext.jsx';
 
 // Effect components
@@ -114,6 +115,23 @@ const SpringConnection = ({ start, end, opacity = 1, color = "#00ffff", intensit
 };
 
 const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0, helixConfig, showAsOrb = false, orbPosition = null, scrollSpeed = 0 }) => {
+  // Measure render time
+  useEffect(() => {
+    const startTime = window.performance.now();
+    
+    // Use RAF to measure after paint
+    requestAnimationFrame(() => {
+      const endTime = window.performance.now();
+      const renderTime = endTime - startTime;
+      if (renderTime > 0) {
+        performanceMonitor.metrics.renderTime.push(renderTime);
+        if (performanceMonitor.metrics.renderTime.length > 50) {
+          performanceMonitor.metrics.renderTime.shift();
+        }
+      }
+    });
+  });
+  
   // Calculate position along the extended helix
   const repeatTurns = helixConfig?.repeatTurns || effects.repeatTurns || 2;
   const totalCards = totalProjects * Math.ceil(repeatTurns + 1);

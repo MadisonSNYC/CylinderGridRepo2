@@ -1,6 +1,8 @@
 // Position cache system for optimizing helix calculations
 // Uses memoization to avoid redundant position computations
 
+import { performanceMonitor } from './performanceMonitor.js';
+
 class HelixPositionCache {
   constructor() {
     this.positions = new Map();
@@ -95,9 +97,12 @@ class HelixPositionCache {
     const key = this.generateKey(index, scrollOffset, config);
     
     if (!this.positions.has(key)) {
+      performanceMonitor.recordCacheMiss();
       this.checkCacheSize();
       const position = this.computePosition(index, totalProjects, scrollOffset, config);
       this.positions.set(key, position);
+    } else {
+      performanceMonitor.recordCacheHit();
     }
     
     return this.positions.get(key);
