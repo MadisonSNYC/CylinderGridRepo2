@@ -156,23 +156,23 @@ export function PerformanceMonitor({ showVisual = true }) {
     <>
       {/* Main Performance Monitor */}
       <div className="fixed bottom-4 right-4 bg-gray-900/95 backdrop-blur-sm border border-gray-700 rounded-lg shadow-lg z-50" 
-           style={{ width: '280px', maxHeight: isCollapsed ? '40px' : '320px', overflow: 'hidden' }}>
+           style={{ width: '280px', maxHeight: isCollapsed ? '40px' : '320px' }}>
         {/* Header */}
-        <div className="flex items-center justify-between p-3 border-b border-gray-700 cursor-pointer"
+        <div className="flex items-center justify-between p-3 border-b border-gray-700 cursor-pointer overflow-hidden"
              onClick={() => setIsCollapsed(!isCollapsed)}>
-          <div className="flex items-center gap-2">
-            <h3 className="text-xs font-semibold text-white uppercase tracking-wide">Performance</h3>
-            <span className={`text-xs font-mono ${getStatusColor(metrics.fps)}`}>
+          <div className="flex items-center gap-2 min-w-0">
+            <h3 className="text-xs font-semibold text-white uppercase tracking-wide truncate">Performance</h3>
+            <span className={`text-xs font-mono flex-shrink-0 ${getStatusColor(metrics.fps)}`}>
               {getStatusLabel(metrics.fps)}
             </span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 flex-shrink-0">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 setShowReport(true);
               }}
-              className="p-1 hover:bg-gray-800 rounded transition-colors"
+              className="p-1 hover:bg-gray-800 rounded transition-colors flex-shrink-0"
               title="Generate Report"
             >
               <FileText className="w-3 h-3 text-gray-400" />
@@ -182,22 +182,22 @@ export function PerformanceMonitor({ showVisual = true }) {
                 e.stopPropagation();
                 downloadReport();
               }}
-              className="p-1 hover:bg-gray-800 rounded transition-colors"
+              className="p-1 hover:bg-gray-800 rounded transition-colors flex-shrink-0"
               title="Download Report"
             >
               <Download className="w-3 h-3 text-gray-400" />
             </button>
             {isCollapsed ? (
-              <ChevronUp className="w-3 h-3 text-gray-400" />
+              <ChevronUp className="w-3 h-3 text-gray-400 flex-shrink-0" />
             ) : (
-              <ChevronDown className="w-3 h-3 text-gray-400" />
+              <ChevronDown className="w-3 h-3 text-gray-400 flex-shrink-0" />
             )}
           </div>
         </div>
       
         {/* Content */}
         {!isCollapsed && (
-          <div className="p-3 space-y-2">
+          <div className="p-3 space-y-2" style={{ maxHeight: '250px', overflowY: 'auto', overflowX: 'hidden' }}>
             {/* FPS Display */}
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-400">FPS</span>
@@ -244,7 +244,7 @@ export function PerformanceMonitor({ showVisual = true }) {
             </div>
             
             {/* FPS Graph */}
-            <div className="pt-2 border-t border-gray-700">
+            <div className="pt-2 border-t border-gray-700 overflow-hidden">
               <FPSGraph fps={metrics.fps} />
             </div>
           </div>
@@ -275,7 +275,7 @@ function FPSGraph({ fps }) {
   const graphHeight = 20;
   
   return (
-    <div className="flex items-end gap-px h-5">
+    <div className="flex items-end gap-px h-5 w-full overflow-hidden">
       {history.map((value, i) => {
         const height = (value / maxFPS) * graphHeight;
         const color = value >= 55 ? 'bg-green-500' : value >= 40 ? 'bg-yellow-500' : 'bg-red-500';
