@@ -231,24 +231,21 @@
   }
 }
 
-/* Apply per-tier; yaw cancel stays on .tile-card */
-.fx-depth-placement .helix-tile.depth-near .tile-content {
-  transform:
-    translateZ(var(--pp-near-z))
-    scale(var(--pp-near-scale))
-    rotateX(var(--pp-near-tilt));
+/* Apply per-tier using CSS variables for smooth transitions */
+.fx-depth-placement .helix-tile.depth-near {
+  --depth-z: var(--pp-near-z);
+  --depth-scale-multiplier: var(--pp-near-scale);
+  --depth-tilt: var(--pp-near-tilt);
 }
-.fx-depth-placement .helix-tile.depth-mid .tile-content {
-  transform:
-    translateZ(var(--pp-mid-z))
-    scale(var(--pp-mid-scale))
-    rotateX(var(--pp-mid-tilt));
+.fx-depth-placement .helix-tile.depth-mid {
+  --depth-z: var(--pp-mid-z);
+  --depth-scale-multiplier: var(--pp-mid-scale);
+  --depth-tilt: var(--pp-mid-tilt);
 }
-.fx-depth-placement .helix-tile.depth-far .tile-content {
-  transform:
-    translateZ(var(--pp-far-z))
-    scale(var(--pp-far-scale))
-    rotateX(var(--pp-far-tilt));
+.fx-depth-placement .helix-tile.depth-far {
+  --depth-z: var(--pp-far-z);
+  --depth-scale-multiplier: var(--pp-far-scale);
+  --depth-tilt: var(--pp-far-tilt);
 }
 
 /* Ensure blur stays media-only and placement doesn't blur UI */
@@ -788,45 +785,27 @@
   animation: speedLines 0.6s linear infinite;
 }
 
-/* Parallax depth effect for cards */
-.fx-scroll-movement .helix-node.depth-near {
+/* Unified smooth transitions for all cards */
+.helix-node {
   transform-origin: center center;
-  transition: transform 0.1s ease-out;
+  transition: transform 0.08s ease-out, opacity 0.2s ease;
+  will-change: transform, opacity;
 }
 
-.fx-scroll-movement .helix-node.depth-mid {
-  transform-origin: center center;
-  transition: transform 0.15s ease-out;
+/* Dynamic card scaling during fast scroll - using CSS variables */
+.fx-scroll-movement.scroll-fast .helix-node {
+  --scroll-scale-multiplier: 1.03;
 }
 
-.fx-scroll-movement .helix-node.depth-far {
-  transform-origin: center center;
-  transition: transform 0.2s ease-out;
+.fx-scroll-movement.scroll-ultra-fast .helix-node {
+  --scroll-scale-multiplier: 1.06;
 }
 
-/* Dynamic card scaling during fast scroll */
-.fx-scroll-movement.scroll-fast .helix-node.depth-near .tile-content {
-  transform: scale(1.05) !important;
-}
-
-.fx-scroll-movement.scroll-fast .helix-node.depth-mid .tile-content {
-  transform: scale(1.02) !important;
-}
-
-.fx-scroll-movement.scroll-fast .helix-node.depth-far .tile-content {
-  transform: scale(0.98) !important;
-}
-
-.fx-scroll-movement.scroll-ultra-fast .helix-node.depth-near .tile-content {
-  transform: scale(1.08) !important;
-}
-
-.fx-scroll-movement.scroll-ultra-fast .helix-node.depth-mid .tile-content {
-  transform: scale(1.04) !important;
-}
-
-.fx-scroll-movement.scroll-ultra-fast .helix-node.depth-far .tile-content {
-  transform: scale(0.96) !important;
+/* Default scroll scale */
+.helix-node {
+  --scroll-scale-multiplier: 1;
+  --depth-scale-multiplier: 1;
+  --final-scale: 1;
 }
 
 /* Tunnel effect background */

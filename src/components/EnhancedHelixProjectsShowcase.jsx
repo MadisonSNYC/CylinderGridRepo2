@@ -135,25 +135,44 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
   const currentRotation = scrollOffset * (360 * repeatTurns / totalProjects);
   const cardFaceAngle = angle - currentRotation;
   
-  // Calculate depth-based opacity like Ashfall Studio
+  // Calculate depth-based opacity and smooth scaling
   const normalizedAngle = ((angle - currentRotation) % 360 + 360) % 360;
-  let opacity = 1;
-  let scale = 1;
   
-  // Front cards (facing viewer) - use config opacity
+  // Convert to radians for smooth math functions
+  const radians = (normalizedAngle * Math.PI) / 180;
+  
+  // Smooth continuous scaling based on cosine function
+  // cos(0) = 1 (front), cos(π) = -1 (back)
+  // This gives us smooth scaling from front to back
+  const depthFactor = Math.cos(radians);
+  const baseScale = helixConfig?.cardScale || 1;
+  
+  // Scale ranges from 0.8x (back) to 1.0x (front) smoothly
+  const scaleRange = 0.2; // Maximum scale reduction
+  const scale = baseScale * (1 - (scaleRange * (1 - depthFactor) / 2));
+  
+  // Smooth opacity based on position
+  let opacity = 1;
   if (normalizedAngle < 45 || normalizedAngle > 315) {
     opacity = helixConfig?.opacityFront || 1;
-    scale = helixConfig?.cardScale || 1;
-  }
-  // Side cards - medium opacity
-  else if ((normalizedAngle >= 45 && normalizedAngle < 135) || (normalizedAngle >= 225 && normalizedAngle < 315)) {
-    opacity = helixConfig?.opacitySide || 0.7;
-    scale = (helixConfig?.cardScale || 1) * 0.9;
-  }
-  // Back cards - low opacity for depth
-  else {
+  } else if (normalizedAngle >= 135 && normalizedAngle <= 225) {
     opacity = helixConfig?.opacityBack || 0.3;
-    scale = (helixConfig?.cardScale || 1) * 0.8;
+  } else {
+    // Smooth transition for side cards
+    const sideProgress = normalizedAngle < 180 
+      ? (normalizedAngle - 45) / 90 
+      : (315 - normalizedAngle) / 90;
+    const frontOpacity = helixConfig?.opacityFront || 1;
+    const sideOpacity = helixConfig?.opacitySide || 0.7;
+    const backOpacity = helixConfig?.opacityBack || 0.3;
+    
+    if (normalizedAngle < 135) {
+      // Transition from front to back (left side)
+      opacity = frontOpacity - (frontOpacity - sideOpacity) * sideProgress;
+    } else {
+      // Transition from back to front (right side)
+      opacity = backOpacity + (sideOpacity - backOpacity) * sideProgress;
+    }
   }
   
   // Calculate depth for hierarchy effects
@@ -194,16 +213,18 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
         top: '50%',
         transform: `
           translate(-50%, -50%)
-          rotateY(${angle - currentRotation}deg) 
-          translateZ(${radius}px) 
           translateY(${yOffset - (scrollOffset * 10)}px)
+          rotateY(${angle - currentRotation}deg)
+          translateZ(${radius}px)
           scale(${scale})
         `,
         transformStyle: 'preserve-3d',
+        transformOrigin: 'center center',
         backfaceVisibility: 'visible',
         WebkitBackfaceVisibility: 'visible',
+        willChange: 'transform, opacity',
         opacity: opacity,
-        transition: effects.smoothRotation ? 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'all 0.3s ease'
+        transition: 'transform 0.08s ease-out, opacity 0.2s ease'
       }}
       onClick={() => onClick(index)}
     >
@@ -503,15 +524,16 @@ export const EnhancedHelixProjectsShowcase = ({
     }
   }, [prefersReducedMotion]);
 
-  // Mouse wheel / trackpad scroll support
+  // Mouse wheel / trackpad scroll support - simple and reliable
   useEffect(() => {
     if (!enhanced) return;
 
     const handleWheel = (e) => {
       e.preventDefault();
-      const delta = e.deltaY > 0 ? 1 : -1;
+      // Use actual deltaY for smoother, more natural scrolling
+      const delta = e.deltaY * 0.002; // Increased for more responsive scrolling
       const sensitivity = helixConfig.scrollSensitivity || 1;
-      setScrollOffset(prev => prev + delta * 0.2 * sensitivity); // Apply scroll sensitivity
+      setScrollOffset(prev => prev + delta * sensitivity);
     };
 
     const helixElement = helixRef.current?.parentElement;
