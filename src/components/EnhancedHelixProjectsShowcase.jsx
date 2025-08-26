@@ -723,7 +723,7 @@ export const EnhancedHelixProjectsShowcase = ({
                       {Array.from({ length: Math.ceil(helixConfig.repeatTurns || 1.5) + 1 }, (_, setIndex) => 
                         projects.map((project, index) => {
                           const globalIndex = setIndex * projects.length + index;
-                          const showEveryNth = 1; // Force all cards to show (override any config)
+                          const showEveryNth = helixConfig.showEveryNth || 1; // Use config value
                           
                           
                           // Always render all cards, but decide if they should be orbs or full cards

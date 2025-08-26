@@ -66,7 +66,11 @@ const initialState = {
     containerWidth: 500,
     containerHeight: 400,
     scrollSensitivity: 0.5,
-    showEveryNth: 1
+    showEveryNth: 1,
+    enableCulling: false,
+    enableLOD: false,
+    activeCards: null,
+    renderDistance: null
   },
   
   // Effects configuration
