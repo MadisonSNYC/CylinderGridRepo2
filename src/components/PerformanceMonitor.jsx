@@ -5,7 +5,7 @@ import { performanceMonitor } from '../utils/performanceMonitor.js';
 import { helixPositionCache } from '../utils/helixPositionCache.js';
 
 export function PerformanceMonitor({ showVisual = true }) {
-  const { performance, updateFPS } = useHelixPerformance();
+  const { performance: perfState, updateFPS } = useHelixPerformance();
   const [metrics, setMetrics] = useState({
     fps: 60,
     avgFPS: 60,
@@ -16,7 +16,7 @@ export function PerformanceMonitor({ showVisual = true }) {
   });
   
   const frameCount = useRef(0);
-  const lastTime = useRef(performance.now());
+  const lastTime = useRef(window.performance.now());
   
   useEffect(() => {
     const updateMetrics = () => {
@@ -35,7 +35,7 @@ export function PerformanceMonitor({ showVisual = true }) {
           avgFPS: perfSummary.averageFPS || currentFPS,
           renderTime: perfSummary.averageRenderTime,
           cacheHitRate: perfSummary.cacheHitRate,
-          visibleCards: performance?.visibleCards || 0,
+          visibleCards: perfState?.visibleCards || 0,
           totalMemory: cacheStats.totalMemory
         });
         
@@ -54,7 +54,7 @@ export function PerformanceMonitor({ showVisual = true }) {
     
     const rafId = requestAnimationFrame(updateMetrics);
     return () => cancelAnimationFrame(rafId);
-  }, [performance, updateFPS]);
+  }, [perfState, updateFPS]);
   
   if (!showVisual) return null;
   
