@@ -3,6 +3,7 @@ import { Button } from './ui/button.jsx';
 import { Pause, Play, SkipForward, Square } from 'lucide-react';
 import { projects } from '../data/projects.js';
 import { helixPositionCache } from '../utils/helixPositionCache.js';
+import { useHelixScroll, useHelixConfig } from '../contexts/HelixContext.jsx';
 
 // Effect components
 import { ColorSchemeEffects } from './effects/ColorSchemeEffects.jsx';
@@ -15,7 +16,7 @@ import { TypographyEffects } from './effects/TypographyEffects.jsx';
 // Advanced controls
 import { AdvancedHelixPanel } from './AdvancedHelixPanel.jsx';
 import { EffectsControlPanel } from './EffectsControlPanel.jsx';
-import { useHelixConfig } from '../hooks/useHelixConfig.js';
+import { useHelixConfig as useOldHelixConfig } from '../hooks/useHelixConfig.js';
 import { useLockedEffects } from '../hooks/useLockedEffects.js';
 
 const SpringConnection = ({ start, end, opacity = 1, color = "#00ffff", intensity = 1 }) => {
@@ -433,7 +434,11 @@ export const EnhancedHelixProjectsShowcase = ({
   const [enhanced, setEnhanced] = useState(true); // Force 3D mode for testing
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [scrollOffset, setScrollOffset] = useState(0); // For endless scroll
+  
+  // Use new state management for scroll
+  const { scroll, updateScroll, batchScrollUpdate } = useHelixScroll();
+  const { config: contextConfig } = useHelixConfig();
+  const scrollOffset = scroll?.offset || 0;
   const scrollSpeed = useRef(0); // Track current scroll speed without re-renders
   const scrollAnimationId = useRef(null); // For RAF throttling
   
@@ -450,7 +455,7 @@ export const EnhancedHelixProjectsShowcase = ({
     canUndo: canUndoHelix,
     canRedo: canRedoHelix,
     updateRuntimeInfo 
-  } = useHelixConfig();
+  } = useOldHelixConfig();
   
   // Locked effects management
   const { lockedEffects, toggleLock } = useLockedEffects();
@@ -502,7 +507,7 @@ export const EnhancedHelixProjectsShowcase = ({
     const friction = 0.95; // Momentum decay
     const minVelocity = 0.001; // Threshold to stop momentum
 
-    const updateScroll = () => {
+    const updateScrollAnimation = () => {
       const now = performance.now();
       const deltaTime = Math.min((now - lastTime) / 1000, 0.1); // Cap deltaTime to avoid jumps
       lastTime = now;
@@ -512,18 +517,14 @@ export const EnhancedHelixProjectsShowcase = ({
         // Update velocity
         velocity = velocity * friction + pendingDelta;
         
-        // Apply velocity to scroll
-        setScrollOffset(prev => {
-          // Ensure we're only affecting vertical scroll
-          const newOffset = prev + velocity;
-          return newOffset;
-        });
+        // Apply velocity to scroll using new state management
+        updateScroll(velocity, now);
         
         pendingDelta = 0;
         
         // Continue animation if velocity is significant
         if (Math.abs(velocity) > minVelocity) {
-          scrollAnimationId.current = requestAnimationFrame(updateScroll);
+          scrollAnimationId.current = requestAnimationFrame(updateScrollAnimation);
         } else {
           velocity = 0;
           isUpdating = false;
@@ -548,7 +549,7 @@ export const EnhancedHelixProjectsShowcase = ({
       if (!isUpdating) {
         isUpdating = true;
         lastTime = performance.now();
-        scrollAnimationId.current = requestAnimationFrame(updateScroll);
+        scrollAnimationId.current = requestAnimationFrame(updateScrollAnimation);
       }
     };
 
@@ -589,16 +590,17 @@ export const EnhancedHelixProjectsShowcase = ({
         case 'ArrowRight':
         case 'ArrowDown':
           e.preventDefault();
-          setScrollOffset(prev => prev + 0.65 * sensitivity); // Increased by 30% (0.5 * 1.3)
+          updateScroll(0.65 * sensitivity, performance.now()); // Increased by 30% (0.5 * 1.3)
           break;
         case 'ArrowLeft':
         case 'ArrowUp':
           e.preventDefault();
-          setScrollOffset(prev => prev - 0.65 * sensitivity); // Increased by 30% (0.5 * 1.3)
+          updateScroll(-0.65 * sensitivity, performance.now()); // Increased by 30% (0.5 * 1.3)
           break;
         case 'Home':
           e.preventDefault();
-          setScrollOffset(0);
+          // Reset scroll to 0 - need to update this
+          updateScroll(-scrollOffset, performance.now());
           break;
         case 'Escape':
           e.preventDefault();
@@ -609,11 +611,11 @@ export const EnhancedHelixProjectsShowcase = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [enhanced, helixConfig.scrollSensitivity]);
+  }, [enhanced, helixConfig.scrollSensitivity, updateScroll, scrollOffset]);
 
   const handleProjectClick = (index) => {
     const targetOffset = index;
-    setScrollOffset(targetOffset);
+    updateScroll(targetOffset - scrollOffset, performance.now());
   };
 
   const handlePause = () => setIsPaused(true);

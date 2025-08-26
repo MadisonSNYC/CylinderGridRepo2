@@ -1,11 +1,12 @@
 import React from 'react';
 import { DevPanel } from './components/DevPanel.jsx';
 import { EnhancedHelixProjectsShowcase } from './components/EnhancedHelixProjectsShowcase.jsx';
-import { useEffects } from './hooks/useEffects.js';
+import { HelixProvider } from './contexts/HelixContext.jsx';
+import { useEffectsCompat } from './hooks/useMigrationBridge.js';
 import './App.css';
 
-function App() {
-  const { effects, toggleEffect, resetEffects, undoEffects, redoEffects, canUndo: canUndoEffects, canRedo: canRedoEffects, setPlacementStrength, setRepeatTurns } = useEffects();
+function AppContent() {
+  const { effects, toggleEffect, resetEffects, undoEffects, redoEffects, canUndo: canUndoEffects, canRedo: canRedoEffects, setPlacementStrength, setRepeatTurns } = useEffectsCompat();
 
   return (
     <div className="App relative">
@@ -35,6 +36,15 @@ function App() {
         setRepeatTurns={setRepeatTurns}
       />
     </div>
+  );
+}
+
+// Wrap with provider
+function App() {
+  return (
+    <HelixProvider>
+      <AppContent />
+    </HelixProvider>
   );
 }
 
