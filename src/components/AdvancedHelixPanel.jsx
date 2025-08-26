@@ -374,6 +374,29 @@ export const AdvancedHelixPanel = ({ helixConfig, onConfigChange, onReset, onUnd
           />
         </div>
 
+        {/* Aspect Ratio Test */}
+        <div className="mt-6 p-3 bg-blue-900/30 rounded border border-blue-700">
+          <h4 className="text-xs font-semibold text-blue-300 mb-2">Aspect Ratio Test</h4>
+          <div className="flex gap-2 mb-2">
+            {[1, 2, 3, 4, 5].map(n => (
+              <button
+                key={n}
+                onClick={() => updateConfig('showEveryNth', n)}
+                className={`px-2 py-1 text-xs rounded ${
+                  helixConfig.showEveryNth === n 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                Every {n}th
+              </button>
+            ))}
+          </div>
+          <div className="text-xs text-gray-400">
+            Click buttons to test different card display patterns
+          </div>
+        </div>
+
         {/* Debug Info */}
         <div className="mt-6 p-3 bg-gray-800/30 rounded border border-gray-700">
           <div className="text-xs text-gray-500 space-y-1">
