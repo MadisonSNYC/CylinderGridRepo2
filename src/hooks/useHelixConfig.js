@@ -7,8 +7,8 @@ const defaultHelixConfig = {
   perspectiveOriginY: 32,
   
   // Helix Structure
-  radius: 430,
-  verticalSpan: 450,
+  radius: 470,
+  verticalSpan: 650,
   repeatTurns: 1.5,
   rotateX: -10,
   rotateY: 0,
