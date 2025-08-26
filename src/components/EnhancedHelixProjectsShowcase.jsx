@@ -204,7 +204,6 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
       data-orb-index={showAsOrb ? index : undefined}
       style={{
         width: showAsOrb ? '15px' : `${helixConfig?.cardWidth || 180}px`,
-        height: showAsOrb ? '15px' : `${helixConfig?.cardHeight || 320}px`,
         aspectRatio: showAsOrb ? '1 / 1' : '9 / 16',
         left: '50%',
         top: '50%',
@@ -250,7 +249,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
         effects.richCardContent ? (
           // Rich card with video/image content
           <div 
-            className={`w-full h-full bg-gray-800 border border-gray-600 transition-all duration-300 cursor-pointer overflow-hidden group ${
+            className={`w-full bg-gray-800 border border-gray-600 transition-all duration-300 cursor-pointer overflow-hidden group ${
               effects.cardHoverEffects ? 'hover:border-gray-400 hover:scale-105' : ''
             }`}
             style={{
@@ -262,11 +261,14 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
               borderRadius: '12px',
               boxShadow: effects.cardShadows ? '0 4px 20px rgba(0, 0, 0, 0.3)' : 'none',
               border: effects.cardBorders ? '2px solid rgba(255, 255, 255, 0.1)' : undefined,
-              willChange: effects.cardHoverEffects ? 'transform' : 'auto'
+              willChange: effects.cardHoverEffects ? 'transform' : 'auto',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column'
             }}
           >
           {/* Video/Image Content - maintaining aspect ratio */}
-          <div className="relative w-full bg-gray-900 overflow-hidden" style={{ height: '75%' }}>
+          <div className="relative w-full bg-gray-900 overflow-hidden flex-1" style={{ flex: '3' }}>
             {project.videoAsset && (
               <video
                 ref={videoRef}
@@ -307,7 +309,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
           </div>
 
           {/* Card Content - remaining height */}
-          <div className="p-2 flex flex-col justify-between" style={{ height: '25%' }}>
+          <div className="p-2 flex flex-col justify-between" style={{ flex: '1' }}>
             <div>
               <h3 className="text-white text-xs font-semibold mb-0.5 line-clamp-1 leading-tight">
                 {project.title}
@@ -338,7 +340,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
         ) : (
           // Simple card view
           <div 
-            className={`w-full h-full bg-gray-700 border border-gray-500 transition-colors flex items-center justify-center ${
+            className={`w-full bg-gray-700 border border-gray-500 transition-colors flex items-center justify-center ${
               effects.cardHoverEffects ? 'hover:border-gray-400 hover:bg-gray-600' : ''
             }`}
             style={{
@@ -351,7 +353,8 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
               borderRadius: '12px',
               boxShadow: effects.cardShadows ? '0 4px 20px rgba(0, 0, 0, 0.2)' : 'none',
               border: effects.cardBorders ? '2px solid rgba(255, 255, 255, 0.1)' : undefined,
-              visibility: 'visible'
+              visibility: 'visible',
+              height: '100%'
             }}
           >
             <div className="text-center">

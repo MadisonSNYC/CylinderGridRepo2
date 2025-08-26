@@ -317,7 +317,15 @@
 /* 9:16 aspect ratio cards */
 .helix-node {
   /* Ensure consistent proportions */
-  aspect-ratio: 9 / 16;
+  aspect-ratio: 9 / 16 !important;
+  /* Don't let height override aspect ratio */
+  height: auto !important;
+}
+
+.helix-node > div:first-child {
+  /* Ensure inner content respects aspect ratio */
+  height: 100% !important;
+  width: 100% !important;
 }
 
 /* Step S1 - Face-the-camera additive CSS */
