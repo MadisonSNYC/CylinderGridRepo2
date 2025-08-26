@@ -203,8 +203,8 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
       `}
       data-orb-index={showAsOrb ? index : undefined}
       style={{
-        width: showAsOrb ? '15px' : `${helixConfig?.cardWidth || 180}px`,
-        height: showAsOrb ? '15px' : `${helixConfig?.cardHeight || 320}px`,
+        width: showAsOrb ? '15px' : '180px',
+        height: showAsOrb ? '15px' : '320px',
         left: '50%',
         top: '50%',
         transform: `
@@ -212,14 +212,13 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
           translateY(${scrollY}px)
           rotateY(${cardRotation}deg)
           translateZ(${radius}px)
-          scale3d(${scale}, ${scale}, 1)
         `,
         transformStyle: 'preserve-3d',
         transformOrigin: 'center center',
         backfaceVisibility: 'visible',
         WebkitBackfaceVisibility: 'visible',
         willChange: 'transform, opacity',
-        opacity: opacity,
+        opacity: opacity * (0.7 + (scale - 0.8) * 0.75), // Use scale for opacity instead of size
         transition: 'transform 0.08s ease-out, opacity 0.2s ease'
       }}
       onClick={() => onClick(index)}

@@ -314,21 +314,27 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 9:16 aspect ratio cards */
+/* 9:16 aspect ratio cards - FIXED DIMENSIONS */
 .helix-node:not([data-orb-index]) {
-  /* Ensure aspect ratio for cards */
-  aspect-ratio: 9 / 16;
+  /* Force exact dimensions for 9:16 ratio */
+  width: 180px !important;
+  height: 320px !important;
+  /* Remove any box-sizing issues */
+  box-sizing: border-box !important;
 }
 
 .helix-node[data-orb-index] {
-  /* Orbs should be circular */
-  aspect-ratio: 1 / 1;
+  /* Orbs are small circles */
+  width: 15px !important;
+  height: 15px !important;
+  box-sizing: border-box !important;
 }
 
 .helix-node > div:first-child {
-  /* Ensure inner content respects aspect ratio */
+  /* Ensure inner content respects container */
   height: 100% !important;
   width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* Step S1 - Face-the-camera additive CSS */
