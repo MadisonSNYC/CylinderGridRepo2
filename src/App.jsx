@@ -3,6 +3,7 @@ import { DevPanel } from './components/DevPanel.jsx';
 import { EnhancedHelixProjectsShowcase } from './components/EnhancedHelixProjectsShowcase.jsx';
 import { HelixProvider } from './contexts/HelixContext.jsx';
 import { useEffectsCompat } from './hooks/useMigrationBridge.js';
+import { PerformanceMonitor } from './components/PerformanceMonitor.jsx';
 import './App.css';
 
 function AppContent() {
@@ -35,6 +36,8 @@ function AppContent() {
         setPlacementStrength={setPlacementStrength}
         setRepeatTurns={setRepeatTurns}
       />
+      
+      <PerformanceMonitor showVisual={true} />
     </div>
   );
 }
