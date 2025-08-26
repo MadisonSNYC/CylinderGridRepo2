@@ -393,7 +393,12 @@
 
 /* Billboard mode - always faces forward */
 .center-logo.billboard {
-  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px)) rotateY(calc(-1 * var(--sceneDeg, 0deg)));
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(calc(-1 * var(--sceneDeg, 0deg)));
+  transform-style: preserve-3d;
+  backface-visibility: visible;
 }
 
 /* Rotate mode - rotates with scene */

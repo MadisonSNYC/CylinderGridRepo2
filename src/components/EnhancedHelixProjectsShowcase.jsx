@@ -17,7 +17,101 @@ import { EffectsControlPanel } from './EffectsControlPanel.jsx';
 import { useHelixConfig } from '../hooks/useHelixConfig.js';
 import { useLockedEffects } from '../hooks/useLockedEffects.js';
 
-const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0, helixConfig, showAsOrb = false }) => {
+const SpringConnection = ({ start, end, opacity = 1, color = "#00ffff", intensity = 1 }) => {
+  // Check if positions are properly populated
+  if (!start || !end || 
+      start.screenX === undefined || start.screenY === undefined ||
+      end.screenX === undefined || end.screenY === undefined) {
+    return null;
+  }
+  
+  // Calculate control points for electric arc path
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const dz = end.z - start.z;
+  
+  // Create electric arc with multiple control points
+  const midX = (start.screenX + end.screenX) / 2;
+  const midY = (start.screenY + end.screenY) / 2;
+  
+  // Electric arc with random jitter for lightning effect
+  const jitter = Math.random() * 30 - 15;
+  const waveAmplitude = 60 + (intensity * 40);
+  const control1X = midX + waveAmplitude * Math.sin((start.angle || 0) * 0.05) + jitter;
+  const control1Y = midY - Math.abs(dy || 0) * 0.5 + jitter;
+  const control2X = midX - waveAmplitude * Math.sin((end.angle || 0) * 0.05) - jitter;
+  const control2Y = midY + Math.abs(dy || 0) * 0.5 - jitter;
+  
+  return (
+    <svg
+      className="spring-connection"
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        zIndex: 5
+      }}
+    >
+      <defs>
+        <linearGradient id={`electric-gradient-${start.index}-${end.index}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#00ffff" stopOpacity="1" />
+          <stop offset="20%" stopColor="#00ffff" stopOpacity="1" />
+          <stop offset="50%" stopColor="#ffffff" stopOpacity="1" />
+          <stop offset="80%" stopColor="#00ffff" stopOpacity="1" />
+          <stop offset="100%" stopColor="#00ffff" stopOpacity="1" />
+        </linearGradient>
+        <filter id={`electric-glow-${start.index}-${end.index}`}>
+          <feGaussianBlur stdDeviation={12 + intensity * 8} result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      {/* Main electric neon arc */}
+      <path
+        d={`M ${start.screenX} ${start.screenY} 
+            C ${control1X} ${control1Y}, ${control2X} ${control2Y}, ${end.screenX} ${end.screenY}`}
+        stroke={`url(#electric-gradient-${start.index}-${end.index})`}
+        strokeWidth={4 + intensity * 6}
+        fill="none"
+        opacity="1"
+        filter={`url(#electric-glow-${start.index}-${end.index})`}
+        className="electric-path"
+        strokeLinecap="round"
+      />
+      {/* Core bright white line */}
+      <path
+        d={`M ${start.screenX} ${start.screenY} 
+            C ${control1X} ${control1Y}, ${control2X} ${control2Y}, ${end.screenX} ${end.screenY}`}
+        stroke="#ffffff"
+        strokeWidth={1 + intensity * 2}
+        fill="none"
+        opacity="0.9"
+        className="electric-core"
+        strokeLinecap="round"
+      />
+      {/* Electric sparks */}
+      <path
+        d={`M ${start.screenX} ${start.screenY} 
+            C ${control1X + jitter} ${control1Y - jitter}, ${control2X - jitter} ${control2Y + jitter}, ${end.screenX} ${end.screenY}`}
+        stroke="#00ffff"
+        strokeWidth="0.5"
+        fill="none"
+        opacity={0.6 + intensity * 0.3}
+        strokeDasharray="2 8"
+        className="spring-path-secondary"
+      />
+    </svg>
+  );
+};
+
+const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0, helixConfig, showAsOrb = false, orbPosition = null }) => {
   // Calculate position along the extended helix
   const repeatTurns = helixConfig?.repeatTurns || effects.repeatTurns || 2;
   const totalCards = totalProjects * Math.ceil(repeatTurns + 1);
@@ -70,6 +164,21 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
     else depthClass = 'depth-medium';
   }
   
+  // Store position for spring connections (for ALL nodes)
+  if (orbPosition) {
+    const adjustedAngle = angle - currentRotation;
+    const radians = (adjustedAngle * Math.PI) / 180;
+    orbPosition.x = Math.sin(radians) * radius;
+    orbPosition.z = Math.cos(radians) * radius;
+    orbPosition.y = yOffset - (scrollOffset * 10);
+    orbPosition.angle = adjustedAngle;
+    orbPosition.index = index;
+    // Calculate screen position for SVG rendering - using actual transform calculations
+    const screenRadius = radius * (helixConfig?.cardScale || 1.8);
+    orbPosition.screenX = window.innerWidth / 2 + Math.sin(radians) * screenRadius;
+    orbPosition.screenY = window.innerHeight / 2 + (yOffset - (scrollOffset * 10)) * (helixConfig?.cardScale || 1.8);
+  }
+
   return (
     <div
       className={`
@@ -77,6 +186,7 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
         ${isActive ? 'active z-20' : 'z-10'}
         ${depthClass}
       `}
+      data-orb-index={showAsOrb ? index : undefined}
       style={{
         width: showAsOrb ? '15px' : `${helixConfig?.cardWidth || 80}px`,
         height: showAsOrb ? '15px' : `${helixConfig?.cardHeight || 142}px`,
@@ -86,7 +196,7 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
           translate(-50%, -50%)
           rotateY(${angle - currentRotation}deg) 
           translateZ(${radius}px) 
-          translateY(${yOffset - (scrollOffset * 30)}px)
+          translateY(${yOffset - (scrollOffset * 10)}px)
           scale(${scale})
         `,
         transformStyle: 'preserve-3d',
@@ -319,6 +429,15 @@ export const EnhancedHelixProjectsShowcase = ({
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [scrollOffset, setScrollOffset] = useState(0); // For endless scroll
+  const [prevScrollOffset, setPrevScrollOffset] = useState(0); // For tracking scroll speed
+  
+  // Track scroll changes for speed calculation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPrevScrollOffset(scrollOffset);
+    }, 50); // Small delay to measure speed
+    return () => clearTimeout(timer);
+  }, [scrollOffset]);
   
   // Advanced helix configuration
   const { 
@@ -509,8 +628,9 @@ export const EnhancedHelixProjectsShowcase = ({
                           rotateZ(${helixConfig.rotateZ}deg)
                           translateZ(-1200px)
                         `,
-                        // Pass scene rotation as CSS variable for billboard mode
-                        '--sceneDeg': `${scrollOffset * (360 * (helixConfig.repeatTurns || 2) / projects.length)}deg`,
+                        // Pass scene rotation as CSS variable for billboard mode - include all rotations
+                        '--sceneDeg': `${(scrollOffset * (360 * (helixConfig.repeatTurns || 1.5) / projects.length)) + (helixConfig.rotateY || 0)}deg`,
+                        '--logo-z': '0px',
                         transition: 'none',
                         width: `${helixConfig.containerWidth}px`,
                         height: `${helixConfig.containerHeight}px`,
@@ -613,6 +733,61 @@ export const EnhancedHelixProjectsShowcase = ({
       
       {/* Rich Card Styles */}
     <style>{`
+      /* Electric Neon Connection Animations */
+      @keyframes electric-pulse {
+        0% { 
+          filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 30px #00ffff);
+        }
+        50% { 
+          filter: drop-shadow(0 0 15px #00ffff) drop-shadow(0 0 30px #00ffff) drop-shadow(0 0 45px #00ffff);
+        }
+        100% { 
+          filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 30px #00ffff);
+        }
+      }
+      
+      @keyframes electric-flow {
+        0% { 
+          stroke-dashoffset: 0;
+        }
+        100% { 
+          stroke-dashoffset: -20;
+        }
+      }
+      
+      @keyframes electric-spark {
+        0%, 100% { 
+          opacity: 0.4;
+        }
+        25% {
+          opacity: 1;
+        }
+        50% { 
+          opacity: 0.6;
+        }
+        75% {
+          opacity: 0.9;
+        }
+      }
+      
+      .electric-path {
+        filter: drop-shadow(0 0 15px #00ffff) drop-shadow(0 0 30px #00ffff) drop-shadow(0 0 50px #0088ff);
+        animation: electric-pulse 1.5s ease-in-out infinite;
+      }
+      
+      .electric-core {
+        filter: drop-shadow(0 0 5px #ffffff) drop-shadow(0 0 10px #ffffff);
+        animation: electric-spark 0.5s ease-in-out infinite;
+      }
+      
+      .spring-path-secondary {
+        animation: electric-flow 0.8s linear infinite;
+      }
+      
+      .spring-connection {
+        mix-blend-mode: screen;
+      }
+      
       .line-clamp-1 {
         display: -webkit-box;
         -webkit-line-clamp: 1;
