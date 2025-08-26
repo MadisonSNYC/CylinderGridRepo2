@@ -26,12 +26,16 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
   const effectiveIndex = index % totalProjects;
   
   // Position calculation for extended helix - ensure even spacing
-  const angle = (index / totalCards) * 360 * repeatTurns; // Evenly distribute across all cards
+  const angle = (index / totalProjects) * 360; // One full rotation per set of projects
   const radius = helixConfig?.radius || 250; // Use config radius
   
-  // DNA Helix arrangement - extend vertical span based on repeat turns
-  const verticalSpan = (helixConfig?.verticalSpan || 800) * repeatTurns;
-  const yOffset = (index / (totalCards - 1)) * verticalSpan - (verticalSpan / 2);
+  // DNA Helix arrangement - proper spacing for infinite scroll
+  const verticalSpan = helixConfig?.verticalSpan || 450;
+  // Calculate position within the total vertical range with extra spacing
+  const spacingMultiplier = 2.5; // Increase spacing between all elements
+  const normalizedPosition = index / (totalCards - 1);
+  const totalHeight = verticalSpan * repeatTurns * spacingMultiplier;
+  const yOffset = normalizedPosition * totalHeight - (totalHeight / 2);
   
   // Calculate the current rotation to always face forward
   const currentRotation = scrollOffset * (360 * repeatTurns / totalProjects);
@@ -74,15 +78,15 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
         ${depthClass}
       `}
       style={{
-        width: showAsOrb ? '20px' : `${helixConfig?.cardWidth || 80}px`,
-        height: showAsOrb ? '20px' : `${helixConfig?.cardHeight || 142}px`,
+        width: showAsOrb ? '15px' : `${helixConfig?.cardWidth || 80}px`,
+        height: showAsOrb ? '15px' : `${helixConfig?.cardHeight || 142}px`,
         left: '50%',
         top: '50%',
         transform: `
           translate(-50%, -50%)
-          rotateY(${angle}deg) 
+          rotateY(${angle - currentRotation}deg) 
           translateZ(${radius}px) 
-          translateY(${yOffset}px)
+          translateY(${yOffset - (scrollOffset * 30)}px)
           scale(${scale})
         `,
         transformStyle: 'preserve-3d',
@@ -96,7 +100,7 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
       {showAsOrb ? (
         // Orb visualization for placement debugging
         <div 
-          className="w-full h-full rounded-full flex items-center justify-center shadow-lg"
+          className="w-full h-full rounded-full shadow-lg"
           style={{
             background: `radial-gradient(circle at 30% 30%, 
               hsl(${(index * 360 / totalCards) % 360}, 70%, 60%), 
@@ -108,13 +112,11 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
             `,
             transformStyle: 'preserve-3d',
             backfaceVisibility: 'visible',
-            WebkitBackfaceVisibility: 'visible'
+            WebkitBackfaceVisibility: 'visible',
+            opacity: opacity, // Apply same opacity as cards
+            zIndex: 1 // Ensure orbs are visible
           }}
-        >
-          <div className="text-white text-xs font-bold drop-shadow-lg">
-            {index}
-          </div>
-        </div>
+        />
       ) : (
         // Rich/Simple card view based on effects
         effects.richCardContent ? (
@@ -154,12 +156,7 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
               <>
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mb-2 mx-auto">
-                      <span className="text-white text-xs font-bold">
-                        {String((effectiveIndex + 1)).padStart(2, '0')}
-                      </span>
-                    </div>
-                    <div className="text-gray-400 text-xs">
+                    <div className="text-gray-400 text-sm">
                       {project.title}
                     </div>
                   </div>
@@ -178,10 +175,6 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             
-            {/* Project number badge */}
-            <div className="absolute top-2 right-2 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full z-10">
-              {String((effectiveIndex + 1)).padStart(2, '0')}
-            </div>
           </div>
 
           {/* Card Content - remaining 25% height */}
@@ -233,11 +226,8 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
             }}
           >
             <div className="text-center">
-              <div className="text-white text-xs font-medium mb-1">
+              <div className="text-white text-sm font-medium">
                 {project.title}
-              </div>
-              <div className="text-gray-400 text-xs">
-                Project {String((effectiveIndex + 1)).padStart(2, '0')}
               </div>
             </div>
           </div>
@@ -512,18 +502,16 @@ export const EnhancedHelixProjectsShowcase = ({
                         transformStyle: 'preserve-3d',
                         perspective: `${helixConfig.perspective}px`,
                         perspectiveOrigin: `${helixConfig.perspectiveOriginX}% ${helixConfig.perspectiveOriginY}%`,
-                        // Combine rotation and vertical translation for scroll effect
+                        // Static container - rotation happens on individual cards
                         transform: `
-                          rotateX(${helixConfig.rotateX}deg) 
-                          rotateY(${(scrollOffset * (360 * (helixConfig.repeatTurns || 2) / projects.length)) + helixConfig.rotateY}deg)
+                          rotateX(${helixConfig.rotateX}deg)
+                          rotateY(${helixConfig.rotateY}deg)
                           rotateZ(${helixConfig.rotateZ}deg)
-                          translateY(${-scrollOffset * 20 * helixConfig.scrollSensitivity}px)
+                          translateZ(-1200px)
                         `,
                         // Pass scene rotation as CSS variable for billboard mode
                         '--sceneDeg': `${scrollOffset * (360 * (helixConfig.repeatTurns || 2) / projects.length)}deg`,
-                        transition: effects.smoothRotation 
-                          ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' 
-                          : 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                        transition: 'none',
                         width: `${helixConfig.containerWidth}px`,
                         height: `${helixConfig.containerHeight}px`,
                         position: 'relative'
@@ -531,13 +519,14 @@ export const EnhancedHelixProjectsShowcase = ({
                     >
                       {/* Render multiple sets of cards for infinite scroll */}
                       {/* Use repeatTurns to control number of card sets */}
-                      {Array.from({ length: Math.ceil(effects.repeatTurns || 2) + 1 }, (_, setIndex) => 
+                      {Array.from({ length: Math.ceil(helixConfig.repeatTurns || 1.5) + 1 }, (_, setIndex) => 
                         projects.map((project, index) => {
                           const globalIndex = setIndex * projects.length + index;
                           const showEveryNth = helixConfig.showEveryNth || 1;
                           
                           
                           // Always render all cards, but decide if they should be orbs or full cards
+                          // Use globalIndex for continuous pattern across all sets
                           const isNthCard = globalIndex % showEveryNth === 0;
                           const shouldShowAsOrb = showEveryNth > 1 && !isNthCard;
                           

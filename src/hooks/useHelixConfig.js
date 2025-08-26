@@ -2,12 +2,12 @@ import { useState, useCallback, useRef } from 'react';
 
 const defaultHelixConfig = {
   // Global Perspective
-  perspective: 2300,
+  perspective: 3000,
   perspectiveOriginX: 71,
   perspectiveOriginY: 32,
   
   // Helix Structure
-  radius: 310,
+  radius: 430,
   verticalSpan: 450,
   repeatTurns: 1.5,
   rotateX: -10,
@@ -17,15 +17,15 @@ const defaultHelixConfig = {
   // Card Properties (9:16 aspect ratio)
   cardWidth: 90,
   cardHeight: 160,
-  cardScale: 0.9,
+  cardScale: 1.8,
   opacityFront: 1,
   opacitySide: 0.7,
   opacityBack: 0.3,
   
   // Container
-  containerWidth: 600,
-  containerHeight: 600,
-  scrollSensitivity: 1.2,
+  containerWidth: 500,
+  containerHeight: 400,
+  scrollSensitivity: 0.5,
   
   // Performance
   enableCulling: false,
@@ -34,7 +34,7 @@ const defaultHelixConfig = {
   renderDistance: null,
   
   // Visualization
-  showEveryNth: 5, // Show every 5th card as full cards, others as orbs
+  showEveryNth: 3, // Show every 3rd card as full cards, others as orbs
   
   // Runtime (read-only)
   totalProjects: 16,
