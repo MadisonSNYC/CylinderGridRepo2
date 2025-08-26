@@ -203,8 +203,8 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
       `}
       data-orb-index={showAsOrb ? index : undefined}
       style={{
-        width: showAsOrb ? '15px' : `${(helixConfig?.cardWidth || 180) * scale}px`,
-        aspectRatio: showAsOrb ? '1 / 1' : '9 / 16',
+        width: showAsOrb ? '15px' : `${helixConfig?.cardWidth || 180}px`,
+        height: showAsOrb ? '15px' : `${helixConfig?.cardHeight || 320}px`,
         left: '50%',
         top: '50%',
         transform: `
@@ -212,6 +212,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
           translateY(${scrollY}px)
           rotateY(${cardRotation}deg)
           translateZ(${radius}px)
+          scale3d(${scale}, ${scale}, 1)
         `,
         transformStyle: 'preserve-3d',
         transformOrigin: 'center center',

@@ -316,16 +316,13 @@
 
 /* 9:16 aspect ratio cards */
 .helix-node:not([data-orb-index]) {
-  /* Ensure consistent proportions for cards (not orbs) */
-  aspect-ratio: 9 / 16 !important;
-  /* Don't let height override aspect ratio */
-  height: auto !important;
+  /* Ensure aspect ratio for cards */
+  aspect-ratio: 9 / 16;
 }
 
 .helix-node[data-orb-index] {
   /* Orbs should be circular */
-  aspect-ratio: 1 / 1 !important;
-  height: auto !important;
+  aspect-ratio: 1 / 1;
 }
 
 .helix-node > div:first-child {
