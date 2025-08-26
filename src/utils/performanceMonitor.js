@@ -19,7 +19,7 @@ class PerformanceMonitor {
     const delta = now - this.lastFrameTime;
     
     if (delta >= 1000) { // Update every second
-      const fps = Math.round((this.frameCount * 1000) / delta);
+      const fps = this.frameCount > 0 ? Math.round((this.frameCount * 1000) / delta) : 0;
       this.metrics.fps.push(fps);
       
       // Keep only last 10 measurements
@@ -39,7 +39,7 @@ class PerformanceMonitor {
 
   // Get average FPS
   getAverageFPS() {
-    if (this.metrics.fps.length === 0) return 60;
+    if (this.metrics.fps.length === 0) return 0; // Return 0 instead of 60 when no measurements
     const sum = this.metrics.fps.reduce((a, b) => a + b, 0);
     return Math.round(sum / this.metrics.fps.length);
   }
@@ -102,7 +102,7 @@ class PerformanceMonitor {
 
     return {
       averageFPS: this.getAverageFPS(),
-      currentFPS: this.metrics.fps[this.metrics.fps.length - 1] || 60,
+      currentFPS: this.metrics.fps[this.metrics.fps.length - 1] || 0,
       averageRenderTime: Math.round(avgRenderTime * 100) / 100,
       averageScrollLatency: Math.round(avgScrollLatency * 100) / 100,
       cacheHitRate: this.getCacheHitRate(),

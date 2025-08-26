@@ -218,16 +218,6 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
 
   // Control video playback based on visibility
   useEffect(() => {
-    // DEBUG: Check what's being rendered
-    console.log('Card render debug:', {
-      index,
-      showAsOrb,
-      richCardContent: effects.richCardContent,
-      hasVideo: !!project.videoAsset,
-      videoPath: project.videoAsset,
-      normalizedAngle
-    });
-    
     if (videoRef.current) {
       const shouldPlay = normalizedAngle < 90 || normalizedAngle > 270;
       if (shouldPlay && videoRef.current.paused) {
@@ -236,7 +226,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
         videoRef.current.pause();
       }
     }
-  }, [normalizedAngle, showAsOrb, effects.richCardContent, project.videoAsset, index]);
+  }, [normalizedAngle]);
 
   return (
     <div
@@ -292,55 +282,23 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
         effects.richCardContent ? (
           // Rich card with video/image content
           <div 
-            className={`w-full bg-gray-800 border border-gray-600 transition-all duration-300 cursor-pointer overflow-hidden group ${
+            className={`w-full h-full bg-gray-800 border border-gray-600 transition-all duration-300 cursor-pointer overflow-hidden group ${
               effects.cardHoverEffects ? 'hover:border-gray-400 hover:scale-105' : ''
             }`}
             style={{
-              // Always face the viewer - counter-rotate by the card's angle
-              transform: `rotateY(${-angle}deg)`,
-              transformStyle: 'preserve-3d',
-              backfaceVisibility: 'visible',
-              WebkitBackfaceVisibility: 'visible',
-              // NUCLEAR: Remove all layout styles that break aspect ratio
               width: '100%',
-              height: '100%',
-              position: 'absolute',
-              inset: '0'
+              height: '100%'
             }}
           >
           {/* Video/Image Content - maintaining aspect ratio */}
           <div 
-            className="relative w-full bg-gray-900 overflow-hidden" 
-            style={{ 
-              position: 'absolute', 
-              inset: '0', 
-              width: '100%', 
-              height: '100%',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'red' // DEBUG: Make container visible
-            }}
+            className="relative w-full h-full bg-gray-900 overflow-hidden"
           >
-            {console.log('Video check:', { hasVideo: !!project.videoAsset, videoPath: project.videoAsset, index })}
             {project.videoAsset && (
               <video
                 ref={videoRef}
                 key={project.videoAsset}
                 className="absolute inset-0 w-full h-full object-cover"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  minWidth: '100%',
-                  minHeight: '100%'
-                }}
                 src={project.videoAsset}
                 muted={true}
                 loop={true}
@@ -362,18 +320,6 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
                 {project.thumbnail && (
                   <img
                     className="absolute inset-0 w-full h-full object-cover z-0"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      minWidth: '100%',
-                      minHeight: '100%'
-                    }}
                     src={project.thumbnail}
                     alt={project.title}
                     loading="lazy"
@@ -388,7 +334,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
           </div>
 
           {/* Card Content - overlay text */}
-          <div className="p-2" style={{ position: 'absolute', bottom: '0', left: '0', right: '0', zIndex: 10, background: 'rgba(0,0,0,0.7)' }}>
+          <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/70 z-10">
             <div>
               <h3 className="text-white text-xs font-semibold mb-0.5 line-clamp-1 leading-tight">
                 {project.title}
@@ -419,20 +365,11 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
         ) : (
           // Simple card view
           <div 
-            className={`w-full bg-gray-700 border border-gray-500 transition-colors flex items-center justify-center ${
+            className={`w-full h-full bg-gray-700 border border-gray-500 transition-colors flex items-center justify-center ${
               effects.cardHoverEffects ? 'hover:border-gray-400 hover:bg-gray-600' : ''
             }`}
             style={{
-              // Always face the viewer - counter-rotate by the card's angle
-              transform: `rotateY(${-angle}deg)`,
-              transformStyle: 'preserve-3d',
-              backfaceVisibility: 'visible',
-              WebkitBackfaceVisibility: 'visible',
-              transition: effects.cardHoverEffects ? 'all 0.3s ease' : 'none',
-              borderRadius: '12px',
-              boxShadow: effects.cardShadows ? '0 4px 20px rgba(0, 0, 0, 0.2)' : 'none',
-              border: effects.cardBorders ? '2px solid rgba(255, 255, 255, 0.1)' : undefined,
-              visibility: 'visible',
+              width: '100%',
               height: '100%'
             }}
           >
