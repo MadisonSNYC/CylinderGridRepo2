@@ -14,9 +14,9 @@ const defaultHelixConfig = {
   rotateY: 0,
   rotateZ: 0,
   
-  // Card Properties
-  cardWidth: 80,
-  cardHeight: 142,
+  // Card Properties (9:16 aspect ratio)
+  cardWidth: 90,
+  cardHeight: 160,
   cardScale: 0.9,
   opacityFront: 1,
   opacitySide: 0.7,

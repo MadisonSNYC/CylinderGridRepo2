@@ -65,7 +65,10 @@ export const EffectsControlPanel = ({ effects, onEffectToggle, onReset, onUndo, 
       effects: [
         { key: 'ashfallCards', label: 'Ashfall Style', description: 'Clean white cards' },
         { key: 'cardShadows', label: 'Shadows', description: 'Drop shadows' },
-        { key: 'cardBorders', label: 'Borders', description: 'Card borders' }
+        { key: 'cardBorders', label: 'Borders', description: 'Card borders' },
+        { key: 'richCardContent', label: 'Rich Content', description: 'Show videos/images on cards' },
+        { key: 'cardHoverEffects', label: 'Hover Effects', description: 'Interactive card animations' },
+        { key: 'videoPlayOnHover', label: 'Video Hover', description: 'Play videos on hover' }
       ]
     },
     {

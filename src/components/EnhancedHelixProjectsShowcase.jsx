@@ -116,28 +116,132 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
           </div>
         </div>
       ) : (
-        // Normal card view
-        <div 
-          className="w-full h-full bg-gray-700 border border-gray-500 hover:border-gray-400 transition-colors flex items-center justify-center"
-          style={{
-            // Always face the viewer - counter-rotate by the card's angle
-            transform: `rotateY(${-angle}deg)`,
-            transformStyle: 'preserve-3d',
-            backfaceVisibility: 'visible',
-            WebkitBackfaceVisibility: 'visible',
-            transition: 'all 0.3s ease',
-            // Consistent curved appearance like depth blur
-            borderRadius: '12px',
-            // Force visibility
-            visibility: 'visible'
-          }}
-        >
-          <div className="text-center">
-            <div className="text-white text-xs font-medium">
-              Project {String((effectiveIndex + 1)).padStart(2, '0')}
+        // Rich/Simple card view based on effects
+        effects.richCardContent ? (
+          // Rich card with video/image content
+          <div 
+            className={`w-full h-full bg-gray-800 border border-gray-600 transition-all duration-300 cursor-pointer overflow-hidden group ${
+              effects.cardHoverEffects ? 'hover:border-gray-400 hover:scale-105' : ''
+            }`}
+            style={{
+              // Always face the viewer - counter-rotate by the card's angle
+              transform: `rotateY(${-angle}deg)`,
+              transformStyle: 'preserve-3d',
+              backfaceVisibility: 'visible',
+              WebkitBackfaceVisibility: 'visible',
+              borderRadius: '12px',
+              boxShadow: effects.cardShadows ? '0 4px 20px rgba(0, 0, 0, 0.3)' : 'none',
+              border: effects.cardBorders ? '2px solid rgba(255, 255, 255, 0.1)' : undefined,
+              willChange: effects.cardHoverEffects ? 'transform' : 'auto'
+            }}
+          >
+          {/* Video/Image Content - taking 75% of card height for 9:16 ratio */}
+          <div className="relative w-full h-3/4 bg-gray-900 overflow-hidden">
+            {project.videoAsset && (
+              <video
+                key={project.videoAsset}
+                className="absolute inset-0 w-full h-full object-cover"
+                src={project.videoAsset}
+                muted={true}
+                loop={true}
+                playsInline={true}
+                autoPlay={true}
+              />
+            )}
+            
+            {/* Only show fallback if no video asset */}
+            {!project.videoAsset && (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                      <span className="text-white text-xs font-bold">
+                        {String((effectiveIndex + 1)).padStart(2, '0')}
+                      </span>
+                    </div>
+                    <div className="text-gray-400 text-xs">
+                      {project.title}
+                    </div>
+                  </div>
+                </div>
+                {project.thumbnail && (
+                  <img
+                    className="absolute inset-0 w-full h-full object-cover z-0"
+                    src={project.thumbnail}
+                    alt={project.title}
+                    loading="lazy"
+                  />
+                )}
+              </>
+            )}
+            
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            
+            {/* Project number badge */}
+            <div className="absolute top-2 right-2 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full z-10">
+              {String((effectiveIndex + 1)).padStart(2, '0')}
+            </div>
+          </div>
+
+          {/* Card Content - remaining 25% height */}
+          <div className="p-2 h-1/4 flex flex-col justify-between">
+            <div>
+              <h3 className="text-white text-xs font-semibold mb-0.5 line-clamp-1 leading-tight">
+                {project.title}
+              </h3>
+              <p className="text-gray-400 text-xs line-clamp-1 leading-tight mb-1">
+                {project.description}
+              </p>
+            </div>
+            
+            {/* Technology badges - more compact */}
+            <div className="flex flex-wrap gap-1">
+              {project.technologies.slice(0, 2).map(tech => (
+                <span 
+                  key={tech} 
+                  className="bg-blue-600/20 text-blue-300 text-xs px-1.5 py-0.5 rounded-full border border-blue-500/30"
+                >
+                  {tech}
+                </span>
+              ))}
+              {project.technologies.length > 2 && (
+                <span className="text-gray-500 text-xs self-center">
+                  +{project.technologies.length - 2}
+                </span>
+              )}
             </div>
           </div>
         </div>
+        ) : (
+          // Simple card view
+          <div 
+            className={`w-full h-full bg-gray-700 border border-gray-500 transition-colors flex items-center justify-center ${
+              effects.cardHoverEffects ? 'hover:border-gray-400 hover:bg-gray-600' : ''
+            }`}
+            style={{
+              // Always face the viewer - counter-rotate by the card's angle
+              transform: `rotateY(${-angle}deg)`,
+              transformStyle: 'preserve-3d',
+              backfaceVisibility: 'visible',
+              WebkitBackfaceVisibility: 'visible',
+              transition: effects.cardHoverEffects ? 'all 0.3s ease' : 'none',
+              borderRadius: '12px',
+              boxShadow: effects.cardShadows ? '0 4px 20px rgba(0, 0, 0, 0.2)' : 'none',
+              border: effects.cardBorders ? '2px solid rgba(255, 255, 255, 0.1)' : undefined,
+              visibility: 'visible'
+            }}
+          >
+            <div className="text-center">
+              <div className="text-white text-xs font-medium mb-1">
+                {project.title}
+              </div>
+              <div className="text-gray-400 text-xs">
+                Project {String((effectiveIndex + 1)).padStart(2, '0')}
+              </div>
+            </div>
+          </div>
+        )
       )}
     </div>
   );
@@ -517,6 +621,77 @@ export const EnhancedHelixProjectsShowcase = ({
           </StructureEffects>
         </CardDesignEffects>
       </VisualEffects>
+      
+      {/* Rich Card Styles */}
+    <style>{`
+      .line-clamp-1 {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      
+      .helix-node .group:hover video {
+        filter: brightness(1.1) contrast(1.05);
+      }
+      
+      .helix-node .group:hover {
+        box-shadow: 
+          0 8px 32px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+      
+      .helix-node video {
+        transition: filter 0.3s ease;
+        transform: translateZ(0); /* Force hardware acceleration */
+      }
+      
+      .helix-node .group {
+        transform: translateZ(0); /* Force hardware acceleration */
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+      
+      .tech-badge {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      
+      /* Performance optimizations */
+      .helix-node {
+        contain: layout style paint;
+        will-change: transform;
+      }
+      
+      .helix-node video,
+      .helix-node img {
+        image-rendering: optimizeSpeed;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: optimize-contrast;
+      }
+      
+      @media (prefers-reduced-motion: reduce) {
+        .helix-node .group {
+          transition: none;
+        }
+        .helix-node .group:hover {
+          transform: none;
+          scale: none;
+        }
+        .helix-node video {
+          transition: none;
+        }
+      }
+    `}</style>
     </ColorSchemeEffects>
   );
 };

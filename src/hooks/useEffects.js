@@ -16,6 +16,9 @@ const defaultEffects = {
   ashfallCards: false,
   cardShadows: false,
   cardBorders: false,
+  richCardContent: true,        // Show rich content vs simple cards
+  cardHoverEffects: true,       // Enable hover interactions
+  videoPlayOnHover: true,       // Auto-play videos on hover
   
   // Structure
   centralWireframe: false,
