@@ -15,9 +15,9 @@ const defaultHelixConfig = {
   rotateZ: 0,
   
   // Card Properties (9:16 aspect ratio)
-  cardWidth: 90,
-  cardHeight: 160,
-  cardScale: 1.8,
+  cardWidth: 180,
+  cardHeight: 320,
+  cardScale: 1,
   opacityFront: 1,
   opacitySide: 0.7,
   opacityBack: 0.3,
@@ -34,7 +34,7 @@ const defaultHelixConfig = {
   renderDistance: null,
   
   // Visualization
-  showEveryNth: 3, // Show every 3rd card as full cards, others as orbs
+  showEveryNth: 1, // Show every card as full card (1 = all cards visible)
   
   // Runtime (read-only)
   totalProjects: 16,

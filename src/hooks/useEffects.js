@@ -4,13 +4,19 @@ const defaultEffects = {
   // Color Scheme
   ashfallColors: false,
   monochrome: false,
+  cinematicColors: false,     // Disabled for performance
+  screenGlow: false,          // Disabled for performance
+  scanLines: false,           // Disabled for performance
+  monitorStyle: false,        // Disabled for performance
+  colorGrade: false,
+  filmGrain: false,
   
   // Visual Effects
   chromaticAberration: false,
-  depthBlur: false,
+  depthBlur: false,           // Disabled for performance
   glitchEffects: false,
-  ambientLighting: false,
-  rgbEdge: false,            // RGB edge effect on cards
+  ambientLighting: false,     // Disabled for performance
+  rgbEdge: false,             // Disabled for performance
   
   // Card Design
   ashfallCards: false,

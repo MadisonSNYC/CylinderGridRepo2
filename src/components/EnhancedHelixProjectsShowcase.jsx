@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { Button } from './ui/button.jsx';
 import { Pause, Play, SkipForward, Square } from 'lucide-react';
 import { projects } from '../data/projects.js';
+import { helixPositionCache } from '../utils/helixPositionCache.js';
 
 // Effect components
 import { ColorSchemeEffects } from './effects/ColorSchemeEffects.jsx';
@@ -111,69 +112,34 @@ const SpringConnection = ({ start, end, opacity = 1, color = "#00ffff", intensit
   );
 };
 
-const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0, helixConfig, showAsOrb = false, orbPosition = null, scrollSpeed = 0 }) => {
+const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0, helixConfig, showAsOrb = false, orbPosition = null, scrollSpeed = 0 }) => {
   // Calculate position along the extended helix
   const repeatTurns = helixConfig?.repeatTurns || effects.repeatTurns || 2;
   const totalCards = totalProjects * Math.ceil(repeatTurns + 1);
+  const videoRef = useRef(null);
   
   // Use modulo for display purposes
   const effectiveIndex = index % totalProjects;
   
-  // Position calculation for extended helix - ensure even spacing
-  const angle = (index / totalProjects) * 360; // One full rotation per set of projects
-  const radius = helixConfig?.radius || 250; // Use config radius
+  // Get cached position or compute if not cached
+  const position = useMemo(() => {
+    const config = {
+      radius: helixConfig?.radius || 325,
+      verticalSpan: helixConfig?.verticalSpan || 585,
+      repeatTurns: repeatTurns,
+      cardScale: helixConfig?.cardScale || 1,
+      opacityFront: helixConfig?.opacityFront || 1,
+      opacitySide: helixConfig?.opacitySide || 0.7,
+      opacityBack: helixConfig?.opacityBack || 0.3
+    };
+    return helixPositionCache.getPosition(index, totalProjects, scrollOffset, config);
+  }, [index, totalProjects, scrollOffset, helixConfig, repeatTurns]);
   
-  // DNA Helix arrangement - proper spacing for infinite scroll
-  const verticalSpan = helixConfig?.verticalSpan || 450;
-  // Calculate position within the total vertical range with extra spacing
-  const spacingMultiplier = 2.5; // Increase spacing between all elements
-  const normalizedPosition = index / (totalCards - 1);
-  const totalHeight = verticalSpan * repeatTurns * spacingMultiplier;
-  const yOffset = normalizedPosition * totalHeight - (totalHeight / 2);
+  // Extract values from cached position
+  const { angle, currentRotation, normalizedAngle, radius, yOffset, scale, opacity: cachedOpacity, depthFactor, scrollY, cardRotation } = position;
   
-  // Calculate the current rotation to always face forward
-  const currentRotation = scrollOffset * (360 * repeatTurns / totalProjects);
-  const cardFaceAngle = angle - currentRotation;
-  
-  // Calculate depth-based opacity and smooth scaling
-  const normalizedAngle = ((angle - currentRotation) % 360 + 360) % 360;
-  
-  // Convert to radians for smooth math functions
-  const radians = (normalizedAngle * Math.PI) / 180;
-  
-  // Smooth continuous scaling based on cosine function
-  // cos(0) = 1 (front), cos(π) = -1 (back)
-  // This gives us smooth scaling from front to back
-  const depthFactor = Math.cos(radians);
-  const baseScale = helixConfig?.cardScale || 1;
-  
-  // Scale ranges from 0.8x (back) to 1.0x (front) smoothly
-  const scaleRange = 0.2; // Maximum scale reduction
-  const scale = baseScale * (1 - (scaleRange * (1 - depthFactor) / 2));
-  
-  // Smooth opacity based on position
-  let opacity = 1;
-  if (normalizedAngle < 45 || normalizedAngle > 315) {
-    opacity = helixConfig?.opacityFront || 1;
-  } else if (normalizedAngle >= 135 && normalizedAngle <= 225) {
-    opacity = helixConfig?.opacityBack || 0.3;
-  } else {
-    // Smooth transition for side cards
-    const sideProgress = normalizedAngle < 180 
-      ? (normalizedAngle - 45) / 90 
-      : (315 - normalizedAngle) / 90;
-    const frontOpacity = helixConfig?.opacityFront || 1;
-    const sideOpacity = helixConfig?.opacitySide || 0.7;
-    const backOpacity = helixConfig?.opacityBack || 0.3;
-    
-    if (normalizedAngle < 135) {
-      // Transition from front to back (left side)
-      opacity = frontOpacity - (frontOpacity - sideOpacity) * sideProgress;
-    } else {
-      // Transition from back to front (right side)
-      opacity = backOpacity + (sideOpacity - backOpacity) * sideProgress;
-    }
-  }
+  // Use cached opacity
+  const opacity = cachedOpacity;
   
   // Calculate depth for hierarchy effects
   let depthClass = '';
@@ -185,18 +151,29 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
   
   // Store position for spring connections (for ALL nodes)
   if (orbPosition) {
-    const adjustedAngle = angle - currentRotation;
-    const radians = (adjustedAngle * Math.PI) / 180;
+    const radians = (cardRotation * Math.PI) / 180;
     orbPosition.x = Math.sin(radians) * radius;
     orbPosition.z = Math.cos(radians) * radius;
-    orbPosition.y = yOffset - (scrollOffset * 10);
-    orbPosition.angle = adjustedAngle;
+    orbPosition.y = scrollY; // Use cached scrollY
+    orbPosition.angle = cardRotation;
     orbPosition.index = index;
     // Calculate screen position for SVG rendering - using actual transform calculations
-    const screenRadius = radius * (helixConfig?.cardScale || 1.8);
+    const screenRadius = radius * (helixConfig?.cardScale || 1);
     orbPosition.screenX = window.innerWidth / 2 + Math.sin(radians) * screenRadius;
-    orbPosition.screenY = window.innerHeight / 2 + (yOffset - (scrollOffset * 10)) * (helixConfig?.cardScale || 1.8);
+    orbPosition.screenY = window.innerHeight / 2 + scrollY * (helixConfig?.cardScale || 1); // Use cached scrollY
   }
+
+  // Control video playback based on visibility
+  useEffect(() => {
+    if (videoRef.current) {
+      const shouldPlay = normalizedAngle < 90 || normalizedAngle > 270;
+      if (shouldPlay && videoRef.current.paused) {
+        videoRef.current.play().catch(() => {}); // Ignore play errors
+      } else if (!shouldPlay && !videoRef.current.paused) {
+        videoRef.current.pause();
+      }
+    }
+  }, [normalizedAngle]);
 
   return (
     <div
@@ -207,14 +184,14 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
       `}
       data-orb-index={showAsOrb ? index : undefined}
       style={{
-        width: showAsOrb ? '15px' : `${helixConfig?.cardWidth || 80}px`,
-        height: showAsOrb ? '15px' : `${helixConfig?.cardHeight || 142}px`,
+        width: showAsOrb ? '15px' : `${helixConfig?.cardWidth || 180}px`,
+        height: showAsOrb ? '15px' : `${helixConfig?.cardHeight || 320}px`,
         left: '50%',
         top: '50%',
         transform: `
           translate(-50%, -50%)
-          translateY(${yOffset - (scrollOffset * 10)}px)
-          rotateY(${angle - currentRotation}deg)
+          translateY(${scrollY}px)
+          rotateY(${cardRotation}deg)
           translateZ(${radius}px)
           scale(${scale})
         `,
@@ -272,13 +249,14 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
           <div className="relative w-full h-3/4 bg-gray-900 overflow-hidden">
             {project.videoAsset && (
               <video
+                ref={videoRef}
                 key={project.videoAsset}
                 className="absolute inset-0 w-full h-full object-cover"
                 src={project.videoAsset}
                 muted={true}
                 loop={true}
                 playsInline={true}
-                autoPlay={true}
+                autoPlay={false} // Controlled by useEffect
               />
             )}
             
@@ -366,7 +344,13 @@ const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, 
       )}
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Only re-render if critical props change
+  return prevProps.scrollOffset === nextProps.scrollOffset &&
+         prevProps.index === nextProps.index &&
+         prevProps.isActive === nextProps.isActive &&
+         prevProps.showAsOrb === nextProps.showAsOrb;
+});
 
 const ProjectsGrid = ({ projects, className = '' }) => (
   <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8 ${className}`}>
@@ -450,29 +434,11 @@ export const EnhancedHelixProjectsShowcase = ({
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [scrollOffset, setScrollOffset] = useState(0); // For endless scroll
-  const [prevScrollOffset, setPrevScrollOffset] = useState(0); // For tracking scroll speed
-  const [scrollSpeed, setScrollSpeed] = useState(0); // Track current scroll speed
+  const scrollSpeed = useRef(0); // Track current scroll speed without re-renders
+  const scrollAnimationId = useRef(null); // For RAF throttling
   
-  // Track scroll changes for speed calculation
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPrevScrollOffset(scrollOffset);
-    }, 50); // Small delay to measure speed
-    return () => clearTimeout(timer);
-  }, [scrollOffset]);
-
-  // Calculate scroll speed for cinematic effects
-  useEffect(() => {
-    const speed = Math.abs(scrollOffset - prevScrollOffset);
-    setScrollSpeed(speed);
-    
-    // Auto-fade scroll speed after inactivity
-    const fadeTimer = setTimeout(() => {
-      setScrollSpeed(prev => prev * 0.8);
-    }, 100);
-    
-    return () => clearTimeout(fadeTimer);
-  }, [scrollOffset, prevScrollOffset]);
+  // Simplified scroll speed tracking without re-renders
+  // Speed is now calculated inline when needed
   
   // Advanced helix configuration
   const { 
@@ -496,14 +462,15 @@ export const EnhancedHelixProjectsShowcase = ({
     }
   };
 
-  // Update runtime info for the panel
+  // Update runtime info for the panel - throttled to reduce re-renders
   useEffect(() => {
+    const roundedOffset = Math.round(scrollOffset * 10) / 10; // Round to 1 decimal
     updateRuntimeInfo({
       totalProjects: projects.length,
-      scrollOffset: scrollOffset,
+      scrollOffset: roundedOffset,
       visibleCards: Math.ceil((helixConfig.repeatTurns || 2) + 1) * projects.length
     });
-  }, [scrollOffset, projects.length, helixConfig.repeatTurns, updateRuntimeInfo]);
+  }, [Math.round(scrollOffset), projects.length, helixConfig.repeatTurns, updateRuntimeInfo]);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -524,22 +491,76 @@ export const EnhancedHelixProjectsShowcase = ({
     }
   }, [prefersReducedMotion]);
 
-  // Mouse wheel / trackpad scroll support - simple and reliable
+  // Optimized scroll handler with RAF throttling and momentum
   useEffect(() => {
     if (!enhanced) return;
 
+    let pendingDelta = 0;
+    let isUpdating = false;
+    let velocity = 0;
+    let lastTime = performance.now();
+    const friction = 0.95; // Momentum decay
+    const minVelocity = 0.001; // Threshold to stop momentum
+
+    const updateScroll = () => {
+      const now = performance.now();
+      const deltaTime = Math.min((now - lastTime) / 1000, 0.1); // Cap deltaTime to avoid jumps
+      lastTime = now;
+
+      // Apply pending delta with momentum
+      if (pendingDelta !== 0 || Math.abs(velocity) > minVelocity) {
+        // Update velocity
+        velocity = velocity * friction + pendingDelta;
+        
+        // Apply velocity to scroll
+        setScrollOffset(prev => {
+          // Ensure we're only affecting vertical scroll
+          const newOffset = prev + velocity;
+          return newOffset;
+        });
+        
+        pendingDelta = 0;
+        
+        // Continue animation if velocity is significant
+        if (Math.abs(velocity) > minVelocity) {
+          scrollAnimationId.current = requestAnimationFrame(updateScroll);
+        } else {
+          velocity = 0;
+          isUpdating = false;
+        }
+      } else {
+        isUpdating = false;
+      }
+    };
+
     const handleWheel = (e) => {
       e.preventDefault();
-      // Use actual deltaY for smoother, more natural scrolling
-      const delta = e.deltaY * 0.002; // Increased for more responsive scrolling
+      // Only use vertical delta, ignore horizontal
+      const deltaY = e.deltaY;
+      const deltaX = 0; // Explicitly ignore horizontal scroll
+      
+      // Normalize the delta for consistent behavior across devices
+      const normalizedDelta = deltaY * 0.0026; // Increased by 30% for more transformation
       const sensitivity = helixConfig.scrollSensitivity || 1;
-      setScrollOffset(prev => prev + delta * sensitivity);
+      
+      pendingDelta = normalizedDelta * sensitivity * 0.15; // Apply smoothing factor
+      
+      if (!isUpdating) {
+        isUpdating = true;
+        lastTime = performance.now();
+        scrollAnimationId.current = requestAnimationFrame(updateScroll);
+      }
     };
 
     const helixElement = helixRef.current?.parentElement;
     if (helixElement) {
       helixElement.addEventListener('wheel', handleWheel, { passive: false });
-      return () => helixElement.removeEventListener('wheel', handleWheel);
+      return () => {
+        helixElement.removeEventListener('wheel', handleWheel);
+        if (scrollAnimationId.current) {
+          cancelAnimationFrame(scrollAnimationId.current);
+        }
+      };
     }
   }, [enhanced, helixConfig.scrollSensitivity]);
 
@@ -568,12 +589,12 @@ export const EnhancedHelixProjectsShowcase = ({
         case 'ArrowRight':
         case 'ArrowDown':
           e.preventDefault();
-          setScrollOffset(prev => prev + 0.5 * sensitivity); // Apply scroll sensitivity
+          setScrollOffset(prev => prev + 0.65 * sensitivity); // Increased by 30% (0.5 * 1.3)
           break;
         case 'ArrowLeft':
         case 'ArrowUp':
           e.preventDefault();
-          setScrollOffset(prev => prev - 0.5 * sensitivity); // Apply scroll sensitivity
+          setScrollOffset(prev => prev - 0.65 * sensitivity); // Increased by 30% (0.5 * 1.3)
           break;
         case 'Home':
           e.preventDefault();
@@ -665,11 +686,11 @@ export const EnhancedHelixProjectsShowcase = ({
                     } ${
                       effects.colorGrade ? 'fx-color-grade' : ''
                     } ${
-                      scrollSpeed > 15 ? 'scroll-ultra-fast' : 
-                      scrollSpeed > 8 ? 'scroll-fast' : ''
+                      scrollSpeed.current > 15 ? 'scroll-ultra-fast' : 
+                      scrollSpeed.current > 8 ? 'scroll-fast' : ''
                     }`}
                     style={{
-                      '--scroll-offset-y': `${scrollOffset * 2}px` // Move logo/wireframe with scroll
+                      '--scroll-offset-y': `${scrollOffset * 2.6}px` // Increased by 30% (2 * 1.3)
                     }}
                   >
                     <div 
@@ -687,7 +708,7 @@ export const EnhancedHelixProjectsShowcase = ({
                           translateZ(-1200px)
                         `,
                         // Pass scene rotation as CSS variable for billboard mode - include all rotations
-                        '--sceneDeg': `${(scrollOffset * (360 * (helixConfig.repeatTurns || 1.5) / projects.length)) + (helixConfig.rotateY || 0)}deg`,
+                        '--sceneDeg': `${(scrollOffset * (468 * (helixConfig.repeatTurns || 1.5) / projects.length)) + (helixConfig.rotateY || 0)}deg`,
                         '--logo-z': '0px',
                         transition: 'none',
                         width: `${helixConfig.containerWidth}px`,
@@ -700,7 +721,7 @@ export const EnhancedHelixProjectsShowcase = ({
                       {Array.from({ length: Math.ceil(helixConfig.repeatTurns || 1.5) + 1 }, (_, setIndex) => 
                         projects.map((project, index) => {
                           const globalIndex = setIndex * projects.length + index;
-                          const showEveryNth = helixConfig.showEveryNth || 1;
+                          const showEveryNth = 1; // Force all cards to show (override any config)
                           
                           
                           // Always render all cards, but decide if they should be orbs or full cards
@@ -720,7 +741,7 @@ export const EnhancedHelixProjectsShowcase = ({
                               scrollOffset={scrollOffset}
                               helixConfig={helixConfig}
                               showAsOrb={shouldShowAsOrb} // Show as orb if not an Nth card
-                              scrollSpeed={scrollSpeed}
+                              scrollSpeed={scrollSpeed.current}
                             />
                           );
                         })
@@ -735,7 +756,7 @@ export const EnhancedHelixProjectsShowcase = ({
                           aria-hidden="true"
                           style={{
                             transform: effects.centerLogoMode === 'billboard' 
-                              ? `translate(-50%, -50%) translateY(var(--scroll-offset-y, 0px)) rotateY(${-((scrollOffset * (360 * (helixConfig.repeatTurns || 1.5) / projects.length)) + (helixConfig.rotateY || 0))}deg)`
+                              ? `translate(-50%, -50%) translateY(var(--scroll-offset-y, 0px)) rotateY(${-((scrollOffset * (468 * (helixConfig.repeatTurns || 1.5) / projects.length)) + (helixConfig.rotateY || 0))}deg)`
                               : `translate(-50%, -50%) translateY(var(--scroll-offset-y, 0px))`
                           }}
                         />
