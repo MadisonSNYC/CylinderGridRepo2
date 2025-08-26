@@ -160,6 +160,33 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
   // Use cached opacity
   const opacity = cachedOpacity;
   
+  // Detect front-facing cards and apply compensation
+  const isFrontFacing = normalizedAngle < 45 || normalizedAngle > 315;
+  const isNearFront = normalizedAngle < 90 || normalizedAngle > 270;
+  
+  // For front-facing cards, use fixed 9:16 ratio with counter-scaling
+  const baseWidth = 180;
+  const baseHeight = 320;
+  
+  // Apply inverse perspective compensation for visual correction
+  let correctedWidth = baseWidth;
+  let correctedHeight = baseHeight;
+  let perspectiveTransform = '';
+  
+  if (isFrontFacing) {
+    // For front cards, use exact dimensions and add perspective counter-transform
+    correctedWidth = baseWidth;
+    correctedHeight = baseHeight;
+    perspectiveTransform = `scaleX(1.0) scaleY(1.0)`;
+  } else if (isNearFront) {
+    // For near-front cards, apply slight correction
+    const angle = Math.min(normalizedAngle, 360 - normalizedAngle);
+    const correction = 1 + (angle / 90) * 0.2;
+    correctedWidth = baseWidth;
+    correctedHeight = baseHeight * correction;
+    perspectiveTransform = `scaleY(${1 / correction})`;
+  }
+  
   // Calculate depth for hierarchy effects
   let depthClass = '';
   if (effects.depthHierarchy) {
@@ -203,12 +230,12 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
       `}
       data-orb-index={showAsOrb ? index : undefined}
       style={{
-        width: showAsOrb ? '15px' : '180px',
-        height: showAsOrb ? '15px' : '320px',
-        minWidth: showAsOrb ? '15px' : '180px',
-        maxWidth: showAsOrb ? '15px' : '180px', 
-        minHeight: showAsOrb ? '15px' : '320px',
-        maxHeight: showAsOrb ? '15px' : '320px',
+        width: showAsOrb ? '15px' : `${correctedWidth}px`,
+        height: showAsOrb ? '15px' : `${correctedHeight}px`,
+        minWidth: showAsOrb ? '15px' : `${correctedWidth}px`,
+        maxWidth: showAsOrb ? '15px' : `${correctedWidth}px`, 
+        minHeight: showAsOrb ? '15px' : `${correctedHeight}px`,
+        maxHeight: showAsOrb ? '15px' : `${correctedHeight}px`,
         left: '50%',
         top: '50%',
         transform: `
@@ -216,6 +243,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
           translateY(${scrollY}px)
           rotateY(${cardRotation}deg)
           translateZ(${radius}px)
+          ${perspectiveTransform}
         `,
         transformStyle: 'preserve-3d',
         transformOrigin: 'center center',
