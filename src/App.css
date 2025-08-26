@@ -314,20 +314,30 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 9:16 aspect ratio cards - FIXED DIMENSIONS */
-.helix-node:not([data-orb-index]) {
-  /* Force exact dimensions for 9:16 ratio */
+/* 9:16 aspect ratio cards - FORCE FIXED DIMENSIONS */
+.helix-assembly .helix-node.helix-node:not([data-orb-index]) {
+  /* Ultra-specific selector to override everything */
   width: 180px !important;
   height: 320px !important;
-  /* Remove any box-sizing issues */
+  min-width: 180px !important;
+  max-width: 180px !important;
+  min-height: 320px !important;
+  max-height: 320px !important;
   box-sizing: border-box !important;
+  /* Prevent any transforms from affecting visual size */
+  transform-box: border-box !important;
 }
 
-.helix-node[data-orb-index] {
-  /* Orbs are small circles */
+.helix-assembly .helix-node.helix-node[data-orb-index] {
+  /* Ultra-specific selector for orbs */
   width: 15px !important;
   height: 15px !important;
+  min-width: 15px !important;
+  max-width: 15px !important;
+  min-height: 15px !important;
+  max-height: 15px !important;
   box-sizing: border-box !important;
+  transform-box: border-box !important;
 }
 
 .helix-node > div:first-child {
@@ -335,6 +345,17 @@
   height: 100% !important;
   width: 100% !important;
   box-sizing: border-box !important;
+}
+
+/* Prevent perspective from affecting visual size */
+.helix-assembly {
+  /* Reset any perspective that might affect card visual dimensions */
+  transform-style: preserve-3d !important;
+}
+
+.helix-node {
+  /* Ensure transforms don't affect visual size calculations */
+  transform-box: border-box !important;
 }
 
 /* Step S1 - Face-the-camera additive CSS */

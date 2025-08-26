@@ -205,6 +205,10 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
       style={{
         width: showAsOrb ? '15px' : '180px',
         height: showAsOrb ? '15px' : '320px',
+        minWidth: showAsOrb ? '15px' : '180px',
+        maxWidth: showAsOrb ? '15px' : '180px', 
+        minHeight: showAsOrb ? '15px' : '320px',
+        maxHeight: showAsOrb ? '15px' : '320px',
         left: '50%',
         top: '50%',
         transform: `
