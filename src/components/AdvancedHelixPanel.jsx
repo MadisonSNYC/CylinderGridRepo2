@@ -221,25 +221,31 @@ export const AdvancedHelixPanel = ({ helixConfig, onConfigChange, onReset, onUnd
           
           <SliderControl
             label="CARD WIDTH"
-            value={helixConfig.cardWidth || 80}
-            min={50}
-            max={120}
-            step={5}
+            value={helixConfig.cardWidth || 180}
+            min={90}
+            max={270}
+            step={10}
             suffix="px"
-            onChange={(val) => updateConfig('cardWidth', val)}
+            onChange={(val) => {
+              updateConfig('cardWidth', val);
+              // Maintain 9:16 aspect ratio
+              updateConfig('cardHeight', Math.round(val * 16 / 9));
+            }}
             color="#10b981"
           />
 
-          <SliderControl
-            label="CARD HEIGHT"
-            value={helixConfig.cardHeight || 142}
-            min={80}
-            max={200}
-            step={5}
-            suffix="px"
-            onChange={(val) => updateConfig('cardHeight', val)}
-            color="#10b981"
-          />
+          <div className="opacity-60 pointer-events-none">
+            <SliderControl
+              label="CARD HEIGHT (Auto 9:16)"
+              value={helixConfig.cardHeight || 320}
+              min={160}
+              max={480}
+              step={10}
+              suffix="px"
+              onChange={() => {}}
+              color="#10b981"
+            />
+          </div>
 
           <SliderControl
             label="CARD SCALE"

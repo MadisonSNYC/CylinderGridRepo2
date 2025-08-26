@@ -205,6 +205,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
       style={{
         width: showAsOrb ? '15px' : `${helixConfig?.cardWidth || 180}px`,
         height: showAsOrb ? '15px' : `${helixConfig?.cardHeight || 320}px`,
+        aspectRatio: showAsOrb ? '1 / 1' : '9 / 16',
         left: '50%',
         top: '50%',
         transform: `
@@ -264,8 +265,8 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
               willChange: effects.cardHoverEffects ? 'transform' : 'auto'
             }}
           >
-          {/* Video/Image Content - taking 75% of card height for 9:16 ratio */}
-          <div className="relative w-full h-3/4 bg-gray-900 overflow-hidden">
+          {/* Video/Image Content - maintaining aspect ratio */}
+          <div className="relative w-full bg-gray-900 overflow-hidden" style={{ height: '75%' }}>
             {project.videoAsset && (
               <video
                 ref={videoRef}
@@ -305,8 +306,8 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
             
           </div>
 
-          {/* Card Content - remaining 25% height */}
-          <div className="p-2 h-1/4 flex flex-col justify-between">
+          {/* Card Content - remaining height */}
+          <div className="p-2 flex flex-col justify-between" style={{ height: '25%' }}>
             <div>
               <h3 className="text-white text-xs font-semibold mb-0.5 line-clamp-1 leading-tight">
                 {project.title}
