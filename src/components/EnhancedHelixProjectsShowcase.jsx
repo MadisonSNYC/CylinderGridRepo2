@@ -111,7 +111,7 @@ const SpringConnection = ({ start, end, opacity = 1, color = "#00ffff", intensit
   );
 };
 
-const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0, helixConfig, showAsOrb = false, orbPosition = null }) => {
+const HelixNode = ({ project, index, totalProjects, isActive, onClick, effects, scrollOffset = 0, helixConfig, showAsOrb = false, orbPosition = null, scrollSpeed = 0 }) => {
   // Calculate position along the extended helix
   const repeatTurns = helixConfig?.repeatTurns || effects.repeatTurns || 2;
   const totalCards = totalProjects * Math.ceil(repeatTurns + 1);
@@ -430,6 +430,7 @@ export const EnhancedHelixProjectsShowcase = ({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [scrollOffset, setScrollOffset] = useState(0); // For endless scroll
   const [prevScrollOffset, setPrevScrollOffset] = useState(0); // For tracking scroll speed
+  const [scrollSpeed, setScrollSpeed] = useState(0); // Track current scroll speed
   
   // Track scroll changes for speed calculation
   useEffect(() => {
@@ -438,6 +439,19 @@ export const EnhancedHelixProjectsShowcase = ({
     }, 50); // Small delay to measure speed
     return () => clearTimeout(timer);
   }, [scrollOffset]);
+
+  // Calculate scroll speed for cinematic effects
+  useEffect(() => {
+    const speed = Math.abs(scrollOffset - prevScrollOffset);
+    setScrollSpeed(speed);
+    
+    // Auto-fade scroll speed after inactivity
+    const fadeTimer = setTimeout(() => {
+      setScrollSpeed(prev => prev * 0.8);
+    }, 100);
+    
+    return () => clearTimeout(fadeTimer);
+  }, [scrollOffset, prevScrollOffset]);
   
   // Advanced helix configuration
   const { 
@@ -613,7 +627,29 @@ export const EnhancedHelixProjectsShowcase = ({
                   />
 
                   {/* 3D Helix Scene */}
-                  <div className="helix-scene relative h-screen overflow-hidden flex items-center justify-center">
+                  <div 
+                    className={`helix-scene fx-scroll-movement relative h-screen overflow-hidden flex items-center justify-center ${
+                      effects.cinematicColors ? 'fx-cinematic' : ''
+                    } ${
+                      effects.screenGlow ? 'fx-screen-glow' : ''
+                    } ${
+                      effects.scanLines ? 'fx-scan-lines' : ''
+                    } ${
+                      effects.chromaticAberration ? 'fx-chromatic' : ''
+                    } ${
+                      effects.filmGrain ? 'fx-film-grain' : ''
+                    } ${
+                      effects.monitorStyle ? 'fx-monitor-style' : ''
+                    } ${
+                      effects.colorGrade ? 'fx-color-grade' : ''
+                    } ${
+                      scrollSpeed > 15 ? 'scroll-ultra-fast' : 
+                      scrollSpeed > 8 ? 'scroll-fast' : ''
+                    }`}
+                    style={{
+                      '--scroll-offset-y': `${scrollOffset * 2}px` // Move logo/wireframe with scroll
+                    }}
+                  >
                     <div 
                       className="helix-assembly"
                       ref={helixRef}
@@ -662,6 +698,7 @@ export const EnhancedHelixProjectsShowcase = ({
                               scrollOffset={scrollOffset}
                               helixConfig={helixConfig}
                               showAsOrb={shouldShowAsOrb} // Show as orb if not an Nth card
+                              scrollSpeed={scrollSpeed}
                             />
                           );
                         })
@@ -674,6 +711,11 @@ export const EnhancedHelixProjectsShowcase = ({
                           alt="Ravie logo"
                           className={`center-logo no-select ${effects.centerLogoMode || 'billboard'}`}
                           aria-hidden="true"
+                          style={{
+                            transform: effects.centerLogoMode === 'billboard' 
+                              ? `translate(-50%, -50%) translateY(var(--scroll-offset-y, 0px)) rotateY(${-((scrollOffset * (360 * (helixConfig.repeatTurns || 1.5) / projects.length)) + (helixConfig.rotateY || 0))}deg)`
+                              : `translate(-50%, -50%) translateY(var(--scroll-offset-y, 0px))`
+                          }}
                         />
                       )}
                     </div>
