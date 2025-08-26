@@ -294,6 +294,17 @@ function FPSGraph({ fps }) {
 
 // Report Modal Component
 function ReportModal({ report, onClose, onDownload }) {
+  const [showJson, setShowJson] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+  
+  const copyToClipboard = () => {
+    const jsonText = JSON.stringify(report, null, 2);
+    navigator.clipboard.writeText(jsonText).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+  
   if (report.error) {
     return (
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100]">
@@ -318,93 +329,120 @@ function ReportModal({ report, onClose, onDownload }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-white">Performance Report</h2>
-          <button
-            onClick={onClose}
-            className="p-1 hover:bg-gray-800 rounded transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-400" />
-          </button>
-        </div>
-        
-        {/* Session Info */}
-        <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
-          <h3 className="text-sm font-semibold text-blue-400 mb-3">Session Information</h3>
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div>
-              <span className="text-gray-400">Duration:</span>
-              <span className="ml-2 text-white">{report.sessionInfo.duration}</span>
-            </div>
-            <div>
-              <span className="text-gray-400">Samples:</span>
-              <span className="ml-2 text-white">{report.sessionInfo.samplesCollected}</span>
-            </div>
-            <div className="col-span-2">
-              <span className="text-gray-400">Generated:</span>
-              <span className="ml-2 text-white">{new Date(report.sessionInfo.timestamp).toLocaleString()}</span>
-            </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowJson(!showJson)}
+              className="px-3 py-1 text-xs bg-gray-800 text-gray-300 rounded hover:bg-gray-700 transition-colors"
+            >
+              {showJson ? 'View Stats' : 'View JSON'}
+            </button>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-gray-800 rounded transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-400" />
+            </button>
           </div>
         </div>
         
-        {/* FPS Statistics */}
-        <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
-          <h3 className="text-sm font-semibold text-green-400 mb-3">FPS Performance</h3>
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div>
-              <span className="text-gray-400">Average:</span>
-              <span className="ml-2 text-white font-mono">{report.fpsStats.average}</span>
-            </div>
-            <div>
-              <span className="text-gray-400">Current:</span>
-              <span className="ml-2 text-white font-mono">{report.fpsStats.current}</span>
-            </div>
-            <div>
-              <span className="text-gray-400">Min:</span>
-              <span className="ml-2 text-white font-mono">{report.fpsStats.min}</span>
-            </div>
-            <div>
-              <span className="text-gray-400">Max:</span>
-              <span className="ml-2 text-white font-mono">{report.fpsStats.max}</span>
+        {showJson ? (
+          /* JSON Text View */
+          <div className="mb-6">
+            <div className="bg-gray-800/50 rounded-lg p-4 relative">
+              <pre className="text-xs text-gray-300 font-mono whitespace-pre overflow-x-auto select-all">
+{JSON.stringify(report, null, 2)}
+              </pre>
+              {copied && (
+                <div className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">
+                  Copied!
+                </div>
+              )}
             </div>
           </div>
-        </div>
-        
-        {/* Render Statistics */}
-        <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
-          <h3 className="text-sm font-semibold text-yellow-400 mb-3">Render Performance</h3>
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div>
-              <span className="text-gray-400">Average:</span>
-              <span className="ml-2 text-white font-mono">{report.renderStats.average}</span>
+        ) : (
+          /* Stats View */
+          <>
+            {/* Session Info */}
+            <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
+              <h3 className="text-sm font-semibold text-blue-400 mb-3">Session Information</h3>
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <span className="text-gray-400">Duration:</span>
+                  <span className="ml-2 text-white">{report.sessionInfo.duration}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Samples:</span>
+                  <span className="ml-2 text-white">{report.sessionInfo.samplesCollected}</span>
+                </div>
+                <div className="col-span-2">
+                  <span className="text-gray-400">Generated:</span>
+                  <span className="ml-2 text-white">{new Date(report.sessionInfo.timestamp).toLocaleString()}</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <span className="text-gray-400">Current:</span>
-              <span className="ml-2 text-white font-mono">{report.renderStats.current}</span>
+            
+            {/* FPS Statistics */}
+            <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
+              <h3 className="text-sm font-semibold text-green-400 mb-3">FPS Performance</h3>
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <span className="text-gray-400">Average:</span>
+                  <span className="ml-2 text-white font-mono">{report.fpsStats.average}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Current:</span>
+                  <span className="ml-2 text-white font-mono">{report.fpsStats.current}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Min:</span>
+                  <span className="ml-2 text-white font-mono">{report.fpsStats.min}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Max:</span>
+                  <span className="ml-2 text-white font-mono">{report.fpsStats.max}</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <span className="text-gray-400">Max:</span>
-              <span className="ml-2 text-white font-mono">{report.renderStats.max}</span>
+            
+            {/* Render Statistics */}
+            <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
+              <h3 className="text-sm font-semibold text-yellow-400 mb-3">Render Performance</h3>
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <span className="text-gray-400">Average:</span>
+                  <span className="ml-2 text-white font-mono">{report.renderStats.average}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Current:</span>
+                  <span className="ml-2 text-white font-mono">{report.renderStats.current}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Max:</span>
+                  <span className="ml-2 text-white font-mono">{report.renderStats.max}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        
-        {/* Cache Statistics */}
-        <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
-          <h3 className="text-sm font-semibold text-purple-400 mb-3">Cache & Memory</h3>
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div>
-              <span className="text-gray-400">Hit Rate:</span>
-              <span className="ml-2 text-white font-mono">{report.cacheStats.hitRate}</span>
+            
+            {/* Cache Statistics */}
+            <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
+              <h3 className="text-sm font-semibold text-purple-400 mb-3">Cache & Memory</h3>
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <span className="text-gray-400">Hit Rate:</span>
+                  <span className="ml-2 text-white font-mono">{report.cacheStats.hitRate}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Current Memory:</span>
+                  <span className="ml-2 text-white font-mono">{report.cacheStats.currentMemory}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Avg Memory:</span>
+                  <span className="ml-2 text-white font-mono">{report.cacheStats.avgMemory}</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <span className="text-gray-400">Current Memory:</span>
-              <span className="ml-2 text-white font-mono">{report.cacheStats.currentMemory}</span>
-            </div>
-            <div>
-              <span className="text-gray-400">Avg Memory:</span>
-              <span className="ml-2 text-white font-mono">{report.cacheStats.avgMemory}</span>
-            </div>
-          </div>
-        </div>
+          </>
+        )}
         
         {/* Actions */}
         <div className="flex gap-3">
