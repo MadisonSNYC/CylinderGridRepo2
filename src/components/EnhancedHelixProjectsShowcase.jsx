@@ -191,22 +191,8 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
   const perspectiveScaleX = containerPerspective / zDistance;
   const perspectiveScaleY = containerPerspective / zDistance;
   
-  // For front-facing cards, counter-transform to maintain exact 9:16 ratio
-  let correctedWidth = baseWidth;
-  let correctedHeight = baseHeight;
-  let perspectiveTransform = '';
-  
-  if (isFrontFacing) {
-    // Apply inverse scaling to counter perspective distortion
-    const inverseScaleX = 1 / perspectiveScaleX;
-    const inverseScaleY = 1 / perspectiveScaleY;
-    
-    correctedWidth = baseWidth * inverseScaleX;
-    correctedHeight = baseHeight * inverseScaleY;
-    
-    // Add transform to ensure visual dimensions are exactly 180x320
-    perspectiveTransform = `scaleX(${perspectiveScaleX}) scaleY(${perspectiveScaleY})`;
-  }
+  // NUCLEAR OPTION: Remove ALL JavaScript dimension calculations
+  // Let CSS handle ALL sizing - no JS overrides whatsoever
   
   // Calculate depth for hierarchy effects
   let depthClass = '';
@@ -232,6 +218,16 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
 
   // Control video playback based on visibility
   useEffect(() => {
+    // DEBUG: Check what's being rendered
+    console.log('Card render debug:', {
+      index,
+      showAsOrb,
+      richCardContent: effects.richCardContent,
+      hasVideo: !!project.videoAsset,
+      videoPath: project.videoAsset,
+      normalizedAngle
+    });
+    
     if (videoRef.current) {
       const shouldPlay = normalizedAngle < 90 || normalizedAngle > 270;
       if (shouldPlay && videoRef.current.paused) {
@@ -240,7 +236,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
         videoRef.current.pause();
       }
     }
-  }, [normalizedAngle]);
+  }, [normalizedAngle, showAsOrb, effects.richCardContent, project.videoAsset, index]);
 
   return (
     <div
@@ -251,12 +247,8 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
       `}
       data-orb-index={showAsOrb ? index : undefined}
       style={{
-        width: showAsOrb ? '15px' : `${correctedWidth}px`,
-        height: showAsOrb ? '15px' : `${correctedHeight}px`,
-        minWidth: showAsOrb ? '15px' : `${correctedWidth}px`,
-        maxWidth: showAsOrb ? '15px' : `${correctedWidth}px`, 
-        minHeight: showAsOrb ? '15px' : `${correctedHeight}px`,
-        maxHeight: showAsOrb ? '15px' : `${correctedHeight}px`,
+        // NUCLEAR OPTION: CSS handles ALL dimensions - no JS overrides
+        // Even orbs will be handled by CSS rules
         left: '50%',
         top: '50%',
         transform: `
@@ -264,7 +256,6 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
           translateY(${scrollY}px)
           rotateY(${cardRotation}deg)
           translateZ(${radius}px)
-          ${perspectiveTransform}
         `,
         transformStyle: 'preserve-3d',
         transformOrigin: 'center center',
@@ -310,22 +301,46 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
               transformStyle: 'preserve-3d',
               backfaceVisibility: 'visible',
               WebkitBackfaceVisibility: 'visible',
-              borderRadius: '12px',
-              boxShadow: effects.cardShadows ? '0 4px 20px rgba(0, 0, 0, 0.3)' : 'none',
-              border: effects.cardBorders ? '2px solid rgba(255, 255, 255, 0.1)' : undefined,
-              willChange: effects.cardHoverEffects ? 'transform' : 'auto',
+              // NUCLEAR: Remove all layout styles that break aspect ratio
+              width: '100%',
               height: '100%',
-              display: 'flex',
-              flexDirection: 'column'
+              position: 'absolute',
+              inset: '0'
             }}
           >
           {/* Video/Image Content - maintaining aspect ratio */}
-          <div className="relative w-full bg-gray-900 overflow-hidden flex-1" style={{ flex: '3' }}>
+          <div 
+            className="relative w-full bg-gray-900 overflow-hidden" 
+            style={{ 
+              position: 'absolute', 
+              inset: '0', 
+              width: '100%', 
+              height: '100%',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'red' // DEBUG: Make container visible
+            }}
+          >
+            {console.log('Video check:', { hasVideo: !!project.videoAsset, videoPath: project.videoAsset, index })}
             {project.videoAsset && (
               <video
                 ref={videoRef}
                 key={project.videoAsset}
                 className="absolute inset-0 w-full h-full object-cover"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  minWidth: '100%',
+                  minHeight: '100%'
+                }}
                 src={project.videoAsset}
                 muted={true}
                 loop={true}
@@ -347,6 +362,18 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
                 {project.thumbnail && (
                   <img
                     className="absolute inset-0 w-full h-full object-cover z-0"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      minWidth: '100%',
+                      minHeight: '100%'
+                    }}
                     src={project.thumbnail}
                     alt={project.title}
                     loading="lazy"
@@ -360,8 +387,8 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
             
           </div>
 
-          {/* Card Content - remaining height */}
-          <div className="p-2 flex flex-col justify-between" style={{ flex: '1' }}>
+          {/* Card Content - overlay text */}
+          <div className="p-2" style={{ position: 'absolute', bottom: '0', left: '0', right: '0', zIndex: 10, background: 'rgba(0,0,0,0.7)' }}>
             <div>
               <h3 className="text-white text-xs font-semibold mb-0.5 line-clamp-1 leading-tight">
                 {project.title}
@@ -586,6 +613,9 @@ export const EnhancedHelixProjectsShowcase = ({
       const deltaTime = Math.min((now - lastTime) / 1000, 0.1); // Cap deltaTime to avoid jumps
       lastTime = now;
 
+      // Measure FPS on every animation frame
+      performanceMonitor.measureFPS();
+
       // Apply pending delta with momentum
       if (pendingDelta !== 0 || Math.abs(velocity) > minVelocity) {
         // Update velocity
@@ -700,6 +730,26 @@ export const EnhancedHelixProjectsShowcase = ({
   };
   const handleSkipIntro = () => setEnhanced(false);
 
+  // Continuous FPS measurement loop
+  useEffect(() => {
+    if (!enhanced) return;
+
+    let animationFrameId;
+    const measureContinuousFPS = () => {
+      performanceMonitor.measureFPS();
+      animationFrameId = requestAnimationFrame(measureContinuousFPS);
+    };
+    
+    // Start the continuous measurement loop
+    animationFrameId = requestAnimationFrame(measureContinuousFPS);
+    
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [enhanced]);
+
   // Fallback to 2D grid for reduced motion or unsupported browsers
   if (prefersReducedMotion || !enhanced) {
     return (
@@ -797,7 +847,7 @@ export const EnhancedHelixProjectsShowcase = ({
                       {Array.from({ length: Math.ceil(helixConfig.repeatTurns || 1.5) + 1 }, (_, setIndex) => 
                         projects.map((project, index) => {
                           const globalIndex = setIndex * projects.length + index;
-                          const showEveryNth = helixConfig.showEveryNth || 1; // Use config value
+                          const showEveryNth = helixConfig.showEveryNth || 1; // Use config value for orbs
                           
                           
                           // Always render all cards, but decide if they should be orbs or full cards

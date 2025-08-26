@@ -44,7 +44,11 @@ export const TestRecorder = ({ enabled = false }) => {
     
     // Measure all visible cards
     const cards = document.querySelectorAll('.helix-node:not([data-orb-index])');
-    const cardMeasurements = Array.from(cards).map((card, index) => {
+    const cardMeasurements = Array.from(cards).filter(card => {
+      const rect = card.getBoundingClientRect();
+      // SKIP ORBS: Only measure full-sized cards (not 15px orbs)
+      return rect.width > 20 && rect.height > 20;
+    }).map((card, index) => {
       const rect = card.getBoundingClientRect();
       const computedStyle = window.getComputedStyle(card);
       const actualRatio = rect.width / rect.height;
@@ -203,7 +207,35 @@ export const TestRecorder = ({ enabled = false }) => {
   const copyReport = () => {
     const report = generateReport();
     if (report) {
-      navigator.clipboard.writeText(JSON.stringify(report, null, 2)).then(() => {
+      // Create a terminal-friendly plain text format
+      const reportText = `Test Session Report - ${report.session.id}
+=============================================
+
+SESSION INFO:
+- Start Time: ${report.session.startTime}
+- Duration: ${report.summary.duration}
+- Data Points: ${report.summary.totalDataPoints}
+- User Agent: ${report.session.userAgent}
+- Screen: ${report.session.screenResolution}
+- Viewport: ${report.session.viewportSize}
+
+PERFORMANCE SUMMARY:
+- Average FPS: ${report.summary.averageFPS}
+- Average Render Time: ${report.summary.averageRenderTime}ms
+- Cache Hit Rate: ${report.summary.averageCacheHitRate}%
+- Scroll Distance: ${Math.round(report.summary.scrollRange.totalScrollDistance)}px
+- Scroll Range: ${report.summary.scrollRange.minY}px to ${report.summary.scrollRange.maxY}px
+
+ASPECT RATIO RESULTS:
+- Overall Success Rate: ${report.summary.aspectRatioSuccess.overall}%
+- Front Facing Success Rate: ${report.summary.aspectRatioSuccess.frontFacing}%
+
+${report.issues.length > 0 ? `ISSUES DETECTED:
+${report.issues.map(issue => `- ${issue.type.toUpperCase()}: ${issue.description}`).join('\n')}` : 'NO ISSUES DETECTED'}
+
+SESSION COMPLETED: ${report.session.endTime}`;
+
+      navigator.clipboard.writeText(reportText).then(() => {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       });

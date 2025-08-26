@@ -314,9 +314,14 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 9:16 aspect ratio cards - FORCE FIXED DIMENSIONS */
-.helix-assembly .helix-node.helix-node:not([data-orb-index]) {
-  /* Ultra-specific selector to override everything */
+/* NUCLEAR OPTION: ULTRA-MAXIMUM SPECIFICITY 9:16 ENFORCEMENT */
+html body div.App .helix-assembly .helix-node.helix-node:not([data-orb-index]),
+html body div .helix-assembly .helix-node.helix-node:not([data-orb-index]),  
+.helix-assembly .helix-node.helix-node:not([data-orb-index]),
+.helix-assembly .helix-node.helix-node:not([data-orb-index]) *,
+.helix-assembly .helix-node.helix-node:not([data-orb-index]) > div,
+.helix-assembly .helix-node.helix-node:not([data-orb-index]) .group {
+  /* FORCE EXACT DIMENSIONS - NO EXCEPTIONS */
   width: 180px !important;
   height: 320px !important;
   min-width: 180px !important;
@@ -324,8 +329,92 @@
   min-height: 320px !important;
   max-height: 320px !important;
   box-sizing: border-box !important;
-  /* Prevent any transforms from affecting visual size */
+  
+  /* PREVENT ANY DISTORTION */
   transform-box: border-box !important;
+  contain: layout size style !important;
+  aspect-ratio: 9 / 16 !important;
+  
+  /* ISOLATE FROM PARENT CONSTRAINTS */
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  flex-basis: auto !important;
+  
+  /* TRANSFORM ISOLATION - PREVENT SIZING EFFECTS */
+  transform-origin: center center !important;
+  backface-visibility: visible !important;
+  will-change: transform !important;
+  /* Ensure transforms don't affect getBoundingClientRect measurements */
+  transform-style: preserve-3d !important;
+  
+  /* BULLETPROOF ISOLATION */
+  position: absolute !important;
+  display: block !important;
+  overflow: hidden !important;
+  /* Override any parent sizing constraints */
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  
+  /* DEBUGGING: Disabled - CSS confirmed working */
+  /* outline: 2px solid lime !important;
+  outline-offset: -2px !important; */
+  
+  /* FORCE INTERNAL CONTENT TO FIT CONTAINER */
+  * {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* MEDIA CONTENT ENFORCEMENT */
+  video, img, .group, .absolute, .inset-0 {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* TEXT AND UI ELEMENTS */
+  h3, h2, h1, p, div, span {
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow: hidden !important;
+  }
+  
+  /* TECH TAGS AND BUTTONS */
+  .tech-tag, button, .bg-blue-600, .text-white {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* REMOVE ALL ROUNDED CORNERS INSIDE CARDS */
+  *, *::before, *::after {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+  }
+  
+  /* ELIMINATE FLEX LAYOUTS THAT CREATE INCONSISTENT DIMENSIONS */
+  .group, .relative, div {
+    flex: none !important;
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* FORCE TEXT CONTENT TO OVERLAY */
+  h3, p, .text-white, .text-gray-400 {
+    position: absolute !important;
+    z-index: 10 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: rgba(0,0,0,0.7) !important;
+    padding: 4px !important;
+  }
 }
 
 .helix-assembly .helix-node.helix-node[data-orb-index] {
@@ -365,5 +454,32 @@
   -webkit-transform-style: preserve-3d !important;
   backface-visibility: hidden !important;
   -webkit-backface-visibility: hidden !important;
+}
+
+/* FRONT CARD VIDEO FILL FIX */
+.helix-node:not([data-orb-index]) video,
+.helix-node:not([data-orb-index]) img {
+  /* Force videos and images to completely fill front-facing cards */
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: absolute !important;
+  inset: 0 !important;
+  /* Prevent any scaling issues during scroll */
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  /* DEBUG: Make videos visible with red border */
+  border: 2px solid red !important;
+  z-index: 999 !important;
+}
+
+/* ULTRA NUCLEAR VIDEO FIX - Target all videos everywhere */
+video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border: 3px solid lime !important;
 }
 

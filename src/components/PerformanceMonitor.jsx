@@ -298,8 +298,30 @@ function ReportModal({ report, onClose, onDownload }) {
   const [copied, setCopied] = React.useState(false);
   
   const copyToClipboard = () => {
-    const jsonText = JSON.stringify(report, null, 2);
-    navigator.clipboard.writeText(jsonText).then(() => {
+    // Create a terminal-friendly plain text format
+    const reportText = `Performance Monitor Report - ${new Date().toISOString()}
+===================================================
+
+PERFORMANCE METRICS:
+- Average FPS: ${report.averageFPS}
+- Average Render Time: ${report.averageRenderTime}ms
+- Cache Hit Rate: ${report.cacheHitRate}%
+- Frame Count: ${report.frameCount}
+- Cache Stats: ${report.cacheHits} hits / ${report.cacheMisses} misses
+
+DETAILED METRICS:
+${Object.entries(report.detailedMetrics).map(([key, value]) => 
+  typeof value === 'object' && value !== null 
+    ? `- ${key}: ${JSON.stringify(value)}`
+    : `- ${key}: ${value}`
+).join('\n')}
+
+${report.issues && report.issues.length > 0 ? `PERFORMANCE ISSUES:
+${report.issues.map(issue => `- ${issue}`).join('\n')}` : 'NO PERFORMANCE ISSUES DETECTED'}
+
+Report generated at: ${new Date().toLocaleString()}`;
+
+    navigator.clipboard.writeText(reportText).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
