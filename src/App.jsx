@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { DevPanel } from './components/DevPanel.jsx';
 import { EnhancedHelixProjectsShowcase } from './components/EnhancedHelixProjectsShowcase.jsx';
 import { HelixProvider } from './contexts/HelixContext.jsx';
@@ -7,9 +7,16 @@ import { PerformanceMonitor } from './components/PerformanceMonitor.jsx';
 import { AspectRatioTest } from './components/AspectRatioTest.jsx';
 import { TestRecorder } from './components/TestRecorder.jsx';
 import { ComprehensiveTestSuite } from './components/ComprehensiveTestSuite.jsx';
-import { TestDashboard } from './components/TestDashboard.jsx';
-import { AdvancedTestDashboard } from './components/AdvancedTestDashboard.jsx';
-import { PlaywrightTestDashboard } from './components/PlaywrightTestDashboard.jsx';
+// Test dashboards - conditionally loaded in development only
+const TestDashboard = import.meta.env.DEV
+  ? React.lazy(() => import('./components/TestDashboard.jsx').then(module => ({ default: module.TestDashboard })))
+  : () => null;
+const AdvancedTestDashboard = import.meta.env.DEV
+  ? React.lazy(() => import('./components/AdvancedTestDashboard.jsx').then(module => ({ default: module.AdvancedTestDashboard })))
+  : () => null;
+const PlaywrightTestDashboard = import.meta.env.DEV
+  ? React.lazy(() => import('./components/PlaywrightTestDashboard.jsx').then(module => ({ default: module.PlaywrightTestDashboard })))
+  : () => null;
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { logBrowserInfo } from './lib/browserCompat.js';
 import './lib/polyfills.js'; // Load polyfills
@@ -71,9 +78,14 @@ function AppContent() {
       <AspectRatioTest enabled={showAspectTest} />
       <TestRecorder enabled={showTestRecorder} />
       <ComprehensiveTestSuite enabled={showComprehensiveTest} />
-      <TestDashboard />
-      <AdvancedTestDashboard />
-      <PlaywrightTestDashboard />
+      {/* Test dashboards - development only */}
+      {import.meta.env.DEV && (
+        <Suspense fallback={null}>
+          <TestDashboard />
+          <AdvancedTestDashboard />
+          <PlaywrightTestDashboard />
+        </Suspense>
+      )}
       
       {/* Test Control Buttons */}
       <div className="fixed bottom-4 left-4 flex flex-col gap-2 z-40">
