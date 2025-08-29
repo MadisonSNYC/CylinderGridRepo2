@@ -1,0 +1,994 @@
+{
+  "config": {
+    "configFile": "/Users/madisonrayesutton/CylinderGridRepo2/playwright.config.js",
+    "rootDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "test-results/html-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/test-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results/junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "firefox-desktop",
+        "name": "firefox-desktop",
+        "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "webkit-desktop",
+        "name": "webkit-desktop",
+        "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Tablet Chrome",
+        "name": "Tablet Chrome",
+        "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Microsoft Edge",
+        "name": "Microsoft Edge",
+        "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Google Chrome",
+        "name": "Google Chrome",
+        "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 4,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:4000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "functional/helix-core.spec.js",
+      "file": "functional/helix-core.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Helix Core Functionality",
+          "file": "functional/helix-core.spec.js",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load helix scene with all components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-2e44192b15ff44e66712",
+              "file": "functional/helix-core.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should respond to scroll interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-c7a18e8d9e27b23c3120",
+              "file": "functional/helix-core.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-4a5b624f91bfdea9024a",
+              "file": "functional/helix-core.spec.js",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should maintain performance during interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-f852dadf6dab38b9f2d4",
+              "file": "functional/helix-core.spec.js",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper video aspect ratios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-f354d6b338746b8b9120",
+              "file": "functional/helix-core.spec.js",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "should load helix scene with all components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-desktop",
+                  "projectName": "firefox-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-6661a50400fb081ac167",
+              "file": "functional/helix-core.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should respond to scroll interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-desktop",
+                  "projectName": "firefox-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-1b9ef2d5fa69130079cb",
+              "file": "functional/helix-core.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-desktop",
+                  "projectName": "firefox-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-d80a8e8e7eb75cecac31",
+              "file": "functional/helix-core.spec.js",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should maintain performance during interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-desktop",
+                  "projectName": "firefox-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-009f00683d2014b533ea",
+              "file": "functional/helix-core.spec.js",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper video aspect ratios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-desktop",
+                  "projectName": "firefox-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-a9fb044bacab67c5cbef",
+              "file": "functional/helix-core.spec.js",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "should load helix scene with all components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-desktop",
+                  "projectName": "webkit-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-fa33e1e9dd603c204871",
+              "file": "functional/helix-core.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should respond to scroll interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-desktop",
+                  "projectName": "webkit-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-2844e9d00bfdd1ed641f",
+              "file": "functional/helix-core.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-desktop",
+                  "projectName": "webkit-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-69386effb72a96c27c47",
+              "file": "functional/helix-core.spec.js",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should maintain performance during interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-desktop",
+                  "projectName": "webkit-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-747296e844e48dcac48e",
+              "file": "functional/helix-core.spec.js",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper video aspect ratios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-desktop",
+                  "projectName": "webkit-desktop",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-f0a24ac1aefe6a3a97e1",
+              "file": "functional/helix-core.spec.js",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "should load helix scene with all components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-4218da42d830bb68392b",
+              "file": "functional/helix-core.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should respond to scroll interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-ede7784cffb1703aec85",
+              "file": "functional/helix-core.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-51550fb6c3e54758c07e",
+              "file": "functional/helix-core.spec.js",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should maintain performance during interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-9b7878de1025f8233dee",
+              "file": "functional/helix-core.spec.js",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper video aspect ratios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-c00cbf30060625db9de5",
+              "file": "functional/helix-core.spec.js",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "should load helix scene with all components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-587245fd7c796f31482a",
+              "file": "functional/helix-core.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should respond to scroll interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-38ff645a3d0d265636e4",
+              "file": "functional/helix-core.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-c6dfe69230f9ac0777c3",
+              "file": "functional/helix-core.spec.js",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should maintain performance during interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-bbe5161b0e04cd429e29",
+              "file": "functional/helix-core.spec.js",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper video aspect ratios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-0dc52f785c6cfd77f582",
+              "file": "functional/helix-core.spec.js",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "should load helix scene with all components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet Chrome",
+                  "projectName": "Tablet Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-2b7142f40f0261d5a614",
+              "file": "functional/helix-core.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should respond to scroll interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet Chrome",
+                  "projectName": "Tablet Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-b36177cd16d5a76061a4",
+              "file": "functional/helix-core.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet Chrome",
+                  "projectName": "Tablet Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-b3ea0f1d6a7e17b7ba71",
+              "file": "functional/helix-core.spec.js",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should maintain performance during interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet Chrome",
+                  "projectName": "Tablet Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-7823a8f5e03409bf66a1",
+              "file": "functional/helix-core.spec.js",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper video aspect ratios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet Chrome",
+                  "projectName": "Tablet Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-76de8ee9740b00b8c94c",
+              "file": "functional/helix-core.spec.js",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "should load helix scene with all components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-c3e93deafcddb6b6b984",
+              "file": "functional/helix-core.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should respond to scroll interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-a020fdc2fe25095e8d28",
+              "file": "functional/helix-core.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-779b5acd90964051c2b3",
+              "file": "functional/helix-core.spec.js",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should maintain performance during interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-687b1c499ccc303e82a2",
+              "file": "functional/helix-core.spec.js",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper video aspect ratios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-af5b9a40d34eba1c1839",
+              "file": "functional/helix-core.spec.js",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "should load helix scene with all components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-f78a6d434fcf19031f62",
+              "file": "functional/helix-core.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should respond to scroll interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-53e8b53d6a7c0af90dd7",
+              "file": "functional/helix-core.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-10d5f85e4f12a6c9505b",
+              "file": "functional/helix-core.spec.js",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should maintain performance during interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-ec1b49b2c96bd348800c",
+              "file": "functional/helix-core.spec.js",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper video aspect ratios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8d45325e909fae86152c-bbe543f82c4f8290cbf1",
+              "file": "functional/helix-core.spec.js",
+              "line": 93,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-08-29T20:20:46.135Z",
+    "duration": 17.702999999999975,
+    "expected": 0,
+    "skipped": 40,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -5,6 +5,7 @@ import { projects } from '../data/projects.js';
 import { helixPositionCache } from '../utils/helixPositionCache.js';
 import { performanceMonitor } from '../utils/performanceMonitor.js';
 import { useHelixScroll, useHelixConfig } from '../contexts/HelixContext.jsx';
+import { VideoLazy } from './video/VideoLazy.jsx';
 
 // Effect components
 import { ColorSchemeEffects } from './effects/ColorSchemeEffects.jsx';
@@ -135,7 +136,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
   // Calculate position along the extended helix
   const repeatTurns = helixConfig?.repeatTurns || effects.repeatTurns || 2;
   const totalCards = totalProjects * Math.ceil(repeatTurns + 1);
-  const videoRef = useRef(null);
+  // Removed videoRef - VideoLazy handles its own video elements
   
   // Use modulo for display purposes
   const effectiveIndex = index % totalProjects;
@@ -216,17 +217,7 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
     orbPosition.screenY = window.innerHeight / 2 + scrollY * (helixConfig?.cardScale || 1); // Use cached scrollY
   }
 
-  // Control video playback based on visibility
-  useEffect(() => {
-    if (videoRef.current) {
-      const shouldPlay = normalizedAngle < 90 || normalizedAngle > 270;
-      if (shouldPlay && videoRef.current.paused) {
-        videoRef.current.play().catch(() => {}); // Ignore play errors
-      } else if (!shouldPlay && !videoRef.current.paused) {
-        videoRef.current.pause();
-      }
-    }
-  }, [normalizedAngle]);
+  // VideoLazy component now handles visibility-based loading
 
   return (
     <div
@@ -295,15 +286,15 @@ const HelixNode = React.memo(({ project, index, totalProjects, isActive, onClick
             className="relative w-full h-full bg-gray-900 overflow-hidden"
           >
             {project.videoAsset && (
-              <video
-                ref={videoRef}
+              <VideoLazy
                 key={project.videoAsset}
                 className="absolute inset-0 w-full h-full object-cover"
                 src={project.videoAsset}
+                thumbnail={project.thumbnail}
                 muted={true}
                 loop={true}
                 playsInline={true}
-                autoPlay={false} // Controlled by useEffect
+                autoPlay={true} // VideoLazy handles autoplay properly
               />
             )}
             

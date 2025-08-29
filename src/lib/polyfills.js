@@ -36,7 +36,7 @@ if (!window.performance) {
 }
 
 if (!window.performance.now) {
-  const nowOffset = Date.now();
+  let nowOffset = Date.now();
   
   if (performance.timing && performance.timing.navigationStart) {
     nowOffset = performance.timing.navigationStart;

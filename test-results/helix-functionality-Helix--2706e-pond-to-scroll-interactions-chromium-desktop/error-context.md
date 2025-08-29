@@ -1,0 +1,1362 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - button [ref=e5]:
+      - img [ref=e6]
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - img [ref=e12]
+          - heading "Dev Panel" [level=2] [ref=e15]
+        - generic [ref=e16]:
+          - button "Reset" [ref=e17]
+          - button "Ashfall" [ref=e18]
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - img [ref=e22]
+            - heading "Color" [level=3] [ref=e28]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - switch "Ashfall Theme Ashfall Theme" [ref=e31]
+              - generic [ref=e32]:
+                - generic [ref=e33] [cursor=pointer]: Ashfall Theme
+                - paragraph [ref=e34]: Light cream background
+            - generic [ref=e35]:
+              - switch "Monochrome Monochrome" [ref=e36]
+              - generic [ref=e37]:
+                - generic [ref=e38] [cursor=pointer]: Monochrome
+                - paragraph [ref=e39]: Grayscale cards
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - img [ref=e42]
+            - heading "Effects" [level=3] [ref=e44]
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - switch "Chromatic Chromatic" [ref=e47]
+              - generic [ref=e48]:
+                - generic [ref=e49] [cursor=pointer]: Chromatic
+                - paragraph [ref=e50]: RGB separation
+            - generic [ref=e51]:
+              - switch "Depth Blur Depth Blur" [ref=e52]
+              - generic [ref=e53]:
+                - generic [ref=e54] [cursor=pointer]: Depth Blur
+                - paragraph [ref=e55]: Distance blur
+            - generic [ref=e56]:
+              - switch "Glitch Glitch" [ref=e57]
+              - generic [ref=e58]:
+                - generic [ref=e59] [cursor=pointer]: Glitch
+                - paragraph [ref=e60]: Hover glitch
+            - generic [ref=e61]:
+              - switch "Lighting Lighting" [ref=e62]
+              - generic [ref=e63]:
+                - generic [ref=e64] [cursor=pointer]: Lighting
+                - paragraph [ref=e65]: Soft shadows
+            - generic [ref=e66]:
+              - switch "Outward Turn Outward Turn" [checked] [ref=e67]
+              - generic [ref=e68]:
+                - generic [ref=e69] [cursor=pointer]: Outward Turn
+                - paragraph [ref=e70]: Scroll-based opening + ghost
+            - generic [ref=e71]:
+              - switch "RGB Edge RGB Edge" [ref=e72]
+              - generic [ref=e73]:
+                - generic [ref=e74] [cursor=pointer]: RGB Edge
+                - paragraph [ref=e75]: Chromatic card edges
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - img [ref=e78]
+            - heading "Cards" [level=3] [ref=e81]
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - switch "Ashfall Style Ashfall Style" [ref=e84]
+              - generic [ref=e85]:
+                - generic [ref=e86] [cursor=pointer]: Ashfall Style
+                - paragraph [ref=e87]: Clean white cards
+            - generic [ref=e88]:
+              - switch "Shadows Shadows" [ref=e89]
+              - generic [ref=e90]:
+                - generic [ref=e91] [cursor=pointer]: Shadows
+                - paragraph [ref=e92]: Drop shadows
+            - generic [ref=e93]:
+              - switch "Borders Borders" [ref=e94]
+              - generic [ref=e95]:
+                - generic [ref=e96] [cursor=pointer]: Borders
+                - paragraph [ref=e97]: Card borders
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - img [ref=e100]
+            - heading "Structure" [level=3] [ref=e103]
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - switch "Wireframe Wireframe" [ref=e106]
+              - generic [ref=e107]:
+                - generic [ref=e108] [cursor=pointer]: Wireframe
+                - paragraph [ref=e109]: Center structure
+            - generic [ref=e110]:
+              - switch "Center Logo Center Logo" [checked] [ref=e111]
+              - generic [ref=e112]:
+                - generic [ref=e113] [cursor=pointer]: Center Logo
+                - paragraph [ref=e114]: Ravie logo in center
+            - generic [ref=e115]:
+              - switch "Smooth Smooth" [ref=e116]
+              - generic [ref=e117]:
+                - generic [ref=e118] [cursor=pointer]: Smooth
+                - paragraph [ref=e119]: Better easing
+            - generic [ref=e120]:
+              - switch "Depth Depth" [ref=e121]
+              - generic [ref=e122]:
+                - generic [ref=e123] [cursor=pointer]: Depth
+                - paragraph [ref=e124]: Scale by distance
+          - generic [ref=e125]:
+            - generic [ref=e127]: Logo Mode
+            - combobox [ref=e128]:
+              - option "Billboard (always forward)" [selected]
+              - option "Rotate with scene"
+          - generic [ref=e129]:
+            - generic [ref=e130]:
+              - generic [ref=e131]: Repeat Turns
+              - generic [ref=e132]: "2.0"
+            - slider [ref=e133] [cursor=pointer]: "2"
+            - generic [ref=e134]:
+              - generic [ref=e135]: "0"
+              - generic [ref=e136]: "5"
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - img [ref=e139]
+            - heading "Nav" [level=3] [ref=e141]
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - switch "Counter Counter" [ref=e144]
+              - generic [ref=e145]:
+                - generic [ref=e146] [cursor=pointer]: Counter
+                - paragraph [ref=e147]: Project number
+            - generic [ref=e148]:
+              - switch "Dots Dots" [ref=e149]
+              - generic [ref=e150]:
+                - generic [ref=e151] [cursor=pointer]: Dots
+                - paragraph [ref=e152]: Nav indicators
+            - generic [ref=e153]:
+              - switch "Controls Controls" [ref=e154]
+              - generic [ref=e155]:
+                - generic [ref=e156] [cursor=pointer]: Controls
+                - paragraph [ref=e157]: Clean controls
+        - generic [ref=e158]:
+          - generic [ref=e159]:
+            - img [ref=e160]
+            - heading "Type" [level=3] [ref=e162]
+          - generic [ref=e163]:
+            - generic [ref=e164]:
+              - switch "Typography Typography" [ref=e165]
+              - generic [ref=e166]:
+                - generic [ref=e167] [cursor=pointer]: Typography
+                - paragraph [ref=e168]: Ashfall fonts
+            - generic [ref=e169]:
+              - switch "Subtle Subtle" [ref=e170]
+              - generic [ref=e171]:
+                - generic [ref=e172] [cursor=pointer]: Subtle
+                - paragraph [ref=e173]: Muted colors
+        - generic [ref=e174]:
+          - generic [ref=e175]:
+            - img [ref=e176]
+            - heading "Placement" [level=3] [ref=e179]
+          - generic [ref=e180]:
+            - generic [ref=e181]:
+              - generic [ref=e182]: Strength
+              - generic [ref=e183]: "6"
+            - slider [ref=e184] [cursor=pointer]: "6"
+            - generic [ref=e185]:
+              - generic [ref=e186]: "0"
+              - generic [ref=e187]: "10"
+        - generic [ref=e188]:
+          - generic [ref=e189]:
+            - img [ref=e190]
+            - heading "Input" [level=3] [ref=e192]
+          - generic [ref=e194]:
+            - switch "Invert Scroll Invert Scroll" [ref=e195]
+            - generic [ref=e196]:
+              - generic [ref=e197] [cursor=pointer]: Invert Scroll
+              - paragraph [ref=e198]: Flip wheel direction
+          - generic [ref=e199]:
+            - generic [ref=e200]:
+              - generic [ref=e201]: Mode
+              - generic [ref=e202]: wheel
+            - combobox [ref=e203]:
+              - option "Wheel (manual)" [selected]
+              - option "Sticky (scroll timeline)"
+      - generic [ref=e205]: "Active: 9 / 12"
+  - generic [ref=e211]:
+    - generic [ref=e212]:
+      - link "Skip 3D animation and view projects list" [ref=e213] [cursor=pointer]:
+        - /url: "#projects-list"
+      - generic [ref=e214]:
+        - button "Skip Intro" [ref=e215]:
+          - img
+          - text: Skip Intro
+        - button [ref=e216]:
+          - img
+        - button [ref=e217]:
+          - img
+      - application "3D helix project showcase - use scroll or arrow keys to navigate" [ref=e218]:
+        - generic [ref=e219]: Interactive 3D project showcase. Use scroll wheel or arrow keys to navigate between 16 projects. Press tab to access individual project controls.
+        - generic [ref=e220]:
+          - generic [ref=e225] [cursor=pointer]:
+            - generic [ref=e226] [cursor=pointer]:
+              - heading "March 2022 Project" [level=3] [ref=e227] [cursor=pointer]
+              - paragraph [ref=e228] [cursor=pointer]: Creative video content
+            - generic [ref=e229] [cursor=pointer]:
+              - generic [ref=e230] [cursor=pointer]: Video
+              - generic [ref=e231] [cursor=pointer]: Motion
+          - generic [ref=e236] [cursor=pointer]:
+            - generic [ref=e237] [cursor=pointer]:
+              - heading "April Loop Project" [level=3] [ref=e238] [cursor=pointer]
+              - paragraph [ref=e239] [cursor=pointer]: Seamless loop animation
+            - generic [ref=e240] [cursor=pointer]:
+              - generic [ref=e241] [cursor=pointer]: Animation
+              - generic [ref=e242] [cursor=pointer]: Loop
+          - generic [ref=e247] [cursor=pointer]:
+            - generic [ref=e248] [cursor=pointer]:
+              - heading "April End Project" [level=3] [ref=e249] [cursor=pointer]
+              - paragraph [ref=e250] [cursor=pointer]: Month-end creative piece
+            - generic [ref=e251] [cursor=pointer]:
+              - generic [ref=e252] [cursor=pointer]: Motion
+              - generic [ref=e253] [cursor=pointer]: Creative
+          - generic [ref=e258] [cursor=pointer]:
+            - generic [ref=e259] [cursor=pointer]:
+              - heading "June Loop Creation" [level=3] [ref=e260] [cursor=pointer]
+              - paragraph [ref=e261] [cursor=pointer]: Summer loop animation
+            - generic [ref=e262] [cursor=pointer]:
+              - generic [ref=e263] [cursor=pointer]: Summer
+              - generic [ref=e264] [cursor=pointer]: Loop
+          - generic [ref=e269] [cursor=pointer]:
+            - generic [ref=e270] [cursor=pointer]:
+              - heading "A11 Audio Visual" [level=3] [ref=e271] [cursor=pointer]
+              - paragraph [ref=e272] [cursor=pointer]: Enhanced audio experience
+            - generic [ref=e273] [cursor=pointer]:
+              - generic [ref=e274] [cursor=pointer]: Audio
+              - generic [ref=e275] [cursor=pointer]: Visual
+          - generic [ref=e280] [cursor=pointer]:
+            - generic [ref=e281] [cursor=pointer]:
+              - heading "Airtag 1984" [level=3] [ref=e282] [cursor=pointer]
+              - paragraph [ref=e283] [cursor=pointer]: Retro-futuristic concept
+            - generic [ref=e284] [cursor=pointer]:
+              - generic [ref=e285] [cursor=pointer]: Retro
+              - generic [ref=e286] [cursor=pointer]: Future
+          - generic [ref=e291] [cursor=pointer]:
+            - generic [ref=e292] [cursor=pointer]:
+              - heading "Blockbuster Revival" [level=3] [ref=e293] [cursor=pointer]
+              - paragraph [ref=e294] [cursor=pointer]: Nostalgic video store theme
+            - generic [ref=e295] [cursor=pointer]:
+              - generic [ref=e296] [cursor=pointer]: Nostalgia
+              - generic [ref=e297] [cursor=pointer]: Retail
+          - generic [ref=e302] [cursor=pointer]:
+            - generic [ref=e303] [cursor=pointer]:
+              - heading "Borderline" [level=3] [ref=e304] [cursor=pointer]
+              - paragraph [ref=e305] [cursor=pointer]: Edge creative exploration
+            - generic [ref=e306] [cursor=pointer]:
+              - generic [ref=e307] [cursor=pointer]: Edge
+              - generic [ref=e308] [cursor=pointer]: Creative
+          - generic [ref=e313] [cursor=pointer]:
+            - generic [ref=e314] [cursor=pointer]:
+              - heading "Community June" [level=3] [ref=e315] [cursor=pointer]
+              - paragraph [ref=e316] [cursor=pointer]: Community-focused content
+            - generic [ref=e317] [cursor=pointer]:
+              - generic [ref=e318] [cursor=pointer]: Community
+              - generic [ref=e319] [cursor=pointer]: Social
+          - generic [ref=e324] [cursor=pointer]:
+            - generic [ref=e325] [cursor=pointer]:
+              - heading "ILTWYKM v02" [level=3] [ref=e326] [cursor=pointer]
+              - paragraph [ref=e327] [cursor=pointer]: Interactive experience piece
+            - generic [ref=e328] [cursor=pointer]:
+              - generic [ref=e329] [cursor=pointer]: Interactive
+              - generic [ref=e330] [cursor=pointer]: Experience
+          - generic [ref=e335] [cursor=pointer]:
+            - generic [ref=e336] [cursor=pointer]:
+              - heading "Impulse July" [level=3] [ref=e337] [cursor=pointer]
+              - paragraph [ref=e338] [cursor=pointer]: Mid-summer creative impulse
+            - generic [ref=e339] [cursor=pointer]:
+              - generic [ref=e340] [cursor=pointer]: Impulse
+              - generic [ref=e341] [cursor=pointer]: Summer
+          - generic [ref=e346] [cursor=pointer]:
+            - generic [ref=e347] [cursor=pointer]:
+              - heading "Terminal Week 29" [level=3] [ref=e348] [cursor=pointer]
+              - paragraph [ref=e349] [cursor=pointer]: Terminal interface exploration
+            - generic [ref=e350] [cursor=pointer]:
+              - generic [ref=e351] [cursor=pointer]: Terminal
+              - generic [ref=e352] [cursor=pointer]: Interface
+          - generic [ref=e357] [cursor=pointer]:
+            - generic [ref=e358] [cursor=pointer]:
+              - heading "Fitness Tracker" [level=3] [ref=e359] [cursor=pointer]
+              - paragraph [ref=e360] [cursor=pointer]: Personal fitness monitoring
+            - generic [ref=e361] [cursor=pointer]:
+              - generic [ref=e362] [cursor=pointer]: React Native
+              - generic [ref=e363] [cursor=pointer]: MongoDB
+          - generic [ref=e368] [cursor=pointer]:
+            - generic [ref=e369] [cursor=pointer]:
+              - heading "Music Streaming" [level=3] [ref=e370] [cursor=pointer]
+              - paragraph [ref=e371] [cursor=pointer]: Audio streaming platform
+            - generic [ref=e372] [cursor=pointer]:
+              - generic [ref=e373] [cursor=pointer]: React
+              - generic [ref=e374] [cursor=pointer]: Node.js
+          - generic [ref=e379] [cursor=pointer]:
+            - generic [ref=e380] [cursor=pointer]:
+              - heading "Task Manager" [level=3] [ref=e381] [cursor=pointer]
+              - paragraph [ref=e382] [cursor=pointer]: Project management tool
+            - generic [ref=e383] [cursor=pointer]:
+              - generic [ref=e384] [cursor=pointer]: Vue.js
+              - generic [ref=e385] [cursor=pointer]: PostgreSQL
+          - generic [ref=e390] [cursor=pointer]:
+            - generic [ref=e391] [cursor=pointer]:
+              - heading "Weather App" [level=3] [ref=e392] [cursor=pointer]
+              - paragraph [ref=e393] [cursor=pointer]: Real-time weather data
+            - generic [ref=e394] [cursor=pointer]:
+              - generic [ref=e395] [cursor=pointer]: React
+              - generic [ref=e396] [cursor=pointer]: OpenWeather
+          - generic [ref=e401] [cursor=pointer]:
+            - generic [ref=e402] [cursor=pointer]:
+              - heading "March 2022 Project" [level=3] [ref=e403] [cursor=pointer]
+              - paragraph [ref=e404] [cursor=pointer]: Creative video content
+            - generic [ref=e405] [cursor=pointer]:
+              - generic [ref=e406] [cursor=pointer]: Video
+              - generic [ref=e407] [cursor=pointer]: Motion
+          - generic [ref=e412] [cursor=pointer]:
+            - generic [ref=e413] [cursor=pointer]:
+              - heading "April Loop Project" [level=3] [ref=e414] [cursor=pointer]
+              - paragraph [ref=e415] [cursor=pointer]: Seamless loop animation
+            - generic [ref=e416] [cursor=pointer]:
+              - generic [ref=e417] [cursor=pointer]: Animation
+              - generic [ref=e418] [cursor=pointer]: Loop
+          - generic [ref=e423] [cursor=pointer]:
+            - generic [ref=e424] [cursor=pointer]:
+              - heading "April End Project" [level=3] [ref=e425] [cursor=pointer]
+              - paragraph [ref=e426] [cursor=pointer]: Month-end creative piece
+            - generic [ref=e427] [cursor=pointer]:
+              - generic [ref=e428] [cursor=pointer]: Motion
+              - generic [ref=e429] [cursor=pointer]: Creative
+          - generic [ref=e434] [cursor=pointer]:
+            - generic [ref=e435] [cursor=pointer]:
+              - heading "June Loop Creation" [level=3] [ref=e436] [cursor=pointer]
+              - paragraph [ref=e437] [cursor=pointer]: Summer loop animation
+            - generic [ref=e438] [cursor=pointer]:
+              - generic [ref=e439] [cursor=pointer]: Summer
+              - generic [ref=e440] [cursor=pointer]: Loop
+          - generic [ref=e445] [cursor=pointer]:
+            - generic [ref=e446] [cursor=pointer]:
+              - heading "A11 Audio Visual" [level=3] [ref=e447] [cursor=pointer]
+              - paragraph [ref=e448] [cursor=pointer]: Enhanced audio experience
+            - generic [ref=e449] [cursor=pointer]:
+              - generic [ref=e450] [cursor=pointer]: Audio
+              - generic [ref=e451] [cursor=pointer]: Visual
+          - generic [ref=e456] [cursor=pointer]:
+            - generic [ref=e457] [cursor=pointer]:
+              - heading "Airtag 1984" [level=3] [ref=e458] [cursor=pointer]
+              - paragraph [ref=e459] [cursor=pointer]: Retro-futuristic concept
+            - generic [ref=e460] [cursor=pointer]:
+              - generic [ref=e461] [cursor=pointer]: Retro
+              - generic [ref=e462] [cursor=pointer]: Future
+          - generic [ref=e467] [cursor=pointer]:
+            - generic [ref=e468] [cursor=pointer]:
+              - heading "Blockbuster Revival" [level=3] [ref=e469] [cursor=pointer]
+              - paragraph [ref=e470] [cursor=pointer]: Nostalgic video store theme
+            - generic [ref=e471] [cursor=pointer]:
+              - generic [ref=e472] [cursor=pointer]: Nostalgia
+              - generic [ref=e473] [cursor=pointer]: Retail
+          - generic [ref=e478] [cursor=pointer]:
+            - generic [ref=e479] [cursor=pointer]:
+              - heading "Borderline" [level=3] [ref=e480] [cursor=pointer]
+              - paragraph [ref=e481] [cursor=pointer]: Edge creative exploration
+            - generic [ref=e482] [cursor=pointer]:
+              - generic [ref=e483] [cursor=pointer]: Edge
+              - generic [ref=e484] [cursor=pointer]: Creative
+          - generic [ref=e489] [cursor=pointer]:
+            - generic [ref=e490] [cursor=pointer]:
+              - heading "Community June" [level=3] [ref=e491] [cursor=pointer]
+              - paragraph [ref=e492] [cursor=pointer]: Community-focused content
+            - generic [ref=e493] [cursor=pointer]:
+              - generic [ref=e494] [cursor=pointer]: Community
+              - generic [ref=e495] [cursor=pointer]: Social
+          - generic [ref=e500] [cursor=pointer]:
+            - generic [ref=e501] [cursor=pointer]:
+              - heading "ILTWYKM v02" [level=3] [ref=e502] [cursor=pointer]
+              - paragraph [ref=e503] [cursor=pointer]: Interactive experience piece
+            - generic [ref=e504] [cursor=pointer]:
+              - generic [ref=e505] [cursor=pointer]: Interactive
+              - generic [ref=e506] [cursor=pointer]: Experience
+          - generic [ref=e511] [cursor=pointer]:
+            - generic [ref=e512] [cursor=pointer]:
+              - heading "Impulse July" [level=3] [ref=e513] [cursor=pointer]
+              - paragraph [ref=e514] [cursor=pointer]: Mid-summer creative impulse
+            - generic [ref=e515] [cursor=pointer]:
+              - generic [ref=e516] [cursor=pointer]: Impulse
+              - generic [ref=e517] [cursor=pointer]: Summer
+          - generic [ref=e522] [cursor=pointer]:
+            - generic [ref=e523] [cursor=pointer]:
+              - heading "Terminal Week 29" [level=3] [ref=e524] [cursor=pointer]
+              - paragraph [ref=e525] [cursor=pointer]: Terminal interface exploration
+            - generic [ref=e526] [cursor=pointer]:
+              - generic [ref=e527] [cursor=pointer]: Terminal
+              - generic [ref=e528] [cursor=pointer]: Interface
+          - generic [ref=e533] [cursor=pointer]:
+            - generic [ref=e534] [cursor=pointer]:
+              - heading "Fitness Tracker" [level=3] [ref=e535] [cursor=pointer]
+              - paragraph [ref=e536] [cursor=pointer]: Personal fitness monitoring
+            - generic [ref=e537] [cursor=pointer]:
+              - generic [ref=e538] [cursor=pointer]: React Native
+              - generic [ref=e539] [cursor=pointer]: MongoDB
+          - generic [ref=e544] [cursor=pointer]:
+            - generic [ref=e545] [cursor=pointer]:
+              - heading "Music Streaming" [level=3] [ref=e546] [cursor=pointer]
+              - paragraph [ref=e547] [cursor=pointer]: Audio streaming platform
+            - generic [ref=e548] [cursor=pointer]:
+              - generic [ref=e549] [cursor=pointer]: React
+              - generic [ref=e550] [cursor=pointer]: Node.js
+          - generic [ref=e555] [cursor=pointer]:
+            - generic [ref=e556] [cursor=pointer]:
+              - heading "Task Manager" [level=3] [ref=e557] [cursor=pointer]
+              - paragraph [ref=e558] [cursor=pointer]: Project management tool
+            - generic [ref=e559] [cursor=pointer]:
+              - generic [ref=e560] [cursor=pointer]: Vue.js
+              - generic [ref=e561] [cursor=pointer]: PostgreSQL
+          - generic [ref=e566] [cursor=pointer]:
+            - generic [ref=e567] [cursor=pointer]:
+              - heading "Weather App" [level=3] [ref=e568] [cursor=pointer]
+              - paragraph [ref=e569] [cursor=pointer]: Real-time weather data
+            - generic [ref=e570] [cursor=pointer]:
+              - generic [ref=e571] [cursor=pointer]: React
+              - generic [ref=e572] [cursor=pointer]: OpenWeather
+          - generic [ref=e577] [cursor=pointer]:
+            - generic [ref=e578] [cursor=pointer]:
+              - heading "March 2022 Project" [level=3] [ref=e579] [cursor=pointer]
+              - paragraph [ref=e580] [cursor=pointer]: Creative video content
+            - generic [ref=e581] [cursor=pointer]:
+              - generic [ref=e582] [cursor=pointer]: Video
+              - generic [ref=e583] [cursor=pointer]: Motion
+          - generic [ref=e588] [cursor=pointer]:
+            - generic [ref=e589] [cursor=pointer]:
+              - heading "April Loop Project" [level=3] [ref=e590] [cursor=pointer]
+              - paragraph [ref=e591] [cursor=pointer]: Seamless loop animation
+            - generic [ref=e592] [cursor=pointer]:
+              - generic [ref=e593] [cursor=pointer]: Animation
+              - generic [ref=e594] [cursor=pointer]: Loop
+          - generic [ref=e599] [cursor=pointer]:
+            - generic [ref=e600] [cursor=pointer]:
+              - heading "April End Project" [level=3] [ref=e601] [cursor=pointer]
+              - paragraph [ref=e602] [cursor=pointer]: Month-end creative piece
+            - generic [ref=e603] [cursor=pointer]:
+              - generic [ref=e604] [cursor=pointer]: Motion
+              - generic [ref=e605] [cursor=pointer]: Creative
+          - generic [ref=e610] [cursor=pointer]:
+            - generic [ref=e611] [cursor=pointer]:
+              - heading "June Loop Creation" [level=3] [ref=e612] [cursor=pointer]
+              - paragraph [ref=e613] [cursor=pointer]: Summer loop animation
+            - generic [ref=e614] [cursor=pointer]:
+              - generic [ref=e615] [cursor=pointer]: Summer
+              - generic [ref=e616] [cursor=pointer]: Loop
+          - generic [ref=e621] [cursor=pointer]:
+            - generic [ref=e622] [cursor=pointer]:
+              - heading "A11 Audio Visual" [level=3] [ref=e623] [cursor=pointer]
+              - paragraph [ref=e624] [cursor=pointer]: Enhanced audio experience
+            - generic [ref=e625] [cursor=pointer]:
+              - generic [ref=e626] [cursor=pointer]: Audio
+              - generic [ref=e627] [cursor=pointer]: Visual
+          - generic [ref=e632] [cursor=pointer]:
+            - generic [ref=e633] [cursor=pointer]:
+              - heading "Airtag 1984" [level=3] [ref=e634] [cursor=pointer]
+              - paragraph [ref=e635] [cursor=pointer]: Retro-futuristic concept
+            - generic [ref=e636] [cursor=pointer]:
+              - generic [ref=e637] [cursor=pointer]: Retro
+              - generic [ref=e638] [cursor=pointer]: Future
+          - generic [ref=e643] [cursor=pointer]:
+            - generic [ref=e644] [cursor=pointer]:
+              - heading "Blockbuster Revival" [level=3] [ref=e645] [cursor=pointer]
+              - paragraph [ref=e646] [cursor=pointer]: Nostalgic video store theme
+            - generic [ref=e647] [cursor=pointer]:
+              - generic [ref=e648] [cursor=pointer]: Nostalgia
+              - generic [ref=e649] [cursor=pointer]: Retail
+          - generic [ref=e654] [cursor=pointer]:
+            - generic [ref=e655] [cursor=pointer]:
+              - heading "Borderline" [level=3] [ref=e656] [cursor=pointer]
+              - paragraph [ref=e657] [cursor=pointer]: Edge creative exploration
+            - generic [ref=e658] [cursor=pointer]:
+              - generic [ref=e659] [cursor=pointer]: Edge
+              - generic [ref=e660] [cursor=pointer]: Creative
+          - generic [ref=e665] [cursor=pointer]:
+            - generic [ref=e666] [cursor=pointer]:
+              - heading "Community June" [level=3] [ref=e667] [cursor=pointer]
+              - paragraph [ref=e668] [cursor=pointer]: Community-focused content
+            - generic [ref=e669] [cursor=pointer]:
+              - generic [ref=e670] [cursor=pointer]: Community
+              - generic [ref=e671] [cursor=pointer]: Social
+          - generic [ref=e676] [cursor=pointer]:
+            - generic [ref=e677] [cursor=pointer]:
+              - heading "ILTWYKM v02" [level=3] [ref=e678] [cursor=pointer]
+              - paragraph [ref=e679] [cursor=pointer]: Interactive experience piece
+            - generic [ref=e680] [cursor=pointer]:
+              - generic [ref=e681] [cursor=pointer]: Interactive
+              - generic [ref=e682] [cursor=pointer]: Experience
+          - generic [ref=e687] [cursor=pointer]:
+            - generic [ref=e688] [cursor=pointer]:
+              - heading "Impulse July" [level=3] [ref=e689] [cursor=pointer]
+              - paragraph [ref=e690] [cursor=pointer]: Mid-summer creative impulse
+            - generic [ref=e691] [cursor=pointer]:
+              - generic [ref=e692] [cursor=pointer]: Impulse
+              - generic [ref=e693] [cursor=pointer]: Summer
+          - generic [ref=e698] [cursor=pointer]:
+            - generic [ref=e699] [cursor=pointer]:
+              - heading "Terminal Week 29" [level=3] [ref=e700] [cursor=pointer]
+              - paragraph [ref=e701] [cursor=pointer]: Terminal interface exploration
+            - generic [ref=e702] [cursor=pointer]:
+              - generic [ref=e703] [cursor=pointer]: Terminal
+              - generic [ref=e704] [cursor=pointer]: Interface
+          - generic [ref=e709] [cursor=pointer]:
+            - generic [ref=e710] [cursor=pointer]:
+              - heading "Fitness Tracker" [level=3] [ref=e711] [cursor=pointer]
+              - paragraph [ref=e712] [cursor=pointer]: Personal fitness monitoring
+            - generic [ref=e713] [cursor=pointer]:
+              - generic [ref=e714] [cursor=pointer]: React Native
+              - generic [ref=e715] [cursor=pointer]: MongoDB
+          - generic [ref=e720] [cursor=pointer]:
+            - generic [ref=e721] [cursor=pointer]:
+              - heading "Music Streaming" [level=3] [ref=e722] [cursor=pointer]
+              - paragraph [ref=e723] [cursor=pointer]: Audio streaming platform
+            - generic [ref=e724] [cursor=pointer]:
+              - generic [ref=e725] [cursor=pointer]: React
+              - generic [ref=e726] [cursor=pointer]: Node.js
+          - generic [ref=e731] [cursor=pointer]:
+            - generic [ref=e732] [cursor=pointer]:
+              - heading "Task Manager" [level=3] [ref=e733] [cursor=pointer]
+              - paragraph [ref=e734] [cursor=pointer]: Project management tool
+            - generic [ref=e735] [cursor=pointer]:
+              - generic [ref=e736] [cursor=pointer]: Vue.js
+              - generic [ref=e737] [cursor=pointer]: PostgreSQL
+          - generic [ref=e742] [cursor=pointer]:
+            - generic [ref=e743] [cursor=pointer]:
+              - heading "Weather App" [level=3] [ref=e744] [cursor=pointer]
+              - paragraph [ref=e745] [cursor=pointer]: Real-time weather data
+            - generic [ref=e746] [cursor=pointer]:
+              - generic [ref=e747] [cursor=pointer]: React
+              - generic [ref=e748] [cursor=pointer]: OpenWeather
+          - img
+        - generic [ref=e750]:
+          - heading "Navigation" [level=3] [ref=e751]
+          - list [ref=e752]:
+            - listitem [ref=e753]: ← → Arrow keys to navigate
+            - listitem [ref=e754]: Mouse wheel / trackpad to scroll
+            - listitem [ref=e755]: Click projects to select
+            - listitem [ref=e756]: Esc to exit 3D view
+            - listitem [ref=e757]: Infinite scroll - cards repeat endlessly
+      - generic [ref=e758]:
+        - heading "Projects List" [level=2] [ref=e759]
+        - generic [ref=e760]:
+          - article [ref=e761]:
+            - img "March 2022 Project"
+            - generic [ref=e762]:
+              - heading "March 2022 Project" [level=3]
+              - paragraph: Creative video content
+              - generic:
+                - generic [ref=e763]: Video
+                - generic [ref=e764]: Motion
+          - article [ref=e765]:
+            - img "April Loop Project"
+            - generic [ref=e766]:
+              - heading "April Loop Project" [level=3]
+              - paragraph: Seamless loop animation
+              - generic:
+                - generic [ref=e767]: Animation
+                - generic [ref=e768]: Loop
+          - article [ref=e769]:
+            - img "April End Project"
+            - generic [ref=e770]:
+              - heading "April End Project" [level=3]
+              - paragraph: Month-end creative piece
+              - generic:
+                - generic [ref=e771]: Motion
+                - generic [ref=e772]: Creative
+          - article [ref=e773]:
+            - img "June Loop Creation"
+            - generic [ref=e774]:
+              - heading "June Loop Creation" [level=3]
+              - paragraph: Summer loop animation
+              - generic:
+                - generic [ref=e775]: Summer
+                - generic [ref=e776]: Loop
+          - article [ref=e777]:
+            - img "A11 Audio Visual"
+            - generic [ref=e778]:
+              - heading "A11 Audio Visual" [level=3]
+              - paragraph: Enhanced audio experience
+              - generic:
+                - generic [ref=e779]: Audio
+                - generic [ref=e780]: Visual
+          - article [ref=e781]:
+            - img "Airtag 1984"
+            - generic [ref=e782]:
+              - heading "Airtag 1984" [level=3]
+              - paragraph: Retro-futuristic concept
+              - generic:
+                - generic [ref=e783]: Retro
+                - generic [ref=e784]: Future
+          - article [ref=e785]:
+            - img "Blockbuster Revival"
+            - generic [ref=e786]:
+              - heading "Blockbuster Revival" [level=3]
+              - paragraph: Nostalgic video store theme
+              - generic:
+                - generic [ref=e787]: Nostalgia
+                - generic [ref=e788]: Retail
+          - article [ref=e789]:
+            - img "Borderline"
+            - generic [ref=e790]:
+              - heading "Borderline" [level=3]
+              - paragraph: Edge creative exploration
+              - generic:
+                - generic [ref=e791]: Edge
+                - generic [ref=e792]: Creative
+          - article [ref=e793]:
+            - img "Community June"
+            - generic [ref=e794]:
+              - heading "Community June" [level=3]
+              - paragraph: Community-focused content
+              - generic:
+                - generic [ref=e795]: Community
+                - generic [ref=e796]: Social
+          - article [ref=e797]:
+            - img "ILTWYKM v02"
+            - generic [ref=e798]:
+              - heading "ILTWYKM v02" [level=3]
+              - paragraph: Interactive experience piece
+              - generic:
+                - generic [ref=e799]: Interactive
+                - generic [ref=e800]: Experience
+          - article [ref=e801]:
+            - img "Impulse July"
+            - generic [ref=e802]:
+              - heading "Impulse July" [level=3]
+              - paragraph: Mid-summer creative impulse
+              - generic:
+                - generic [ref=e803]: Impulse
+                - generic [ref=e804]: Summer
+          - article [ref=e805]:
+            - img "Terminal Week 29"
+            - generic [ref=e806]:
+              - heading "Terminal Week 29" [level=3]
+              - paragraph: Terminal interface exploration
+              - generic:
+                - generic [ref=e807]: Terminal
+                - generic [ref=e808]: Interface
+          - article [ref=e809]:
+            - img "Fitness Tracker"
+            - generic [ref=e810]:
+              - heading "Fitness Tracker" [level=3]
+              - paragraph: Personal fitness monitoring
+              - generic:
+                - generic [ref=e811]: React Native
+                - generic [ref=e812]: MongoDB
+          - article [ref=e813]:
+            - img "Music Streaming"
+            - generic [ref=e814]:
+              - heading "Music Streaming" [level=3]
+              - paragraph: Audio streaming platform
+              - generic:
+                - generic [ref=e815]: React
+                - generic [ref=e816]: Node.js
+          - article [ref=e817]:
+            - img "Task Manager"
+            - generic [ref=e818]:
+              - heading "Task Manager" [level=3]
+              - paragraph: Project management tool
+              - generic:
+                - generic [ref=e819]: Vue.js
+                - generic [ref=e820]: PostgreSQL
+          - article [ref=e821]:
+            - img "Weather App"
+            - generic [ref=e822]:
+              - heading "Weather App" [level=3]
+              - paragraph: Real-time weather data
+              - generic:
+                - generic [ref=e823]: React
+                - generic [ref=e824]: OpenWeather
+    - generic [ref=e825]:
+      - button [ref=e826]:
+        - img [ref=e827]
+      - generic [ref=e829]:
+        - generic [ref=e830]:
+          - generic [ref=e831]:
+            - img [ref=e832]
+            - heading "EFFECTS CONTROL" [level=2] [ref=e834]
+          - generic [ref=e835]:
+            - button "Undo last change (Ctrl+Z)" [disabled]:
+              - img
+            - button "Redo last undone change (Ctrl+Y)" [disabled]:
+              - img
+            - button "Reset" [ref=e836]
+            - button "Ashfall" [ref=e837]
+        - generic [ref=e838]:
+          - generic [ref=e839]:
+            - generic [ref=e840]: "Locked Effects:"
+            - generic [ref=e841]: "0"
+          - generic [ref=e842]:
+            - generic [ref=e843]: "Active Effects:"
+            - generic [ref=e844]: "9"
+        - generic [ref=e845]:
+          - generic [ref=e846]:
+            - generic [ref=e847]:
+              - generic [ref=e848]:
+                - img [ref=e850]
+                - heading "Color Schemes" [level=3] [ref=e856]
+              - generic [ref=e857]:
+                - generic [ref=e858]: 0/2
+                - button "Hide group" [ref=e859]:
+                  - img [ref=e860]
+            - generic [ref=e863]:
+              - generic [ref=e864]:
+                - generic [ref=e865]:
+                  - switch [ref=e866]
+                  - generic [ref=e867]:
+                    - generic [ref=e868] [cursor=pointer]: Ashfall Theme
+                    - paragraph [ref=e869]: Light cream background
+                - button "Lock effect" [ref=e870]:
+                  - img [ref=e871]
+              - generic [ref=e874]:
+                - generic [ref=e875]:
+                  - switch [ref=e876]
+                  - generic [ref=e877]:
+                    - generic [ref=e878] [cursor=pointer]: Monochrome
+                    - paragraph [ref=e879]: Grayscale cards
+                - button "Lock effect" [ref=e880]:
+                  - img [ref=e881]
+          - generic [ref=e884]:
+            - generic [ref=e885]:
+              - generic [ref=e886]:
+                - img [ref=e888]
+                - heading "Visual Effects" [level=3] [ref=e890]
+              - generic [ref=e891]:
+                - generic [ref=e892]: 0/11
+                - button "Hide group" [ref=e893]:
+                  - img [ref=e894]
+            - generic [ref=e897]:
+              - generic [ref=e898]:
+                - generic [ref=e899]:
+                  - switch "Cinematic" [ref=e900]
+                  - generic [ref=e901]:
+                    - generic [ref=e902] [cursor=pointer]: Cinematic
+                    - paragraph [ref=e903]: Color intensification
+                - button "Lock effect" [ref=e904]:
+                  - img [ref=e905]
+              - generic [ref=e908]:
+                - generic [ref=e909]:
+                  - switch "Screen Glow" [ref=e910]
+                  - generic [ref=e911]:
+                    - generic [ref=e912] [cursor=pointer]: Screen Glow
+                    - paragraph [ref=e913]: Cyan glow effects
+                - button "Lock effect" [ref=e914]:
+                  - img [ref=e915]
+              - generic [ref=e918]:
+                - generic [ref=e919]:
+                  - switch "Scan Lines" [ref=e920]
+                  - generic [ref=e921]:
+                    - generic [ref=e922] [cursor=pointer]: Scan Lines
+                    - paragraph [ref=e923]: Moving scan lines
+                - button "Lock effect" [ref=e924]:
+                  - img [ref=e925]
+              - generic [ref=e928]:
+                - generic [ref=e929]:
+                  - switch [ref=e930]
+                  - generic [ref=e931]:
+                    - generic [ref=e932] [cursor=pointer]: Chromatic
+                    - paragraph [ref=e933]: RGB separation
+                - button "Lock effect" [ref=e934]:
+                  - img [ref=e935]
+              - generic [ref=e938]:
+                - generic [ref=e939]:
+                  - switch "Film Grain" [ref=e940]
+                  - generic [ref=e941]:
+                    - generic [ref=e942] [cursor=pointer]: Film Grain
+                    - paragraph [ref=e943]: Film noise overlay
+                - button "Lock effect" [ref=e944]:
+                  - img [ref=e945]
+              - generic [ref=e948]:
+                - generic [ref=e949]:
+                  - switch "Monitor Style" [ref=e950]
+                  - generic [ref=e951]:
+                    - generic [ref=e952] [cursor=pointer]: Monitor Style
+                    - paragraph [ref=e953]: Retro CRT look
+                - button "Lock effect" [ref=e954]:
+                  - img [ref=e955]
+              - generic [ref=e958]:
+                - generic [ref=e959]:
+                  - switch "Color Grade" [ref=e960]
+                  - generic [ref=e961]:
+                    - generic [ref=e962] [cursor=pointer]: Color Grade
+                    - paragraph [ref=e963]: Film color grading
+                - button "Lock effect" [ref=e964]:
+                  - img [ref=e965]
+              - generic [ref=e968]:
+                - generic [ref=e969]:
+                  - switch [ref=e970]
+                  - generic [ref=e971]:
+                    - generic [ref=e972] [cursor=pointer]: Depth Blur
+                    - paragraph [ref=e973]: Distance blur
+                - button "Lock effect" [ref=e974]:
+                  - img [ref=e975]
+              - generic [ref=e978]:
+                - generic [ref=e979]:
+                  - switch [ref=e980]
+                  - generic [ref=e981]:
+                    - generic [ref=e982] [cursor=pointer]: Glitch
+                    - paragraph [ref=e983]: Hover glitch
+                - button "Lock effect" [ref=e984]:
+                  - img [ref=e985]
+              - generic [ref=e988]:
+                - generic [ref=e989]:
+                  - switch [ref=e990]
+                  - generic [ref=e991]:
+                    - generic [ref=e992] [cursor=pointer]: Lighting
+                    - paragraph [ref=e993]: Soft shadows
+                - button "Lock effect" [ref=e994]:
+                  - img [ref=e995]
+              - generic [ref=e998]:
+                - generic [ref=e999]:
+                  - switch [ref=e1000]
+                  - generic [ref=e1001]:
+                    - generic [ref=e1002] [cursor=pointer]: RGB Edge
+                    - paragraph [ref=e1003]: Chromatic card edges
+                - button "Lock effect" [ref=e1004]:
+                  - img [ref=e1005]
+          - generic [ref=e1008]:
+            - generic [ref=e1009]:
+              - generic [ref=e1010]:
+                - img [ref=e1012]
+                - heading "Card Design" [level=3] [ref=e1015]
+              - generic [ref=e1016]:
+                - generic [ref=e1017]: 3/6
+                - button "Hide group" [ref=e1018]:
+                  - img [ref=e1019]
+            - generic [ref=e1022]:
+              - generic [ref=e1023]:
+                - generic [ref=e1024]:
+                  - switch [ref=e1025]
+                  - generic [ref=e1026]:
+                    - generic [ref=e1027] [cursor=pointer]: Ashfall Style
+                    - paragraph [ref=e1028]: Clean white cards
+                - button "Lock effect" [ref=e1029]:
+                  - img [ref=e1030]
+              - generic [ref=e1033]:
+                - generic [ref=e1034]:
+                  - switch [ref=e1035]
+                  - generic [ref=e1036]:
+                    - generic [ref=e1037] [cursor=pointer]: Shadows
+                    - paragraph [ref=e1038]: Drop shadows
+                - button "Lock effect" [ref=e1039]:
+                  - img [ref=e1040]
+              - generic [ref=e1043]:
+                - generic [ref=e1044]:
+                  - switch [ref=e1045]
+                  - generic [ref=e1046]:
+                    - generic [ref=e1047] [cursor=pointer]: Borders
+                    - paragraph [ref=e1048]: Card borders
+                - button "Lock effect" [ref=e1049]:
+                  - img [ref=e1050]
+              - generic [ref=e1053]:
+                - generic [ref=e1054]:
+                  - switch "Rich Content" [checked] [ref=e1055]
+                  - generic [ref=e1056]:
+                    - generic [ref=e1057] [cursor=pointer]: Rich Content
+                    - paragraph [ref=e1058]: Show videos/images on cards
+                - button "Lock effect" [ref=e1059]:
+                  - img [ref=e1060]
+              - generic [ref=e1063]:
+                - generic [ref=e1064]:
+                  - switch "Hover Effects" [checked] [ref=e1065]
+                  - generic [ref=e1066]:
+                    - generic [ref=e1067] [cursor=pointer]: Hover Effects
+                    - paragraph [ref=e1068]: Interactive card animations
+                - button "Lock effect" [ref=e1069]:
+                  - img [ref=e1070]
+              - generic [ref=e1073]:
+                - generic [ref=e1074]:
+                  - switch "Video Hover" [checked] [ref=e1075]
+                  - generic [ref=e1076]:
+                    - generic [ref=e1077] [cursor=pointer]: Video Hover
+                    - paragraph [ref=e1078]: Play videos on hover
+                - button "Lock effect" [ref=e1079]:
+                  - img [ref=e1080]
+          - generic [ref=e1083]:
+            - generic [ref=e1084]:
+              - generic [ref=e1085]:
+                - img [ref=e1087]
+                - heading "Structure & Motion" [level=3] [ref=e1090]
+              - generic [ref=e1091]:
+                - generic [ref=e1092]: 2/6
+                - button "Hide group" [ref=e1093]:
+                  - img [ref=e1094]
+            - generic [ref=e1097]:
+              - generic [ref=e1098]:
+                - generic [ref=e1099]:
+                  - switch [ref=e1100]
+                  - generic [ref=e1101]:
+                    - generic [ref=e1102] [cursor=pointer]: Wireframe
+                    - paragraph [ref=e1103]: Center structure
+                - button "Lock effect" [ref=e1104]:
+                  - img [ref=e1105]
+              - generic [ref=e1108]:
+                - generic [ref=e1109]:
+                  - switch [checked] [ref=e1110]
+                  - generic [ref=e1111]:
+                    - generic [ref=e1112] [cursor=pointer]: Center Logo
+                    - paragraph [ref=e1113]: Ravie logo in center
+                - button "Lock effect" [ref=e1114]:
+                  - img [ref=e1115]
+              - generic [ref=e1118]:
+                - generic [ref=e1119]:
+                  - switch [ref=e1120]
+                  - generic [ref=e1121]:
+                    - generic [ref=e1122] [cursor=pointer]: Smooth
+                    - paragraph [ref=e1123]: Better easing
+                - button "Lock effect" [ref=e1124]:
+                  - img [ref=e1125]
+              - generic [ref=e1128]:
+                - generic [ref=e1129]:
+                  - switch [ref=e1130]
+                  - generic [ref=e1131]:
+                    - generic [ref=e1132] [cursor=pointer]: Depth
+                    - paragraph [ref=e1133]: Scale by distance
+                - button "Lock effect" [ref=e1134]:
+                  - img [ref=e1135]
+              - generic [ref=e1138]:
+                - generic [ref=e1139]:
+                  - switch "Organic Flow" [ref=e1140]
+                  - generic [ref=e1141]:
+                    - generic [ref=e1142] [cursor=pointer]: Organic Flow
+                    - paragraph [ref=e1143]: Natural variations
+                - button "Lock effect" [ref=e1144]:
+                  - img [ref=e1145]
+              - generic [ref=e1148]:
+                - generic [ref=e1149]:
+                  - switch [checked] [ref=e1150]
+                  - generic [ref=e1151]:
+                    - generic [ref=e1152] [cursor=pointer]: Outward Turn
+                    - paragraph [ref=e1153]: Scroll-based opening + ghost
+                - button "Lock effect" [ref=e1154]:
+                  - img [ref=e1155]
+            - generic [ref=e1158]:
+              - generic [ref=e1159]:
+                - generic [ref=e1160]: Logo Mode
+                - button [ref=e1161]:
+                  - img [ref=e1162]
+              - combobox [ref=e1165]:
+                - option "Billboard (always forward)" [selected]
+                - option "Rotate with scene"
+            - generic [ref=e1167]:
+              - generic [ref=e1168]:
+                - generic [ref=e1169]: REPEAT TURNS
+                - generic [ref=e1170]:
+                  - generic [ref=e1171]: "2"
+                  - button "Lock slider" [ref=e1172]:
+                    - img [ref=e1173]
+              - slider [ref=e1176] [cursor=pointer]: "2"
+          - generic [ref=e1177]:
+            - generic [ref=e1178]:
+              - generic [ref=e1179]:
+                - img [ref=e1181]
+                - heading "Navigation" [level=3] [ref=e1183]
+              - generic [ref=e1184]:
+                - generic [ref=e1185]: 0/3
+                - button "Hide group" [ref=e1186]:
+                  - img [ref=e1187]
+            - generic [ref=e1190]:
+              - generic [ref=e1191]:
+                - generic [ref=e1192]:
+                  - switch [ref=e1193]
+                  - generic [ref=e1194]:
+                    - generic [ref=e1195] [cursor=pointer]: Counter
+                    - paragraph [ref=e1196]: Project number
+                - button "Lock effect" [ref=e1197]:
+                  - img [ref=e1198]
+              - generic [ref=e1201]:
+                - generic [ref=e1202]:
+                  - switch [ref=e1203]
+                  - generic [ref=e1204]:
+                    - generic [ref=e1205] [cursor=pointer]: Dots
+                    - paragraph [ref=e1206]: Nav indicators
+                - button "Lock effect" [ref=e1207]:
+                  - img [ref=e1208]
+              - generic [ref=e1211]:
+                - generic [ref=e1212]:
+                  - switch [ref=e1213]
+                  - generic [ref=e1214]:
+                    - generic [ref=e1215] [cursor=pointer]: Controls
+                    - paragraph [ref=e1216]: Clean controls
+                - button "Lock effect" [ref=e1217]:
+                  - img [ref=e1218]
+          - generic [ref=e1221]:
+            - generic [ref=e1222]:
+              - generic [ref=e1223]:
+                - img [ref=e1225]
+                - heading "Typography" [level=3] [ref=e1227]
+              - generic [ref=e1228]:
+                - generic [ref=e1229]: 0/2
+                - button "Hide group" [ref=e1230]:
+                  - img [ref=e1231]
+            - generic [ref=e1234]:
+              - generic [ref=e1235]:
+                - generic [ref=e1236]:
+                  - switch [ref=e1237]
+                  - generic [ref=e1238]:
+                    - generic [ref=e1239] [cursor=pointer]: Typography
+                    - paragraph [ref=e1240]: Ashfall fonts
+                - button "Lock effect" [ref=e1241]:
+                  - img [ref=e1242]
+              - generic [ref=e1245]:
+                - generic [ref=e1246]:
+                  - switch [ref=e1247]
+                  - generic [ref=e1248]:
+                    - generic [ref=e1249] [cursor=pointer]: Subtle
+                    - paragraph [ref=e1250]: Muted colors
+                - button "Lock effect" [ref=e1251]:
+                  - img [ref=e1252]
+          - generic [ref=e1255]:
+            - generic [ref=e1256]:
+              - generic [ref=e1257]:
+                - img [ref=e1259]
+                - heading "Placement System" [level=3] [ref=e1262]
+              - generic [ref=e1263]:
+                - generic [ref=e1264]: 0/0
+                - button "Hide group" [ref=e1265]:
+                  - img [ref=e1266]
+            - generic [ref=e1270]:
+              - generic [ref=e1271]:
+                - generic [ref=e1272]: STRENGTH
+                - generic [ref=e1273]:
+                  - generic [ref=e1274]: "6"
+                  - button "Lock slider" [ref=e1275]:
+                    - img [ref=e1276]
+              - slider [ref=e1279] [cursor=pointer]: "6"
+          - generic [ref=e1280]:
+            - generic [ref=e1281]:
+              - generic [ref=e1282]:
+                - img [ref=e1284]
+                - heading "Input Controls" [level=3] [ref=e1286]
+              - generic [ref=e1287]:
+                - generic [ref=e1288]: 0/1
+                - button "Hide group" [ref=e1289]:
+                  - img [ref=e1290]
+            - generic [ref=e1294]:
+              - generic [ref=e1295]:
+                - switch [ref=e1296]
+                - generic [ref=e1297]:
+                  - generic [ref=e1298] [cursor=pointer]: Invert Scroll
+                  - paragraph [ref=e1299]: Flip wheel direction
+              - button "Lock effect" [ref=e1300]:
+                - img [ref=e1301]
+            - generic [ref=e1304]:
+              - generic [ref=e1305]:
+                - generic [ref=e1306]: Scroll Mode
+                - generic [ref=e1307]:
+                  - generic [ref=e1308]: wheel
+                  - button [ref=e1309]:
+                    - img [ref=e1310]
+              - combobox [ref=e1313]:
+                - option "Wheel (manual)" [selected]
+                - option "Sticky (scroll timeline)"
+    - generic [ref=e1314]:
+      - button [ref=e1315]:
+        - img [ref=e1316]
+      - generic [ref=e1319]:
+        - generic [ref=e1320]:
+          - generic [ref=e1321]:
+            - img [ref=e1322]
+            - heading "HELIX CONTROLS" [level=2] [ref=e1325]
+          - generic [ref=e1326]:
+            - button "Undo last change (Ctrl+Z)" [disabled]:
+              - img
+            - button "Redo last undone change (Ctrl+Y)" [disabled]:
+              - img
+            - button "Reset" [ref=e1327]
+        - generic [ref=e1328]:
+          - generic [ref=e1330]:
+            - img [ref=e1331]
+            - heading "Global Perspective" [level=3] [ref=e1334]
+          - generic [ref=e1335]:
+            - generic [ref=e1336]:
+              - generic [ref=e1337]: PERSPECTIVE
+              - generic [ref=e1338]: 3000px
+            - slider [ref=e1339] [cursor=pointer]: "3000"
+            - generic [ref=e1340]:
+              - generic [ref=e1341]: 500px
+              - generic [ref=e1342]: 3000px
+          - generic [ref=e1343]:
+            - generic [ref=e1344]:
+              - generic [ref=e1345]: ORIGIN X
+              - generic [ref=e1346]: 71%
+            - slider [ref=e1347] [cursor=pointer]: "71"
+            - generic [ref=e1348]:
+              - generic [ref=e1349]: 0%
+              - generic [ref=e1350]: 100%
+          - generic [ref=e1351]:
+            - generic [ref=e1352]:
+              - generic [ref=e1353]: ORIGIN Y
+              - generic [ref=e1354]: 32%
+            - slider [ref=e1355] [cursor=pointer]: "32"
+            - generic [ref=e1356]:
+              - generic [ref=e1357]: 0%
+              - generic [ref=e1358]: 100%
+        - generic [ref=e1359]:
+          - generic [ref=e1361]:
+            - img [ref=e1362]
+            - heading "Helix Structure" [level=3] [ref=e1365]
+          - generic [ref=e1366]:
+            - generic [ref=e1367]:
+              - generic [ref=e1368]: RADIUS
+              - generic [ref=e1369]: 470px
+            - slider [ref=e1370] [cursor=pointer]: "470"
+            - generic [ref=e1371]:
+              - generic [ref=e1372]: 100px
+              - generic [ref=e1373]: 500px
+          - generic [ref=e1374]:
+            - generic [ref=e1375]:
+              - generic [ref=e1376]: VERTICAL SPAN
+              - generic [ref=e1377]: 650px
+            - slider [ref=e1378] [cursor=pointer]: "650"
+            - generic [ref=e1379]:
+              - generic [ref=e1380]: 400px
+              - generic [ref=e1381]: 1600px
+          - generic [ref=e1382]:
+            - generic [ref=e1383]:
+              - generic [ref=e1384]: REPEAT TURNS
+              - generic [ref=e1385]: "1.5"
+            - slider [ref=e1386] [cursor=pointer]: "1.5"
+            - generic [ref=e1387]:
+              - generic [ref=e1388]: "1"
+              - generic [ref=e1389]: "5"
+          - generic [ref=e1390]:
+            - generic [ref=e1391]:
+              - generic [ref=e1392]: GLOBAL ROTATE X
+              - generic [ref=e1393]: "-10°"
+            - slider [ref=e1394] [cursor=pointer]: "-10"
+            - generic [ref=e1395]:
+              - generic [ref=e1396]: "-45°"
+              - generic [ref=e1397]: 45°
+          - generic [ref=e1398]:
+            - generic [ref=e1399]:
+              - generic [ref=e1400]: GLOBAL ROTATE Y
+              - generic [ref=e1401]: 0°
+            - slider [ref=e1402] [cursor=pointer]: "0"
+            - generic [ref=e1403]:
+              - generic [ref=e1404]: "-180°"
+              - generic [ref=e1405]: 180°
+          - generic [ref=e1406]:
+            - generic [ref=e1407]:
+              - generic [ref=e1408]: GLOBAL ROTATE Z
+              - generic [ref=e1409]: 0°
+            - slider [ref=e1410] [cursor=pointer]: "0"
+            - generic [ref=e1411]:
+              - generic [ref=e1412]: "-45°"
+              - generic [ref=e1413]: 45°
+        - generic [ref=e1414]:
+          - generic [ref=e1416]:
+            - img [ref=e1417]
+            - heading "Card Properties" [level=3] [ref=e1420]
+          - generic [ref=e1421]:
+            - generic [ref=e1422]:
+              - generic [ref=e1423]: CARD WIDTH
+              - generic [ref=e1424]: 180px
+            - slider [ref=e1425] [cursor=pointer]: "180"
+            - generic [ref=e1426]:
+              - generic [ref=e1427]: 90px
+              - generic [ref=e1428]: 270px
+          - generic:
+            - generic:
+              - generic:
+                - generic: CARD HEIGHT (Auto 9:16)
+                - generic: 320px
+              - slider: "320"
+              - generic:
+                - generic: 160px
+                - generic: 480px
+          - generic [ref=e1429]:
+            - generic [ref=e1430]:
+              - generic [ref=e1431]: CARD SCALE
+              - generic [ref=e1432]: "1"
+            - slider [ref=e1433] [cursor=pointer]: "1"
+            - generic [ref=e1434]:
+              - generic [ref=e1435]: "0.5"
+              - generic [ref=e1436]: "2"
+          - generic [ref=e1437]:
+            - generic [ref=e1438]:
+              - generic [ref=e1439]: OPACITY FRONT
+              - generic [ref=e1440]: "1"
+            - slider [ref=e1441] [cursor=pointer]: "1"
+            - generic [ref=e1442]:
+              - generic [ref=e1443]: "0.3"
+              - generic [ref=e1444]: "1"
+          - generic [ref=e1445]:
+            - generic [ref=e1446]:
+              - generic [ref=e1447]: OPACITY SIDE
+              - generic [ref=e1448]: "0.7"
+            - slider [ref=e1449] [cursor=pointer]: "0.7"
+            - generic [ref=e1450]:
+              - generic [ref=e1451]: "0.2"
+              - generic [ref=e1452]: "1"
+          - generic [ref=e1453]:
+            - generic [ref=e1454]:
+              - generic [ref=e1455]: OPACITY BACK
+              - generic [ref=e1456]: "0.3"
+            - slider [ref=e1457] [cursor=pointer]: "0.3"
+            - generic [ref=e1458]:
+              - generic [ref=e1459]: "0.1"
+              - generic [ref=e1460]: "1"
+        - generic [ref=e1461]:
+          - generic [ref=e1463]:
+            - img [ref=e1464]
+            - heading "Container" [level=3] [ref=e1469]
+          - generic [ref=e1470]:
+            - generic [ref=e1471]:
+              - generic [ref=e1472]: CONTAINER WIDTH
+              - generic [ref=e1473]: 500px
+            - slider [ref=e1474] [cursor=pointer]: "500"
+            - generic [ref=e1475]:
+              - generic [ref=e1476]: 400px
+              - generic [ref=e1477]: 1000px
+          - generic [ref=e1478]:
+            - generic [ref=e1479]:
+              - generic [ref=e1480]: CONTAINER HEIGHT
+              - generic [ref=e1481]: 400px
+            - slider [ref=e1482] [cursor=pointer]: "400"
+            - generic [ref=e1483]:
+              - generic [ref=e1484]: 400px
+              - generic [ref=e1485]: 1000px
+          - generic [ref=e1486]:
+            - generic [ref=e1487]:
+              - generic [ref=e1488]: SCROLL SENSITIVITY
+              - generic [ref=e1489]: "0.5"
+            - slider [ref=e1490] [cursor=pointer]: "0.5"
+            - generic [ref=e1491]:
+              - generic [ref=e1492]: "0.1"
+              - generic [ref=e1493]: "3"
+        - generic [ref=e1494]:
+          - generic [ref=e1496]:
+            - img [ref=e1497]
+            - heading "Performance" [level=3] [ref=e1501]
+          - generic [ref=e1502]: "Active Cards: Auto"
+          - generic [ref=e1503]: "Render Distance: Full"
+          - generic [ref=e1504]:
+            - button "Culling OFF" [ref=e1505]
+            - button "LOD OFF" [ref=e1506]
+          - generic [ref=e1507]:
+            - generic [ref=e1508]:
+              - generic [ref=e1509]: SHOW EVERY Nth CARD
+              - generic [ref=e1510]: "1"
+            - slider [ref=e1511] [cursor=pointer]: "1"
+            - generic [ref=e1512]:
+              - generic [ref=e1513]: "1"
+              - generic [ref=e1514]: "10"
+        - generic [ref=e1515]:
+          - heading "Aspect Ratio Test" [level=4] [ref=e1516]
+          - generic [ref=e1517]:
+            - button "Every 1th" [ref=e1518]
+            - button "Every 2th" [ref=e1519]
+            - button "Every 3th" [ref=e1520]
+            - button "Every 4th" [ref=e1521]
+            - button "Every 5th" [ref=e1522]
+          - generic [ref=e1523]: Click buttons to test different card display patterns
+        - generic [ref=e1525]:
+          - generic [ref=e1526]: "Total Projects: 16"
+          - generic [ref=e1527]: "Total Cards: 48"
+          - generic [ref=e1528]: "Showing Every: 1th card"
+          - generic [ref=e1529]: "Rendered Cards: 48"
+          - generic [ref=e1530]: "Current Offset: 0.00"
+  - generic [ref=e1531]:
+    - generic [ref=e1532] [cursor=pointer]:
+      - generic [ref=e1533] [cursor=pointer]:
+        - heading "Performance" [level=3] [ref=e1534] [cursor=pointer]
+        - generic [ref=e1535] [cursor=pointer]: Poor
+      - generic [ref=e1536] [cursor=pointer]:
+        - button "Generate Report" [ref=e1537]:
+          - img [ref=e1538]
+        - button "Download Report" [ref=e1541]:
+          - img [ref=e1542]
+        - img [ref=e1545] [cursor=pointer]
+    - generic [ref=e1547]:
+      - generic [ref=e1548]:
+        - generic [ref=e1549]: FPS
+        - generic [ref=e1550]:
+          - generic [ref=e1551]: "20"
+          - generic [ref=e1552]: (1)
+      - generic [ref=e1553]:
+        - generic [ref=e1554]: Render
+        - generic [ref=e1555]: 94.99ms
+      - generic [ref=e1556]:
+        - generic [ref=e1557]: Cache
+        - generic [ref=e1559]: 50%
+      - generic [ref=e1562]:
+        - generic [ref=e1563]: Memory
+        - generic [ref=e1564]: 4.7KB
+  - generic [ref=e1587]:
+    - heading "Comprehensive Test Suite" [level=3] [ref=e1589]:
+      - img [ref=e1590]
+      - text: Comprehensive Test Suite
+    - generic [ref=e1593]:
+      - button "Start Comprehensive Test" [ref=e1594]:
+        - img [ref=e1595]
+        - text: Start Comprehensive Test
+      - generic [ref=e1597]:
+        - checkbox "Auto-advance phases" [ref=e1598]
+        - generic [ref=e1599]: Auto-advance phases
+  - generic [ref=e1600]:
+    - generic [ref=e1602]:
+      - generic [ref=e1603]:
+        - img [ref=e1604]
+        - generic [ref=e1606]: Test Dashboard
+        - generic [ref=e1607]: DEV
+      - button "+" [ref=e1608]
+    - generic [ref=e1610]:
+      - button "Run comprehensive test suite" [ref=e1611]:
+        - img [ref=e1612]
+        - text: Run Tests
+      - button "Copy test report to clipboard" [disabled] [ref=e1614]:
+        - img [ref=e1615]
+        - text: Copy Report
+      - button "Download test report as JSON file" [disabled] [ref=e1618]:
+        - img [ref=e1619]
+        - text: JSON
+  - generic [ref=e1622]:
+    - generic [ref=e1624]:
+      - generic [ref=e1625]:
+        - img [ref=e1626]
+        - generic [ref=e1628]: Advanced Test Suite
+        - generic [ref=e1629]: DEV
+      - button "+" [ref=e1630]
+    - generic [ref=e1633]:
+      - button "Run advanced test suite" [ref=e1634]:
+        - img [ref=e1635]
+        - text: Run Advanced
+      - button "Copy advanced test report to clipboard" [disabled] [ref=e1637]:
+        - img [ref=e1638]
+        - text: Copy Report
+      - button "Download advanced test report as JSON file" [disabled] [ref=e1641]:
+        - img [ref=e1642]
+        - text: JSON
+  - generic [ref=e1645]:
+    - generic [ref=e1646]:
+      - generic [ref=e1647]:
+        - generic [ref=e1648]:
+          - img [ref=e1649]
+          - generic [ref=e1651]: Playwright Tests
+          - generic [ref=e1652]: PRO
+          - img [ref=e1653]
+        - button "+" [ref=e1657]
+      - generic [ref=e1659]: Connected
+    - generic [ref=e1662]:
+      - button "Run Playwright tests" [ref=e1663]:
+        - img [ref=e1664]
+        - text: Run Playwright
+      - button "Copy Playwright test report to clipboard" [disabled] [ref=e1666]:
+        - img [ref=e1667]
+        - text: Copy Report
+  - generic [ref=e1670]:
+    - button "Hide comprehensive test suite panel" [ref=e1671]: Hide Comprehensive Test
+    - button "Show aspect ratio test panel" [ref=e1672]: Show Aspect Test
+    - button "Show test recorder panel" [ref=e1673]: Show Test Recorder
+```

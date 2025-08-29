@@ -1,0 +1,178 @@
+<testsuites id="" name="" tests="40" failures="0" skipped="40" errors="0" time="0.017702999999999976">
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="chromium-desktop" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="firefox-desktop" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="webkit-desktop" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Mobile Safari" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Tablet Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Microsoft Edge" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Google Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

@@ -27,6 +27,19 @@ Implementation details belong in dedicated `*-plan.md` files; this file only tra
 **Context:** TestDashboard, AdvancedTestDashboard, PlaywrightTestDashboard all active
 **Action Required:** Consolidate into single unified testing interface
 
+### Performance Crisis - App Sluggishness
+**Priority:** CRITICAL 🔥  
+**Issue:** Multiple severe performance bottlenecks causing sluggish user experience
+**Context:** 311MB of video assets, 1010-line monolithic component, excessive re-renders
+**Key Problems:**
+- 12 videos totaling 311MB loading simultaneously (up to 50MB each)
+- Main component (EnhancedHelixProjectsShowcase) is 1010 lines
+- 428KB JavaScript bundle in single chunk
+- Multiple animation loops and intervals running constantly
+- No memoization on expensive calculations
+**Action Required:** Implement video optimization, code splitting, and React optimizations
+**Performance Analysis:** Completed 2025-08-29
+
 ---
 
 ## 🔗 Session Rules - URL Reporting
@@ -57,6 +70,46 @@ Example: "Firefox helix rendering fixed - Check **http://localhost:8000** to see
 ---
 
 ## Active Tasks
+
+### Task: Performance Optimization - Critical (SURGICAL REFACTOR)
+**Branch:** perf/surgical-refactor  
+**Plan:** task-md/surgical-performance-refactor-plan.md  
+**Status:** NOT STARTED
+**Priority:** CRITICAL 🔥
+**Protocol:** Zero-deletion, verification-gated refactoring
+
+> Surgical refactor to fix severe performance issues without breaking functionality
+
+#### Phase 1: Video Asset Optimization
+- **Status:** Pending
+- **Scope:** Compress videos, implement lazy loading, create thumbnails
+- **Target:** Reduce 311MB to <50MB initial load
+- **Performance Pre-Check:** 
+- **Verification:** 
+- **Push Log:** 
+- **Date/Time Confirmed:** 
+
+#### Phase 2: Component Optimization
+- **Status:** Pending
+- **Scope:** Split 1010-line component, add memoization, implement code splitting
+- **Target:** <300 lines per component, 60fps scroll
+- **Performance Pre-Check:** 
+- **Verification:** 
+- **Push Log:** 
+- **Date/Time Confirmed:** 
+
+#### Phase 3: Bundle & Runtime Optimization
+- **Status:** Pending
+- **Scope:** Code splitting, lazy loading, remove test components from production
+- **Target:** <200KB initial bundle, <2s TTI
+- **Performance Pre-Check:** 
+- **Verification:** 
+- **Push Log:** 
+- **Date/Time Confirmed:** 
+
+---
+
+## Active Tasks (Lower Priority)
 
 ### Task: Fix Port Configuration
 **Branch:** fix/port-config  
@@ -129,6 +182,62 @@ Example: "Firefox helix rendering fixed - Check **http://localhost:8000** to see
 - **Firefox Pass Rate:** Achieve >80%
 - **WebKit Pass Rate:** Achieve >80%
 - **Mobile Performance:** Smooth scroll on all devices
+
+---
+
+## 🚨 Performance Bottlenecks Analysis (2025-08-29)
+
+### Critical Performance Issues Identified
+
+#### 1. **Video Assets (311MB) - SEVERITY: CRITICAL**
+- **Problem:** 12 MP4 files, individual files up to 50MB
+- **Impact:** 10-30 second initial load, high memory usage
+- **Solution:** Compress with H.265/VP9, lazy load, create thumbnails
+- **Expected Improvement:** 70% reduction in load time
+
+#### 2. **Component Architecture - SEVERITY: HIGH**
+- **Problem:** EnhancedHelixProjectsShowcase.jsx is 1010 lines
+- **Impact:** Slow parsing, no code splitting possible
+- **Solution:** Split into <300 line components, extract SpringConnection
+- **Expected Improvement:** 50% faster component updates
+
+#### 3. **Re-rendering Issues - SEVERITY: HIGH**
+- **Problem:** No memoization, 146 hook uses, constant re-renders
+- **Impact:** 30-40fps instead of 60fps during scroll
+- **Solution:** Add React.memo, useMemo, useCallback
+- **Expected Improvement:** 80% fewer re-renders
+
+#### 4. **Bundle Size (428KB) - SEVERITY: MEDIUM**
+- **Problem:** Single chunk, 45+ Radix UI imports
+- **Impact:** 3-5 second parse time on mobile
+- **Solution:** Code splitting, lazy load UI components
+- **Expected Improvement:** 60% smaller initial bundle
+
+#### 5. **Animation Loops - SEVERITY: MEDIUM**
+- **Problem:** Multiple requestAnimationFrame and setInterval running
+- **Impact:** Constant CPU usage even when idle
+- **Solution:** Throttle, use IntersectionObserver, pause when hidden
+- **Expected Improvement:** 40% less CPU usage
+
+#### 6. **Test Components in Production - SEVERITY: LOW**
+- **Problem:** 3 test dashboards always active
+- **Impact:** Unnecessary memory/CPU usage
+- **Solution:** Conditional rendering for development only
+- **Expected Improvement:** 10MB less memory usage
+
+### Quick Wins (Can implement immediately)
+1. Lazy load videos with intersection observer
+2. Add React.memo to SpringConnection component
+3. Disable performance monitor in production
+4. Remove test dashboards from production build
+5. Compress largest video files
+
+### Metrics to Track
+- Time to Interactive (TTI): Current ~8s → Target <2s
+- First Contentful Paint (FCP): Current ~3s → Target <1s
+- Bundle Size: Current 428KB → Target <200KB
+- FPS during scroll: Current 30-40fps → Target 60fps
+- Memory usage: Current ~150MB → Target <60MB
 
 ---
 
@@ -213,5 +322,6 @@ Completed task plans are archived in `task-md/archived-tasks/` with completion m
 
 ---
 
-*Last Updated: 2025-08-29 16:04 ET*  
-*Next Review: When first critical issue resolved*
+*Last Updated: 2025-08-29 17:04 ET*  
+*Next Review: After performance optimization implementation*  
+*Performance Analysis Added: 2025-08-29 17:04 ET*

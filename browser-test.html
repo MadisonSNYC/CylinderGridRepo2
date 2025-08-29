@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Browser Compatibility Test</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            background: #2a2a2a;
+            border-radius: 5px;
+        }
+        .pass { color: #4ade80; }
+        .fail { color: #f87171; }
+        .warn { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <h1>Browser Compatibility Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        function addResult(name, status, details) {
+            const div = document.createElement('div');
+            div.className = 'test-result';
+            div.innerHTML = `
+                <strong class="${status}">${status === 'pass' ? '✅' : status === 'fail' ? '❌' : '⚠️'} ${name}</strong>
+                <div>${details}</div>
+            `;
+            results.appendChild(div);
+        }
+        
+        // Test browser detection
+        const ua = navigator.userAgent;
+        const browser = {
+            firefox: /Firefox/i.test(ua),
+            webkit: /WebKit/i.test(ua) && !/Chrome/i.test(ua),
+            chrome: /Chrome/i.test(ua),
+            safari: /Safari/i.test(ua) && /Apple Computer/.test(navigator.vendor)
+        };
+        
+        addResult('Browser Detection', 'pass', 
+            `Browser: ${browser.firefox ? 'Firefox' : browser.webkit ? 'WebKit/Safari' : browser.chrome ? 'Chrome' : 'Unknown'}`);
+        
+        // Test 3D transform support
+        const supports3D = CSS.supports && CSS.supports('transform-style', 'preserve-3d');
+        addResult('3D Transforms', supports3D ? 'pass' : 'fail', 
+            `CSS.supports('transform-style', 'preserve-3d'): ${supports3D}`);
+        
+        // Test perspective
+        const supportsPerspective = CSS.supports && CSS.supports('perspective', '1000px');
+        addResult('Perspective', supportsPerspective ? 'pass' : 'fail', 
+            `CSS.supports('perspective', '1000px'): ${supportsPerspective}`);
+        
+        // Test performance.now
+        const hasPerformanceNow = window.performance && typeof window.performance.now === 'function';
+        addResult('performance.now()', hasPerformanceNow ? 'pass' : 'warn', 
+            `Available: ${hasPerformanceNow}`);
+        
+        // Test requestAnimationFrame
+        const hasRAF = typeof window.requestAnimationFrame === 'function';
+        addResult('requestAnimationFrame', hasRAF ? 'pass' : 'warn', 
+            `Available: ${hasRAF}`);
+        
+        // Test video support
+        const video = document.createElement('video');
+        const mp4Support = video.canPlayType('video/mp4; codecs="avc1.42E01E"') !== '';
+        addResult('MP4 Video Support', mp4Support ? 'pass' : 'fail', 
+            `H.264/MP4: ${mp4Support}`);
+        
+        // Test transform with vendor prefixes
+        const testEl = document.createElement('div');
+        testEl.style.transform = 'translateZ(1px)';
+        const hasTransform = testEl.style.transform !== '';
+        addResult('Transform Support', hasTransform ? 'pass' : 'fail', 
+            `transform: translateZ(1px): ${hasTransform}`);
+        
+        // Test WebGL (for future use)
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        addResult('WebGL Support', gl ? 'pass' : 'warn', 
+            `WebGL: ${gl ? 'Available' : 'Not available'}`);
+        
+        // Show raw user agent
+        addResult('User Agent', 'pass', ua);
+    </script>
+</body>
+</html>

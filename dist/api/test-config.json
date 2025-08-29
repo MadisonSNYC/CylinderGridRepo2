@@ -1,0 +1,33 @@
+{
+  "testPages": [
+    { "url": "/", "label": "Helix Showcase" },
+    { "url": "/?phase=baseline", "label": "Baseline Performance" },
+    { "url": "/?phase=scroll-test", "label": "Scroll Performance" },
+    { "url": "/?phase=stress-test", "label": "Stress Test" }
+  ],
+  "deviceProfiles": [
+    { 
+      "name": "desktop", 
+      "viewport": { "width": 1366, "height": 900 }
+    },
+    { 
+      "name": "mobile", 
+      "viewport": { "width": 390, "height": 844 }
+    }
+  ],
+  "performanceThresholds": {
+    "lighthouse": {
+      "performance": 80,
+      "accessibility": 90,
+      "bestPractices": 80,
+      "seo": 80
+    },
+    "helix": {
+      "minFPS": 30,
+      "maxRenderTime": 40,
+      "maxMemoryIncrease": 50
+    }
+  },
+  "version": "1.0.0",
+  "lastUpdated": "2025-08-27T00:25:00.000Z"
+}

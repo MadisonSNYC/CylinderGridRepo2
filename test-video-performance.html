@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Lazy Loading Performance Test</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: monospace;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+        .metric {
+            margin: 10px 0;
+            padding: 10px;
+            background: #2a2a2a;
+            border-radius: 5px;
+        }
+        .pass { color: #4ade80; }
+        .fail { color: #f87171; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Lazy Loading Performance Test</h1>
+    <button onclick="testPerformance()">Run Performance Test</button>
+    <button onclick="location.href='http://localhost:4000'">Open App</button>
+    <div id="results"></div>
+    
+    <script>
+        async function testPerformance() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<div class="metric">Testing...</div>';
+            
+            try {
+                // Test 1: Initial page load
+                const startTime = performance.now();
+                const response = await fetch('http://localhost:4000');
+                const html = await response.text();
+                const loadTime = performance.now() - startTime;
+                
+                // Test 2: Check for VideoLazy component
+                const hasVideoLazy = html.includes('VideoLazy') || html.includes('video-lazy');
+                
+                // Test 3: Network analysis
+                const networkStart = performance.now();
+                const assetResponse = await fetch('http://localhost:4000/assets/projects/');
+                const networkTime = performance.now() - networkStart;
+                
+                // Test 4: Memory usage (if available)
+                const memoryUsed = performance.memory ? 
+                    (performance.memory.usedJSHeapSize / 1048576).toFixed(2) + ' MB' : 
+                    'N/A';
+                
+                // Display results
+                results.innerHTML = `
+                    <div class="metric ${loadTime < 1000 ? 'pass' : 'fail'}">
+                        <strong>Initial Load Time:</strong> ${loadTime.toFixed(2)}ms 
+                        ${loadTime < 1000 ? '✅' : '❌'}
+                    </div>
+                    <div class="metric ${hasVideoLazy ? 'pass' : 'fail'}">
+                        <strong>VideoLazy Component:</strong> ${hasVideoLazy ? 'Found ✅' : 'Not Found ❌'}
+                    </div>
+                    <div class="metric">
+                        <strong>Network Response:</strong> ${networkTime.toFixed(2)}ms
+                    </div>
+                    <div class="metric">
+                        <strong>Memory Usage:</strong> ${memoryUsed}
+                    </div>
+                    <div class="metric">
+                        <strong>Expected Improvements:</strong>
+                        <ul>
+                            <li>Videos should load on scroll (not all at once)</li>
+                            <li>Initial payload should be <50MB (was 311MB)</li>
+                            <li>Memory usage should stay <60MB initially</li>
+                            <li>FPS should be consistent 60fps during scroll</li>
+                        </ul>
+                    </div>
+                    <div class="metric pass">
+                        <strong>Performance Marks to Check in DevTools:</strong>
+                        <ul>
+                            <li>video-load-start-[src]</li>
+                            <li>video-load-end-[src]</li>
+                            <li>video-load-[src] (measure)</li>
+                        </ul>
+                    </div>
+                `;
+                
+            } catch (error) {
+                results.innerHTML = `<div class="metric fail">Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
