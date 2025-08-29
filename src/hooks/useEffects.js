@@ -1,21 +1,30 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 const defaultEffects = {
   // Color Scheme
   ashfallColors: false,
   monochrome: false,
+  cinematicColors: false,     // Disabled for performance
+  screenGlow: false,          // Disabled for performance
+  scanLines: false,           // Disabled for performance
+  monitorStyle: false,        // Disabled for performance
+  colorGrade: false,
+  filmGrain: false,
   
   // Visual Effects
   chromaticAberration: false,
-  depthBlur: false,
+  depthBlur: false,           // Disabled for performance
   glitchEffects: false,
-  ambientLighting: false,
-  rgbEdge: true,             // RGB edge effect on cards
+  ambientLighting: false,     // Disabled for performance
+  rgbEdge: false,             // Disabled for performance
   
   // Card Design
   ashfallCards: false,
   cardShadows: false,
   cardBorders: false,
+  richCardContent: true,        // Show rich content vs simple cards
+  cardHoverEffects: true,       // Enable hover interactions
+  videoPlayOnHover: true,       // Auto-play videos on hover
   
   // Structure
   centralWireframe: false,
@@ -50,43 +59,99 @@ const defaultEffects = {
 
 export const useEffects = () => {
   const [effects, setEffects] = useState(defaultEffects);
+  const history = useRef([defaultEffects]);
+  const historyIndex = useRef(0);
+  const maxHistory = 50; // Keep last 50 changes
+
+  const addToHistory = useCallback((newEffects) => {
+    const newHistory = history.current.slice(0, historyIndex.current + 1);
+    newHistory.push(newEffects);
+    
+    if (newHistory.length > maxHistory) {
+      newHistory.shift();
+    }
+    
+    history.current = newHistory;
+    historyIndex.current = newHistory.length - 1;
+  }, []);
 
   const toggleEffect = useCallback((effectKey, value) => {
-    setEffects(prev => ({
-      ...prev,
-      [effectKey]: value
-    }));
-  }, []);
+    setEffects(prev => {
+      const newEffects = {
+        ...prev,
+        [effectKey]: value
+      };
+      addToHistory(newEffects);
+      return newEffects;
+    });
+  }, [addToHistory]);
 
   const resetEffects = useCallback(() => {
     setEffects(defaultEffects);
+    history.current = [defaultEffects];
+    historyIndex.current = 0;
   }, []);
+
+  const undoEffects = useCallback(() => {
+    if (historyIndex.current > 0) {
+      historyIndex.current -= 1;
+      const previousEffects = history.current[historyIndex.current];
+      setEffects(previousEffects);
+    }
+  }, []);
+
+  const redoEffects = useCallback(() => {
+    if (historyIndex.current < history.current.length - 1) {
+      historyIndex.current += 1;
+      const nextEffects = history.current[historyIndex.current];
+      setEffects(nextEffects);
+    }
+  }, []);
+
+  const canUndo = historyIndex.current > 0;
+  const canRedo = historyIndex.current < history.current.length - 1;
 
   const applyPreset = useCallback((preset) => {
-    setEffects(prev => ({
-      ...prev,
-      ...preset
-    }));
-  }, []);
+    setEffects(prev => {
+      const newEffects = {
+        ...prev,
+        ...preset
+      };
+      addToHistory(newEffects);
+      return newEffects;
+    });
+  }, [addToHistory]);
 
   const setPlacementStrength = useCallback((n) => {
-    setEffects(prev => ({
-      ...prev,
-      placementStrength: n
-    }));
-  }, []);
+    setEffects(prev => {
+      const newEffects = {
+        ...prev,
+        placementStrength: n
+      };
+      addToHistory(newEffects);
+      return newEffects;
+    });
+  }, [addToHistory]);
 
   const setRepeatTurns = useCallback((n) => {
-    setEffects(prev => ({
-      ...prev,
-      repeatTurns: n
-    }));
-  }, []);
+    setEffects(prev => {
+      const newEffects = {
+        ...prev,
+        repeatTurns: n
+      };
+      addToHistory(newEffects);
+      return newEffects;
+    });
+  }, [addToHistory]);
 
   return {
     effects,
     toggleEffect,
     resetEffects,
+    undoEffects,
+    redoEffects,
+    canUndo,
+    canRedo,
     applyPreset,
     setPlacementStrength,
     setRepeatTurns

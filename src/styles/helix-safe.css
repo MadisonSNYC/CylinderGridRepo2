@@ -231,24 +231,21 @@
   }
 }
 
-/* Apply per-tier; yaw cancel stays on .tile-card */
-.fx-depth-placement .helix-tile.depth-near .tile-content {
-  transform:
-    translateZ(var(--pp-near-z))
-    scale(var(--pp-near-scale))
-    rotateX(var(--pp-near-tilt));
+/* Apply per-tier using CSS variables for smooth transitions */
+.fx-depth-placement .helix-tile.depth-near {
+  --depth-z: var(--pp-near-z);
+  --depth-scale-multiplier: var(--pp-near-scale);
+  --depth-tilt: var(--pp-near-tilt);
 }
-.fx-depth-placement .helix-tile.depth-mid .tile-content {
-  transform:
-    translateZ(var(--pp-mid-z))
-    scale(var(--pp-mid-scale))
-    rotateX(var(--pp-mid-tilt));
+.fx-depth-placement .helix-tile.depth-mid {
+  --depth-z: var(--pp-mid-z);
+  --depth-scale-multiplier: var(--pp-mid-scale);
+  --depth-tilt: var(--pp-mid-tilt);
 }
-.fx-depth-placement .helix-tile.depth-far .tile-content {
-  transform:
-    translateZ(var(--pp-far-z))
-    scale(var(--pp-far-scale))
-    rotateX(var(--pp-far-tilt));
+.fx-depth-placement .helix-tile.depth-far {
+  --depth-z: var(--pp-far-z);
+  --depth-scale-multiplier: var(--pp-far-scale);
+  --depth-tilt: var(--pp-far-tilt);
 }
 
 /* Ensure blur stays media-only and placement doesn't blur UI */
@@ -370,20 +367,21 @@
    STEP CL1 - CENTER LOGO (replaces wireframe)
    ====================================== */
 
-/* Center logo replacement for wireframe */
+/* Center logo replacement for wireframe - moves with scroll */
 .center-logo {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 69px;  /* 15% bigger than 60px */
+  width: 207px;  /* 300% of 69px */
   height: auto;
-  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px));
+  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px)) translateY(var(--scroll-offset-y, 0px));
   opacity: var(--logo-opacity, 0.85);
   filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
   pointer-events: none;  /* don't block interactions */
   will-change: transform, opacity;
   user-select: none;
   -webkit-user-select: none;
+  transition: transform 0.1s ease-out;
 }
 
 /* Only hide wireframe lines (star pattern) when logo is shown, keep circles */
@@ -393,7 +391,12 @@
 
 /* Billboard mode - always faces forward */
 .center-logo.billboard {
-  transform: translate(-50%, -50%) translateZ(var(--logo-z, 0px)) rotateY(calc(-1 * var(--sceneDeg, 0deg)));
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(calc(-1 * var(--sceneDeg, 0deg)));
+  transform-style: preserve-3d;
+  backface-visibility: visible;
 }
 
 /* Rotate mode - rotates with scene */
@@ -450,4 +453,394 @@
   opacity: 0.9;
   filter: blur(3px);
   animation-duration: 1s;
+}
+
+/* ======================================
+   CINEMATIC COLOR INTENSIFICATION
+   ====================================== */
+
+/* Base cinematic enhancement - only apply to scene container */
+.helix-scene.fx-cinematic {
+  position: relative;
+  filter: 
+    saturate(var(--cinematic-saturation, 1.4))
+    contrast(var(--cinematic-contrast, 1.2))
+    brightness(var(--cinematic-brightness, 1.1))
+    hue-rotate(var(--cinematic-hue, 0deg));
+  transition: filter 0.3s ease;
+}
+
+/* Lighter effect for individual cards to avoid double-filtering */
+.helix-node.fx-cinematic {
+  /* No filter on individual cards - inherit from scene */
+}
+
+/* Intensify on scroll speed */
+.fx-cinematic.scroll-fast {
+  --cinematic-saturation: 1.8;
+  --cinematic-contrast: 1.4;
+  --cinematic-brightness: 1.2;
+  --cinematic-hue: 5deg;
+}
+
+.fx-cinematic.scroll-ultra-fast {
+  --cinematic-saturation: 2.2;
+  --cinematic-contrast: 1.6;
+  --cinematic-brightness: 1.3;
+  --cinematic-hue: 10deg;
+}
+
+/* Apply to media elements - preserve dimensions */
+.fx-cinematic .media-3d,
+.fx-cinematic video,
+.fx-cinematic img {
+  /* Don't inherit filter to avoid affecting layout */
+}
+
+/* Cinematic vignette overlay */
+.fx-cinematic::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 50% at center,
+    transparent 40%,
+    rgba(0,0,0,var(--vignette-strength, 0.15)) 100%
+  );
+  z-index: 100;
+  transition: background 0.3s ease;
+}
+
+/* Intensify vignette on fast scroll */
+.fx-cinematic.scroll-fast::after {
+  --vignette-strength: 0.25;
+}
+
+.fx-cinematic.scroll-ultra-fast::after {
+  --vignette-strength: 0.35;
+}
+
+/* ======================================
+   ENHANCED VISUAL EFFECTS (Ashfall Lab Style)
+   ====================================== */
+
+/* Animation Keyframes */
+@keyframes filmNoise {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes screenFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.98; }
+}
+
+@keyframes chromaticShift {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(1px); }
+  50% { transform: translateX(0); }
+  75% { transform: translateX(-1px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes subtleCurve {
+  0%, 100% { transform: perspective(600px) rotateX(2deg); }
+  50% { transform: perspective(600px) rotateX(4deg); }
+}
+
+/* Screen Glow Effects */
+.fx-screen-glow .helix-node > div {
+  box-shadow: 
+    0 0 20px rgba(6, 182, 212, 0.3),
+    0 0 40px rgba(6, 182, 212, 0.2),
+    0 0 60px rgba(6, 182, 212, 0.1);
+}
+
+.fx-screen-glow .helix-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(6, 182, 212, 0.1) 0%,
+    rgba(6, 182, 212, 0.05) 50%,
+    transparent 100%
+  );
+  animation: screenFlicker 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Scan Lines Effect */
+.fx-scan-lines .helix-node > div::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 255, 0.03) 2px,
+    rgba(0, 255, 255, 0.03) 4px
+  );
+  pointer-events: none;
+  animation: scanline 3s linear infinite;
+}
+
+/* Chromatic Aberration */
+.fx-chromatic .helix-node > div::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: inherit;
+  filter: 
+    drop-shadow(1px 0 0 rgba(255, 0, 0, 0.15))
+    drop-shadow(-1px 0 0 rgba(0, 255, 255, 0.15));
+  mix-blend-mode: screen;
+  animation: chromaticShift 0.5s ease-in-out infinite;
+  z-index: -1;
+}
+
+/* Film Noise/Grain */
+.fx-film-grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.25;
+  background-image: 
+    radial-gradient(circle, transparent 20%, rgba(255,255,255,0.3) 21%, rgba(255,255,255,0.3) 34%, transparent 35%, transparent),
+    linear-gradient(0deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2));
+  background-size: 20px 20px, 100% 2px;
+  mix-blend-mode: overlay;
+  animation: filmNoise 0.1s infinite;
+  pointer-events: none;
+  z-index: 101;
+}
+
+/* Monitor Style Cards */
+.fx-monitor-style .helix-node > div {
+  border-radius: 0 !important;
+  box-shadow: 
+    0 0 20px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 2px #2a2a2a,
+    inset 0 0 0 4px #1a1a1a !important;
+}
+
+.fx-monitor-style .helix-node > div::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #3a3a3a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  border-radius: 1px;
+  z-index: -1;
+}
+
+/* Color Grading Enhancement */
+.fx-color-grade {
+  filter: 
+    contrast(1.1)
+    brightness(0.95)
+    saturate(1.2)
+    hue-rotate(5deg);
+}
+
+.fx-color-grade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(
+      45deg,
+      rgba(6, 182, 212, 0.02) 0%,
+      rgba(139, 69, 19, 0.02) 100%
+    );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Depth of Field */
+.fx-depth-blur::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(
+      circle at center,
+      transparent 40%,
+      rgba(0, 0, 0, 0.1) 70%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  backdrop-filter: blur(0.5px);
+  pointer-events: none;
+}
+
+/* Performance Optimizations */
+.fx-screen-glow,
+.fx-scan-lines,
+.fx-chromatic,
+.fx-monitor-style {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .fx-scan-lines .helix-node > div::after,
+  .fx-screen-glow .helix-scene::before,
+  .fx-chromatic .helix-node > div::before,
+  .fx-film-grain::after {
+    animation: none !important;
+  }
+}
+
+/* ======================================
+   ENHANCED DOWNWARD SCROLL MOVEMENT
+   ====================================== */
+
+/* Perspective shift during scroll */
+.helix-scene.fx-scroll-movement {
+  transition: perspective 0.2s ease;
+}
+
+.helix-scene.fx-scroll-movement.scroll-fast {
+  perspective: 2000px !important; /* Pull back for speed sensation */
+}
+
+.helix-scene.fx-scroll-movement.scroll-ultra-fast {
+  perspective: 1500px !important; /* Even more dramatic pullback */
+}
+
+/* Vertical motion trails */
+@keyframes verticalTrail {
+  0% { transform: translateY(-100vh); opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.fx-scroll-movement::before {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  z-index: 50;
+  transition: opacity 0.3s ease;
+}
+
+.fx-scroll-movement.scroll-fast::before {
+  opacity: 1;
+  animation: verticalTrail 0.8s linear infinite;
+}
+
+.fx-scroll-movement.scroll-ultra-fast::before {
+  opacity: 1;
+  animation: verticalTrail 0.4s linear infinite;
+}
+
+/* Speed lines effect */
+@keyframes speedLines {
+  0% { transform: translateY(-50px); opacity: 0; }
+  50% { opacity: 0.6; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.fx-scroll-movement::after {
+  content: '';
+  position: fixed;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 10%,
+    transparent 20%
+  );
+  pointer-events: none;
+  opacity: 0;
+  z-index: 49;
+}
+
+.fx-scroll-movement.scroll-fast::after,
+.fx-scroll-movement.scroll-ultra-fast::after {
+  opacity: 1;
+  animation: speedLines 0.6s linear infinite;
+}
+
+/* Unified smooth transitions for all cards */
+.helix-node {
+  transform-origin: center center;
+  transition: transform 0.08s ease-out, opacity 0.2s ease;
+  will-change: transform, opacity;
+}
+
+/* Dynamic card scaling during fast scroll - using CSS variables */
+.fx-scroll-movement.scroll-fast .helix-node {
+  --scroll-scale-multiplier: 1.03;
+}
+
+.fx-scroll-movement.scroll-ultra-fast .helix-node {
+  --scroll-scale-multiplier: 1.06;
+}
+
+/* Default scroll scale */
+.helix-node {
+  --scroll-scale-multiplier: 1;
+  --depth-scale-multiplier: 1;
+  --final-scale: 1;
+}
+
+/* Tunnel effect background */
+.fx-scroll-movement .helix-assembly {
+  position: relative;
+}
+
+.fx-scroll-movement.scroll-fast .helix-assembly::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: 
+    radial-gradient(
+      ellipse 80% 60% at center,
+      transparent 30%,
+      rgba(0, 0, 0, 0.1) 70%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  pointer-events: none;
+  z-index: -1;
+  animation: tunnelPulse 0.5s ease-in-out infinite;
+}
+
+.fx-scroll-movement.scroll-ultra-fast .helix-assembly::before {
+  background: 
+    radial-gradient(
+      ellipse 70% 50% at center,
+      transparent 20%,
+      rgba(0, 0, 0, 0.2) 60%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  animation-duration: 0.3s;
+}
+
+@keyframes tunnelPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
 }

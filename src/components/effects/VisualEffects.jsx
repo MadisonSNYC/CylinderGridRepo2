@@ -46,6 +46,12 @@ export const VisualEffects = ({ effects, children }) => {
       data-ashfall-colors={effects.ashfallColors}
       data-typography={effects.ashfallTypography}
       data-center-logo-mode={effects.centerLogoMode}
+      data-cinematic-colors={effects.cinematicColors}
+      data-screen-glow={effects.screenGlow}
+      data-scan-lines={effects.scanLines}
+      data-film-grain={effects.filmGrain}
+      data-monitor-style={effects.monitorStyle}
+      data-color-grade={effects.colorGrade}
     >
       <style jsx="true">{`
         /* Chromatic Aberration Effect */

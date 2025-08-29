@@ -51,11 +51,12 @@ export const StructureEffects = ({ effects, children }) => {
           position: absolute;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%) translateY(var(--scroll-offset-y, 0px));
           width: 200px;
           height: 200px;
           pointer-events: none;
           z-index: 4;
+          transition: transform 0.1s ease-out;
         }
 
         .structure-effects-wrapper[data-wireframe-lines="true"] .wireframe-line {
