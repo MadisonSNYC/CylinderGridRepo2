@@ -1,4 +1,5 @@
 // Performance monitoring utility for measuring optimization improvements
+import { performanceNow, supportsPerformanceNow } from '../lib/browserCompat.js';
 
 class PerformanceMonitor {
   constructor() {
@@ -9,13 +10,18 @@ class PerformanceMonitor {
       cacheHits: 0,
       cacheMisses: 0
     };
-    this.lastFrameTime = performance.now();
+    this.lastFrameTime = performanceNow();
     this.frameCount = 0;
+    this.supportsPerformance = supportsPerformanceNow();
+    
+    if (!this.supportsPerformance) {
+      console.warn('⚠️ performance.now() not supported, using Date.now() fallback');
+    }
   }
 
   // Measure FPS
   measureFPS() {
-    const now = performance.now();
+    const now = performanceNow();
     const delta = now - this.lastFrameTime;
     
     if (delta >= 1000) { // Update every second
@@ -46,9 +52,9 @@ class PerformanceMonitor {
 
   // Measure render time
   measureRenderTime(callback) {
-    const start = performance.now();
+    const start = performanceNow();
     const result = callback();
-    const duration = performance.now() - start;
+    const duration = performanceNow() - start;
     
     this.metrics.renderTime.push(duration);
     
@@ -62,7 +68,7 @@ class PerformanceMonitor {
 
   // Measure scroll latency
   measureScrollLatency(timestamp) {
-    const latency = performance.now() - timestamp;
+    const latency = performanceNow() - timestamp;
     this.metrics.scrollLatency.push(latency);
     
     // Keep only last 50 measurements
@@ -120,7 +126,7 @@ class PerformanceMonitor {
       cacheHits: 0,
       cacheMisses: 0
     };
-    this.lastFrameTime = performance.now();
+    this.lastFrameTime = performanceNow();
     this.frameCount = 0;
   }
 

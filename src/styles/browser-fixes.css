@@ -1,0 +1,166 @@
+/* Browser-specific CSS fixes for cross-browser compatibility */
+
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+  .helix-container {
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+  
+  .project-card {
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Firefox has issues with nested 3D transforms */
+  .project-card video {
+    -moz-transform: none !important;
+    transform: none !important;
+  }
+  
+  /* Fix perspective rendering in Firefox */
+  .helix-wrapper {
+    -moz-perspective: 1000px;
+    perspective: 1000px;
+    -moz-perspective-origin: 50% 50%;
+    perspective-origin: 50% 50%;
+  }
+}
+
+/* WebKit/Safari-specific fixes */
+@supports (-webkit-appearance: none) {
+  .helix-container {
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+  
+  .project-card {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* WebKit needs explicit will-change for smooth animations */
+  .project-card {
+    will-change: transform;
+  }
+  
+  /* Safari video rendering fix */
+  .project-card video {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+  
+  /* Fix perspective in Safari */
+  .helix-wrapper {
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+    -webkit-perspective-origin: 50% 50%;
+    perspective-origin: 50% 50%;
+  }
+}
+
+/* Edge-specific fixes */
+@supports (-ms-ime-align: auto) {
+  .helix-container {
+    transform-style: preserve-3d;
+  }
+  
+  .project-card {
+    backface-visibility: hidden;
+  }
+}
+
+/* General cross-browser fixes */
+.helix-container {
+  /* Ensure GPU acceleration */
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+  
+  /* Smooth rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.project-card {
+  /* Vendor prefixes for transform */
+  -webkit-transform-origin: center center;
+  -moz-transform-origin: center center;
+  -ms-transform-origin: center center;
+  -o-transform-origin: center center;
+  transform-origin: center center;
+  
+  /* Prevent flickering */
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  
+  /* Force hardware acceleration */
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Video element fixes */
+video {
+  /* Prevent video from breaking 3D context */
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  transform: translateZ(0);
+  
+  /* Fix video playback in Safari */
+  -webkit-playsinline: true;
+  playsinline: true;
+}
+
+/* SVG rendering fixes for connections */
+svg.spring-connection {
+  /* Fix SVG rendering in Firefox */
+  shape-rendering: geometricPrecision;
+  
+  /* Improve SVG performance */
+  will-change: transform;
+}
+
+/* Animation performance fixes */
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .helix-container {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .project-card {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Fix for Firefox transform-style bug */
+@supports (-moz-appearance: none) {
+  .helix-container > * {
+    transform-style: preserve-3d;
+  }
+}
+
+/* iOS Safari fixes */
+@supports (-webkit-touch-callout: none) {
+  .helix-container {
+    -webkit-transform-style: preserve-3d;
+  }
+  
+  video {
+    -webkit-playsinline: true;
+  }
+}
