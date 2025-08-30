@@ -6,7 +6,6 @@ import { helixPositionCache } from '../utils/helixPositionCache.js';
 import { performanceMonitor } from '../utils/performanceMonitor.js';
 import { useHelixScroll, useHelixConfig } from '../contexts/HelixContext.jsx';
 import { VideoLazy } from './video/VideoLazy.jsx';
-import { usePageVisibility } from '../hooks/usePageVisibility.js';
 
 // Effect components
 import { ColorSchemeEffects } from './effects/ColorSchemeEffects.jsx';
@@ -465,9 +464,6 @@ export const EnhancedHelixProjectsShowcase = ({
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   
-  // Page visibility for performance optimization
-  const isPageVisible = usePageVisibility();
-  
   // Use new state management for scroll
   const { scroll, updateScroll, batchScrollUpdate } = useHelixScroll();
   const { config: contextConfig } = useHelixConfig();
@@ -558,8 +554,8 @@ export const EnhancedHelixProjectsShowcase = ({
         
         pendingDelta = 0;
         
-        // Continue animation if velocity is significant and page is visible
-        if (Math.abs(velocity) > minVelocity && isPageVisible) {
+        // Continue animation if velocity is significant
+        if (Math.abs(velocity) > minVelocity) {
           scrollAnimationId.current = requestAnimationFrame(updateScrollAnimation);
         } else {
           velocity = 0;
@@ -582,7 +578,7 @@ export const EnhancedHelixProjectsShowcase = ({
       
       pendingDelta = normalizedDelta * sensitivity * 0.15; // Apply smoothing factor
       
-      if (!isUpdating && isPageVisible) {
+      if (!isUpdating) {
         isUpdating = true;
         lastTime = performance.now();
         scrollAnimationId.current = requestAnimationFrame(updateScrollAnimation);
@@ -601,23 +597,20 @@ export const EnhancedHelixProjectsShowcase = ({
     }
   }, [enhanced, helixConfig.scrollSensitivity]);
 
-  // Auto-rotation logic - DISABLED by default, paused when page hidden
+  // Auto-rotation logic - DISABLED by default
   useEffect(() => {
     // Disabled auto-rotation
     return;
     
-    if (!autoRotate || isPaused || prefersReducedMotion || !enhanced || !isPageVisible) return;
+    if (!autoRotate || isPaused || prefersReducedMotion || !enhanced) return;
     
     const rotationSpeed = effects.smoothRotation ? 6000 : 4000;
     const interval = setInterval(() => {
-      // Double-check visibility before updating
-      if (isPageVisible && !document.hidden) {
-        setScrollOffset(prev => prev + 0.05); // Much slower auto-rotation
-      }
+      setScrollOffset(prev => prev + 0.05); // Much slower auto-rotation
     }, 100);
     
     return () => clearInterval(interval);
-  }, [autoRotate, isPaused, prefersReducedMotion, enhanced, effects.smoothRotation, isPageVisible]);
+  }, [autoRotate, isPaused, prefersReducedMotion, enhanced, effects.smoothRotation]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -650,7 +643,7 @@ export const EnhancedHelixProjectsShowcase = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [enhanced, helixConfig.scrollSensitivity, updateScroll, scrollOffset, isPageVisible]);
+  }, [enhanced, helixConfig.scrollSensitivity, updateScroll, scrollOffset]);
 
   const handleProjectClick = (index) => {
     const targetOffset = index;
@@ -665,20 +658,17 @@ export const EnhancedHelixProjectsShowcase = ({
   };
   const handleSkipIntro = () => setEnhanced(false);
 
-  // Continuous FPS measurement loop - paused when page not visible
+  // Continuous FPS measurement loop
   useEffect(() => {
-    if (!enhanced || !isPageVisible) return;
+    if (!enhanced) return;
 
     let animationFrameId;
     const measureContinuousFPS = () => {
       performanceMonitor.measureFPS();
-      // Only continue if page is still visible
-      if (isPageVisible) {
-        animationFrameId = requestAnimationFrame(measureContinuousFPS);
-      }
+      animationFrameId = requestAnimationFrame(measureContinuousFPS);
     };
     
-    // Start the continuous measurement loop only when visible
+    // Start the continuous measurement loop
     animationFrameId = requestAnimationFrame(measureContinuousFPS);
     
     return () => {
@@ -686,7 +676,7 @@ export const EnhancedHelixProjectsShowcase = ({
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [enhanced, isPageVisible]);
+  }, [enhanced]);
 
   // Fallback to 2D grid for reduced motion or unsupported browsers
   if (prefersReducedMotion || !enhanced) {

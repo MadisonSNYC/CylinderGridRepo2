@@ -10,7 +10,9 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {},
+    "metadata": {
+      "actualWorkers": 4
+    },
     "preserveOutput": "always",
     "reporter": [
       [
@@ -42,7 +44,9 @@
         "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 4
+        },
         "id": "chromium-desktop",
         "name": "chromium-desktop",
         "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
@@ -56,7 +60,9 @@
         "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 4
+        },
         "id": "firefox-desktop",
         "name": "firefox-desktop",
         "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
@@ -70,7 +76,9 @@
         "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 4
+        },
         "id": "webkit-desktop",
         "name": "webkit-desktop",
         "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
@@ -84,7 +92,9 @@
         "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 4
+        },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
         "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
@@ -98,7 +108,9 @@
         "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 4
+        },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
         "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
@@ -112,7 +124,9 @@
         "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 4
+        },
         "id": "Tablet Chrome",
         "name": "Tablet Chrome",
         "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
@@ -126,7 +140,9 @@
         "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 4
+        },
         "id": "Microsoft Edge",
         "name": "Microsoft Edge",
         "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
@@ -140,7 +156,9 @@
         "outputDir": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 4
+        },
         "id": "Google Chrome",
         "name": "Google Chrome",
         "testDir": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs",
@@ -179,7 +197,7 @@
           "specs": [
             {
               "title": "should load helix scene with all components",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -188,8 +206,66 @@
                   "expectedStatus": "passed",
                   "projectId": "chromium-desktop",
                   "projectName": "chromium-desktop",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 19760,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at HelixPage.verifyHelixLoaded (/Users/madisonrayesutton/CylinderGridRepo2/tests/pages/HelixPage.js:201:23)\n    at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:13:5",
+                        "location": {
+                          "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/pages/HelixPage.js",
+                          "column": 23,
+                          "line": 201
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39m../pages/HelixPage.js:201\n\n  199 |     await scene.focus();\n  200 |     const isFocused = await scene.evaluate(el => el === document.activeElement);\n> 201 |     expect(isFocused).toBe(true);\n      |                       ^\n  202 |     \n  203 |     return true;\n  204 |   }"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/pages/HelixPage.js",
+                            "column": 23,
+                            "line": 201
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at ../pages/HelixPage.js:201\n\n  199 |     await scene.focus();\n  200 |     const isFocused = await scene.evaluate(el => el === document.activeElement);\n> 201 |     expect(isFocused).toBe(true);\n      |                       ^\n  202 |     \n  203 |     return true;\n  204 |   }\n    at HelixPage.verifyHelixLoaded (/Users/madisonrayesutton/CylinderGridRepo2/tests/pages/HelixPage.js:201:23)\n    at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:13:5"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎭 Test panels hidden - focusing on helix core functionality\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-29T22:53:41.655Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/pages/HelixPage.js",
+                        "column": 23,
+                        "line": 201
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
                 }
               ],
               "id": "8d45325e909fae86152c-2e44192b15ff44e66712",
@@ -208,8 +284,26 @@
                   "expectedStatus": "passed",
                   "projectId": "chromium-desktop",
                   "projectName": "chromium-desktop",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 20441,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎭 Test panels hidden - focusing on helix core functionality\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-29T22:53:41.669Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "8d45325e909fae86152c-c7a18e8d9e27b23c3120",
@@ -219,7 +313,7 @@
             },
             {
               "title": "should support keyboard navigation",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -228,8 +322,66 @@
                   "expectedStatus": "passed",
                   "projectId": "chromium-desktop",
                   "projectName": "chromium-desktop",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 21069,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n    at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:56:38",
+                        "location": {
+                          "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js",
+                          "column": 38,
+                          "line": 56
+                        },
+                        "snippet": "  54 |     \n  55 |     // Verify no errors occurred during navigation\n> 56 |     expect(errorTracker.hasErrors()).toBe(false);\n     |                                      ^\n  57 |   });\n  58 |\n  59 |   test('should maintain performance during interactions', async ({ "
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js",
+                            "column": 38,
+                            "line": 56
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n\n  54 |     \n  55 |     // Verify no errors occurred during navigation\n> 56 |     expect(errorTracker.hasErrors()).toBe(false);\n     |                                      ^\n  57 |   });\n  58 |\n  59 |   test('should maintain performance during interactions', async ({ \n    at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:56:38"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎭 Test panels hidden - focusing on helix core functionality\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-29T22:53:41.656Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js",
+                        "column": 38,
+                        "line": 56
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
                 }
               ],
               "id": "8d45325e909fae86152c-4a5b624f91bfdea9024a",
@@ -239,7 +391,7 @@
             },
             {
               "title": "should maintain performance during interactions",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -248,8 +400,69 @@
                   "expectedStatus": "passed",
                   "projectId": "chromium-desktop",
                   "projectName": "chromium-desktop",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 28222,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n    at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:90:38",
+                        "location": {
+                          "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js",
+                          "column": 38,
+                          "line": 90
+                        },
+                        "snippet": "  88 |     expect(validation.fps.passed).toBe(true);\n  89 |     expect(validation.memory.passed).toBe(true);\n> 90 |     expect(errorTracker.hasErrors()).toBe(false);\n     |                                      ^\n  91 |   });\n  92 |\n  93 |   test('should have proper video aspect ratios', async ({ helixPage }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js",
+                            "column": 38,
+                            "line": 90
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n\n  88 |     expect(validation.fps.passed).toBe(true);\n  89 |     expect(validation.memory.passed).toBe(true);\n> 90 |     expect(errorTracker.hasErrors()).toBe(false);\n     |                                      ^\n  91 |   });\n  92 |\n  93 |   test('should have proper video aspect ratios', async ({ helixPage }) => {\n    at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:90:38"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎭 Test panels hidden - focusing on helix core functionality\n"
+                        },
+                        {
+                          "text": "Performance Results: { fps: \u001b[32m'24.2 (min: 20)'\u001b[39m, memory: \u001b[32m'0MB (max: 50MB)'\u001b[39m, passed: \u001b[33mtrue\u001b[39m }\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-29T22:53:41.660Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/madisonrayesutton/CylinderGridRepo2/test-results/artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js",
+                        "column": 38,
+                        "line": 90
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
                 }
               ],
               "id": "8d45325e909fae86152c-f852dadf6dab38b9f2d4",
@@ -268,711 +481,29 @@
                   "expectedStatus": "passed",
                   "projectId": "chromium-desktop",
                   "projectName": "chromium-desktop",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 21360,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎭 Test panels hidden - focusing on helix core functionality\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-29T22:54:02.659Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "8d45325e909fae86152c-f354d6b338746b8b9120",
-              "file": "functional/helix-core.spec.js",
-              "line": 93,
-              "column": 3
-            },
-            {
-              "title": "should load helix scene with all components",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox-desktop",
-                  "projectName": "firefox-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-6661a50400fb081ac167",
-              "file": "functional/helix-core.spec.js",
-              "line": 11,
-              "column": 3
-            },
-            {
-              "title": "should respond to scroll interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox-desktop",
-                  "projectName": "firefox-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-1b9ef2d5fa69130079cb",
-              "file": "functional/helix-core.spec.js",
-              "line": 37,
-              "column": 3
-            },
-            {
-              "title": "should support keyboard navigation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox-desktop",
-                  "projectName": "firefox-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-d80a8e8e7eb75cecac31",
-              "file": "functional/helix-core.spec.js",
-              "line": 49,
-              "column": 3
-            },
-            {
-              "title": "should maintain performance during interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox-desktop",
-                  "projectName": "firefox-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-009f00683d2014b533ea",
-              "file": "functional/helix-core.spec.js",
-              "line": 59,
-              "column": 3
-            },
-            {
-              "title": "should have proper video aspect ratios",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox-desktop",
-                  "projectName": "firefox-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-a9fb044bacab67c5cbef",
-              "file": "functional/helix-core.spec.js",
-              "line": 93,
-              "column": 3
-            },
-            {
-              "title": "should load helix scene with all components",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit-desktop",
-                  "projectName": "webkit-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-fa33e1e9dd603c204871",
-              "file": "functional/helix-core.spec.js",
-              "line": 11,
-              "column": 3
-            },
-            {
-              "title": "should respond to scroll interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit-desktop",
-                  "projectName": "webkit-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-2844e9d00bfdd1ed641f",
-              "file": "functional/helix-core.spec.js",
-              "line": 37,
-              "column": 3
-            },
-            {
-              "title": "should support keyboard navigation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit-desktop",
-                  "projectName": "webkit-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-69386effb72a96c27c47",
-              "file": "functional/helix-core.spec.js",
-              "line": 49,
-              "column": 3
-            },
-            {
-              "title": "should maintain performance during interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit-desktop",
-                  "projectName": "webkit-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-747296e844e48dcac48e",
-              "file": "functional/helix-core.spec.js",
-              "line": 59,
-              "column": 3
-            },
-            {
-              "title": "should have proper video aspect ratios",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit-desktop",
-                  "projectName": "webkit-desktop",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-f0a24ac1aefe6a3a97e1",
-              "file": "functional/helix-core.spec.js",
-              "line": 93,
-              "column": 3
-            },
-            {
-              "title": "should load helix scene with all components",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Chrome",
-                  "projectName": "Mobile Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-4218da42d830bb68392b",
-              "file": "functional/helix-core.spec.js",
-              "line": 11,
-              "column": 3
-            },
-            {
-              "title": "should respond to scroll interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Chrome",
-                  "projectName": "Mobile Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-ede7784cffb1703aec85",
-              "file": "functional/helix-core.spec.js",
-              "line": 37,
-              "column": 3
-            },
-            {
-              "title": "should support keyboard navigation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Chrome",
-                  "projectName": "Mobile Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-51550fb6c3e54758c07e",
-              "file": "functional/helix-core.spec.js",
-              "line": 49,
-              "column": 3
-            },
-            {
-              "title": "should maintain performance during interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Chrome",
-                  "projectName": "Mobile Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-9b7878de1025f8233dee",
-              "file": "functional/helix-core.spec.js",
-              "line": 59,
-              "column": 3
-            },
-            {
-              "title": "should have proper video aspect ratios",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Chrome",
-                  "projectName": "Mobile Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-c00cbf30060625db9de5",
-              "file": "functional/helix-core.spec.js",
-              "line": 93,
-              "column": 3
-            },
-            {
-              "title": "should load helix scene with all components",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Safari",
-                  "projectName": "Mobile Safari",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-587245fd7c796f31482a",
-              "file": "functional/helix-core.spec.js",
-              "line": 11,
-              "column": 3
-            },
-            {
-              "title": "should respond to scroll interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Safari",
-                  "projectName": "Mobile Safari",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-38ff645a3d0d265636e4",
-              "file": "functional/helix-core.spec.js",
-              "line": 37,
-              "column": 3
-            },
-            {
-              "title": "should support keyboard navigation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Safari",
-                  "projectName": "Mobile Safari",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-c6dfe69230f9ac0777c3",
-              "file": "functional/helix-core.spec.js",
-              "line": 49,
-              "column": 3
-            },
-            {
-              "title": "should maintain performance during interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Safari",
-                  "projectName": "Mobile Safari",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-bbe5161b0e04cd429e29",
-              "file": "functional/helix-core.spec.js",
-              "line": 59,
-              "column": 3
-            },
-            {
-              "title": "should have proper video aspect ratios",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Safari",
-                  "projectName": "Mobile Safari",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-0dc52f785c6cfd77f582",
-              "file": "functional/helix-core.spec.js",
-              "line": 93,
-              "column": 3
-            },
-            {
-              "title": "should load helix scene with all components",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Tablet Chrome",
-                  "projectName": "Tablet Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-2b7142f40f0261d5a614",
-              "file": "functional/helix-core.spec.js",
-              "line": 11,
-              "column": 3
-            },
-            {
-              "title": "should respond to scroll interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Tablet Chrome",
-                  "projectName": "Tablet Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-b36177cd16d5a76061a4",
-              "file": "functional/helix-core.spec.js",
-              "line": 37,
-              "column": 3
-            },
-            {
-              "title": "should support keyboard navigation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Tablet Chrome",
-                  "projectName": "Tablet Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-b3ea0f1d6a7e17b7ba71",
-              "file": "functional/helix-core.spec.js",
-              "line": 49,
-              "column": 3
-            },
-            {
-              "title": "should maintain performance during interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Tablet Chrome",
-                  "projectName": "Tablet Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-7823a8f5e03409bf66a1",
-              "file": "functional/helix-core.spec.js",
-              "line": 59,
-              "column": 3
-            },
-            {
-              "title": "should have proper video aspect ratios",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Tablet Chrome",
-                  "projectName": "Tablet Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-76de8ee9740b00b8c94c",
-              "file": "functional/helix-core.spec.js",
-              "line": 93,
-              "column": 3
-            },
-            {
-              "title": "should load helix scene with all components",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Microsoft Edge",
-                  "projectName": "Microsoft Edge",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-c3e93deafcddb6b6b984",
-              "file": "functional/helix-core.spec.js",
-              "line": 11,
-              "column": 3
-            },
-            {
-              "title": "should respond to scroll interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Microsoft Edge",
-                  "projectName": "Microsoft Edge",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-a020fdc2fe25095e8d28",
-              "file": "functional/helix-core.spec.js",
-              "line": 37,
-              "column": 3
-            },
-            {
-              "title": "should support keyboard navigation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Microsoft Edge",
-                  "projectName": "Microsoft Edge",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-779b5acd90964051c2b3",
-              "file": "functional/helix-core.spec.js",
-              "line": 49,
-              "column": 3
-            },
-            {
-              "title": "should maintain performance during interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Microsoft Edge",
-                  "projectName": "Microsoft Edge",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-687b1c499ccc303e82a2",
-              "file": "functional/helix-core.spec.js",
-              "line": 59,
-              "column": 3
-            },
-            {
-              "title": "should have proper video aspect ratios",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Microsoft Edge",
-                  "projectName": "Microsoft Edge",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-af5b9a40d34eba1c1839",
-              "file": "functional/helix-core.spec.js",
-              "line": 93,
-              "column": 3
-            },
-            {
-              "title": "should load helix scene with all components",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Google Chrome",
-                  "projectName": "Google Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-f78a6d434fcf19031f62",
-              "file": "functional/helix-core.spec.js",
-              "line": 11,
-              "column": 3
-            },
-            {
-              "title": "should respond to scroll interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Google Chrome",
-                  "projectName": "Google Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-53e8b53d6a7c0af90dd7",
-              "file": "functional/helix-core.spec.js",
-              "line": 37,
-              "column": 3
-            },
-            {
-              "title": "should support keyboard navigation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Google Chrome",
-                  "projectName": "Google Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-10d5f85e4f12a6c9505b",
-              "file": "functional/helix-core.spec.js",
-              "line": 49,
-              "column": 3
-            },
-            {
-              "title": "should maintain performance during interactions",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Google Chrome",
-                  "projectName": "Google Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-ec1b49b2c96bd348800c",
-              "file": "functional/helix-core.spec.js",
-              "line": 59,
-              "column": 3
-            },
-            {
-              "title": "should have proper video aspect ratios",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Google Chrome",
-                  "projectName": "Google Chrome",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8d45325e909fae86152c-bbe543f82c4f8290cbf1",
               "file": "functional/helix-core.spec.js",
               "line": 93,
               "column": 3
@@ -984,11 +515,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-08-29T20:20:46.135Z",
-    "duration": 17.702999999999975,
-    "expected": 0,
-    "skipped": 40,
-    "unexpected": 0,
+    "startTime": "2025-08-29T22:53:40.902Z",
+    "duration": 43235.229,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 3,
     "flaky": 0
   }
 }

@@ -1,178 +1,140 @@
-<testsuites id="" name="" tests="40" failures="0" skipped="40" errors="0" time="0.017702999999999976">
-<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="chromium-desktop" tests="5" failures="0" skipped="5" time="0" errors="0">
-<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
+<testsuites id="" name="" tests="5" failures="3" skipped="0" errors="0" time="43.235229">
+<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T22:53:41.242Z" hostname="chromium-desktop" tests="5" failures="3" skipped="0" time="110.852" errors="0">
+<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="19.76">
+<failure message="helix-core.spec.js:11:3 should load helix scene with all components" type="FAILURE">
+<![CDATA[  [chromium-desktop] › functional/helix-core.spec.js:11:3 › Helix Core Functionality › should load helix scene with all components 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+       at ../pages/HelixPage.js:201
+
+      199 |     await scene.focus();
+      200 |     const isFocused = await scene.evaluate(el => el === document.activeElement);
+    > 201 |     expect(isFocused).toBe(true);
+          |                       ^
+      202 |     
+      203 |     return true;
+      204 |   }
+        at HelixPage.verifyHelixLoaded (/Users/madisonrayesutton/CylinderGridRepo2/tests/pages/HelixPage.js:201:23)
+        at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:13:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🎭 Test panels hidden - focusing on helix core functionality
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/video.webm]]
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-945d1-x-scene-with-all-components-chromium-desktop/error-context.md]]
+]]>
+</system-out>
 </testcase>
-<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
+<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="20.441">
+<system-out>
+<![CDATA[🎭 Test panels hidden - focusing on helix core functionality
+]]>
+</system-out>
 </testcase>
-<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
+<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="21.069">
+<failure message="helix-core.spec.js:49:3 should support keyboard navigation" type="FAILURE">
+<![CDATA[  [chromium-desktop] › functional/helix-core.spec.js:49:3 › Helix Core Functionality › should support keyboard navigation 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      54 |     
+      55 |     // Verify no errors occurred during navigation
+    > 56 |     expect(errorTracker.hasErrors()).toBe(false);
+         |                                      ^
+      57 |   });
+      58 |
+      59 |   test('should maintain performance during interactions', async ({ 
+        at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:56:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🎭 Test panels hidden - focusing on helix core functionality
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/video.webm]]
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-a4572-support-keyboard-navigation-chromium-desktop/error-context.md]]
+]]>
+</system-out>
 </testcase>
-<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
+<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="28.222">
+<failure message="helix-core.spec.js:59:3 should maintain performance during interactions" type="FAILURE">
+<![CDATA[  [chromium-desktop] › functional/helix-core.spec.js:59:3 › Helix Core Functionality › should maintain performance during interactions 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      88 |     expect(validation.fps.passed).toBe(true);
+      89 |     expect(validation.memory.passed).toBe(true);
+    > 90 |     expect(errorTracker.hasErrors()).toBe(false);
+         |                                      ^
+      91 |   });
+      92 |
+      93 |   test('should have proper video aspect ratios', async ({ helixPage }) => {
+        at /Users/madisonrayesutton/CylinderGridRepo2/tests/specs/functional/helix-core.spec.js:90:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🎭 Test panels hidden - focusing on helix core functionality
+Performance Results: { fps: [32m'24.2 (min: 20)'[39m, memory: [32m'0MB (max: 50MB)'[39m, passed: [33mtrue[39m }
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/video.webm]]
+
+[[ATTACHMENT|artifacts/functional-helix-core-Heli-0881d-ormance-during-interactions-chromium-desktop/error-context.md]]
+]]>
+</system-out>
 </testcase>
-<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="firefox-desktop" tests="5" failures="0" skipped="5" time="0" errors="0">
-<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="webkit-desktop" tests="5" failures="0" skipped="5" time="0" errors="0">
-<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
-<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Mobile Safari" tests="5" failures="0" skipped="5" time="0" errors="0">
-<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Tablet Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
-<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Microsoft Edge" tests="5" failures="0" skipped="5" time="0" errors="0">
-<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="functional/helix-core.spec.js" timestamp="2025-08-29T20:20:46.153Z" hostname="Google Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
-<testcase name="Helix Core Functionality › should load helix scene with all components" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should respond to scroll interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should support keyboard navigation" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should maintain performance during interactions" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="0">
-<skipped>
-</skipped>
+<testcase name="Helix Core Functionality › should have proper video aspect ratios" classname="functional/helix-core.spec.js" time="21.36">
+<system-out>
+<![CDATA[🎭 Test panels hidden - focusing on helix core functionality
+]]>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>
