@@ -1,6 +1,9 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { DevPanel } from './components/DevPanel.jsx';
 import { EnhancedHelixProjectsShowcase } from './components/EnhancedHelixProjectsShowcase.jsx';
+import { CinematicDemo } from './components/cinematic/CinematicDemo.jsx';
+import { HelixDemo } from './components/helix-core/HelixDemo.jsx';
+import HelixStandalone from './components/HelixStandalone.jsx';
 import { HelixProvider } from './contexts/HelixContext.jsx';
 import { useEffectsCompat } from './hooks/useMigrationBridge.js';
 import { PerformanceMonitor } from './components/PerformanceMonitor.jsx';
@@ -28,6 +31,9 @@ function AppContent() {
   const [showAspectTest, setShowAspectTest] = useState(false);
   const [showTestRecorder, setShowTestRecorder] = useState(false);
   const [showComprehensiveTest, setShowComprehensiveTest] = useState(true);
+  const [showCinematicDemo, setShowCinematicDemo] = useState(false);
+  const [showHelixDemo, setShowHelixDemo] = useState(false);
+  const [showHelixStandalone, setShowHelixStandalone] = useState(false);
   
   // Log browser info on mount for debugging
   useEffect(() => {
@@ -48,31 +54,41 @@ function AppContent() {
 
   return (
     <div className="App relative">
-      <DevPanel 
-        effects={effects}
-        onEffectToggle={toggleEffect}
-        onReset={resetEffects}
-        onUndo={undoEffects}
-        onRedo={redoEffects}
-        canUndo={canUndoEffects}
-        canRedo={canRedoEffects}
-        setPlacementStrength={setPlacementStrength}
-        setRepeatTurns={setRepeatTurns}
-      />
-      
-      <EnhancedHelixProjectsShowcase 
-        autoRotate={true}
-        scrollDriven={false}
-        effects={effects}
-        onEffectToggle={toggleEffect}
-        onReset={resetEffects}
-        onUndo={undoEffects}
-        onRedo={redoEffects}
-        canUndo={canUndoEffects}
-        canRedo={canRedoEffects}
-        setPlacementStrength={setPlacementStrength}
-        setRepeatTurns={setRepeatTurns}
-      />
+      {showHelixStandalone ? (
+        <HelixStandalone />
+      ) : showHelixDemo ? (
+        <HelixDemo />
+      ) : showCinematicDemo ? (
+        <CinematicDemo />
+      ) : (
+        <>
+          <DevPanel 
+            effects={effects}
+            onEffectToggle={toggleEffect}
+            onReset={resetEffects}
+            onUndo={undoEffects}
+            onRedo={redoEffects}
+            canUndo={canUndoEffects}
+            canRedo={canRedoEffects}
+            setPlacementStrength={setPlacementStrength}
+            setRepeatTurns={setRepeatTurns}
+          />
+          
+          <EnhancedHelixProjectsShowcase 
+            autoRotate={true}
+            scrollDriven={false}
+            effects={effects}
+            onEffectToggle={toggleEffect}
+            onReset={resetEffects}
+            onUndo={undoEffects}
+            onRedo={redoEffects}
+            canUndo={canUndoEffects}
+            canRedo={canRedoEffects}
+            setPlacementStrength={setPlacementStrength}
+            setRepeatTurns={setRepeatTurns}
+          />
+        </>
+      )}
       
       <PerformanceMonitor showVisual={true} />
       <AspectRatioTest enabled={showAspectTest} />
@@ -90,26 +106,51 @@ function AppContent() {
       {/* Test Control Buttons */}
       <div className="fixed bottom-4 left-4 flex flex-col gap-2 z-40">
         <button
-          onClick={() => setShowComprehensiveTest(!showComprehensiveTest)}
-          className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm transition-colors font-semibold"
-          aria-label={`${showComprehensiveTest ? 'Hide' : 'Show'} comprehensive test suite panel`}
+          onClick={() => {setShowHelixStandalone(!showHelixStandalone); setShowHelixDemo(false); setShowCinematicDemo(false);}}
+          className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-2 rounded-lg text-sm transition-colors font-bold shadow-lg"
+          aria-label={`${showHelixStandalone ? 'Hide' : 'Show'} standalone helix`}
         >
-          {showComprehensiveTest ? 'Hide' : 'Show'} Comprehensive Test
+          {showHelixStandalone ? '← Back to Main' : '🎯 Standalone Helix'}
         </button>
         <button
-          onClick={() => setShowAspectTest(!showAspectTest)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
-          aria-label={`${showAspectTest ? 'Hide' : 'Show'} aspect ratio test panel`}
+          onClick={() => {setShowHelixDemo(!showHelixDemo); setShowCinematicDemo(false); setShowHelixStandalone(false);}}
+          className="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm transition-colors font-bold shadow-lg"
+          aria-label={`${showHelixDemo ? 'Hide' : 'Show'} modular helix demo`}
         >
-          {showAspectTest ? 'Hide' : 'Show'} Aspect Test
+          {showHelixDemo ? '← Back to Main' : '🌀 Modular Helix'}
         </button>
         <button
-          onClick={() => setShowTestRecorder(!showTestRecorder)}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
-          aria-label={`${showTestRecorder ? 'Hide' : 'Show'} test recorder panel`}
+          onClick={() => {setShowCinematicDemo(!showCinematicDemo); setShowHelixDemo(false); setShowHelixStandalone(false);}}
+          className="bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-2 rounded-lg text-sm transition-colors font-bold shadow-lg"
+          aria-label={`${showCinematicDemo ? 'Hide' : 'Show'} cinematic demo`}
         >
-          {showTestRecorder ? 'Hide' : 'Show'} Test Recorder
+          {showCinematicDemo ? '← Back to Main' : '🎬 Cinematic Demo'}
         </button>
+        {!showCinematicDemo && !showHelixDemo && !showHelixStandalone && (
+          <>
+            <button
+              onClick={() => setShowComprehensiveTest(!showComprehensiveTest)}
+              className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm transition-colors font-semibold"
+              aria-label={`${showComprehensiveTest ? 'Hide' : 'Show'} comprehensive test suite panel`}
+            >
+              {showComprehensiveTest ? 'Hide' : 'Show'} Comprehensive Test
+            </button>
+            <button
+              onClick={() => setShowAspectTest(!showAspectTest)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+              aria-label={`${showAspectTest ? 'Hide' : 'Show'} aspect ratio test panel`}
+            >
+              {showAspectTest ? 'Hide' : 'Show'} Aspect Test
+            </button>
+            <button
+              onClick={() => setShowTestRecorder(!showTestRecorder)}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+              aria-label={`${showTestRecorder ? 'Hide' : 'Show'} test recorder panel`}
+            >
+              {showTestRecorder ? 'Hide' : 'Show'} Test Recorder
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
