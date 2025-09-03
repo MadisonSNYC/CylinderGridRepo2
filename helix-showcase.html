@@ -120,7 +120,7 @@
                         logo: true,
                         lighting: true,
                         ghostBacks: true,
-                        everyNth: 3,
+                        everyNth: 2,
                         rgbEdge: true
                     },
                     ...options
@@ -230,19 +230,19 @@
             createCard(project, index, total, isNthCard) {
                 const card = document.createElement('div');
                 
-                // Match exact original helix configuration
+                // Tight spiral configuration to match simplified version
                 const totalProjects = this.projects.length;
-                const radius = 470; // Exact from useHelixConfig
-                const verticalSpan = 650; // Exact from useHelixConfig
-                const repeatTurns = 1.5; // Exact from useHelixConfig
+                const radius = 300; // Tight radius
+                const verticalSpan = 500; // Compact vertical span
+                const repeatTurns = 2; // More turns for tighter spiral
                 
                 // Use exact angle calculation from helixPositionCache
                 const angle = (index / totalProjects) * 468; // 360 * 1.3
                 const currentRotation = this.scrollOffset * (468 * repeatTurns / totalProjects);
                 const cardRotation = angle - currentRotation;
                 
-                // Exact vertical positioning from original
-                const spacingMultiplier = 3.25;
+                // Tight vertical positioning 
+                const spacingMultiplier = 2;
                 const normalizedPosition = index / (total - 1);
                 const totalHeight = verticalSpan * repeatTurns * spacingMultiplier;
                 const yOffset = normalizedPosition * totalHeight - (totalHeight / 2);
@@ -329,7 +329,7 @@
                         logo: true,
                         lighting: true,
                         ghostBacks: true,
-                        everyNth: 3,
+                        everyNth: 2,
                         rgbEdge: true
                     },
                     cinema: {
@@ -347,7 +347,7 @@
                         logo: true,
                         lighting: false,
                         ghostBacks: false,
-                        everyNth: 3,
+                        everyNth: 2,
                         rgbEdge: true
                     },
                     holographic: {
@@ -365,7 +365,7 @@
                         logo: false,
                         lighting: false,
                         ghostBacks: false,
-                        everyNth: 3,
+                        everyNth: 2,
                         rgbEdge: false
                     }
                 };
