@@ -451,6 +451,13 @@
                 this.contentProvider = new LocalContentProvider();
                 this.placementCalculator = new PlacementCalculator(this.options.placementMode);
                 
+                // Inertia scrolling properties - BALANCED settings
+                this.velocity = 0;
+                this.friction = 0.95; // Balanced friction for stability
+                this.isScrolling = false;
+                this.lastScrollTime = 0;
+                this.animationFrame = null;
+                
                 this.init();
             }
 
@@ -460,8 +467,13 @@
                         <div class="helix-scene">
                             <div class="helix-assembly">
                                 <div class="helix-cards"></div>
+                                <div class="center-logo">
+                                    <div class="logo-placeholder">LOGO</div>
+                                </div>
                             </div>
                         </div>
+                        <div class="color-grading-overlay"></div>
+                        <div class="monitor-bezel-frame"></div>
                     </div>
                 `;
 
@@ -492,6 +504,8 @@
                         cardsContainer.appendChild(card);
                     }
                 }
+
+                // Logo is now handled by CSS as fixed positioned element
             }
 
             createCard(project, index, total, isNthCard) {
@@ -517,18 +531,17 @@
                     card.innerHTML = `
                         <div class="card-content">
                             ${project.videoAsset ? `
-                                <video class="card-video" autoplay muted loop playsinline>
+                                <video class="card-video" autoplay muted loop playsinline preload="auto">
                                     <source src="${project.videoAsset}" type="video/mp4">
                                 </video>
                             ` : ''}
-                            <div class="card-overlay">
-                                <div class="card-title">${project.title}</div>
-                                <div class="card-description">${project.description}</div>
-                            </div>
                             <div class="card-cinematic-overlay"></div>
-                            <div class="card-film-grain"></div>
                         </div>
                     `;
+                    
+                    // Calculate depth blur based on card distance from center (more subtle)
+                    const centerDistance = Math.abs(cardRotation % 360 - 180) / 180;
+                    const depthBlur = centerDistance * 1; // 0-1px blur range
                     
                     card.style.cssText = `
                         position: absolute;
@@ -538,6 +551,7 @@
                         opacity: ${opacity};
                         cursor: pointer;
                         transition: transform 0.08s ease-out, opacity 0.2s ease;
+                        --depth-blur: ${depthBlur}px;
                     `;
                 }
 
@@ -545,6 +559,19 @@
                     this.activeIndex = index;
                     this.render();
                 });
+
+                // Ensure video plays immediately
+                if (isNthCard && project.videoAsset) {
+                    const video = card.querySelector('.card-video');
+                    if (video) {
+                        // Force play after a small delay to ensure DOM is ready
+                        setTimeout(() => {
+                            video.play().catch(e => {
+                                console.log('Video autoplay failed:', e);
+                            });
+                        }, 100);
+                    }
+                }
 
                 return card;
             }
@@ -568,10 +595,65 @@
             setupEvents() {
                 this.container.addEventListener('wheel', (e) => {
                     e.preventDefault();
-                    const delta = e.deltaY * 0.001;
+                    const delta = e.deltaY * 0.003; // Moderate sensitivity
+                    
+                    // Add to velocity for inertia with reasonable momentum multiplier
+                    this.velocity += delta * 1.8; // Balanced momentum
                     this.scrollOffset += delta;
+                    
+                    // Mark as actively scrolling
+                    this.isScrolling = true;
+                    this.lastScrollTime = performance.now();
+                    
+                    // Start inertia animation if not already running
+                    if (!this.animationFrame) {
+                        this.startInertiaAnimation();
+                    }
+                    
                     this.render();
                 }, { passive: false });
+            }
+
+            startInertiaAnimation() {
+                const animate = () => {
+                    const now = performance.now();
+                    const timeSinceScroll = now - this.lastScrollTime;
+                    
+                    // Stop direct scrolling after 50ms of no wheel events (ultra-fast response)
+                    if (timeSinceScroll > 50) {
+                        this.isScrolling = false;
+                    }
+                    
+                    // Auto-rotation when not actively scrolling or with inertia
+                    if (!this.isScrolling) {
+                        this.scrollOffset += 0.0008; // Very subtle continuous spinning
+                    }
+                    
+                    // Apply inertia when not actively scrolling (reasonable threshold)
+                    if (!this.isScrolling && Math.abs(this.velocity) > 0.001) {
+                        try {
+                            this.scrollOffset += this.velocity;
+                            this.velocity *= this.friction; // Apply friction
+                            this.render();
+                            
+                            // Continue animation
+                            this.animationFrame = requestAnimationFrame(animate);
+                        } catch (e) {
+                            console.error('Animation error:', e);
+                            this.velocity = 0;
+                            this.animationFrame = null;
+                        }
+                    } else if (this.isScrolling) {
+                        // Continue animation while scrolling
+                        this.animationFrame = requestAnimationFrame(animate);
+                    } else {
+                        // Continue auto-rotation even when velocity is low
+                        this.render();
+                        this.animationFrame = requestAnimationFrame(animate);
+                    }
+                };
+                
+                this.animationFrame = requestAnimationFrame(animate);
             }
 
             addStyles() {
@@ -586,6 +668,52 @@
                         height: 100vh;
                         overflow: hidden;
                         background: radial-gradient(circle at center, #0a0a0f 0%, #000000 100%);
+                    }
+
+
+                    .color-grading-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(
+                            45deg,
+                            rgba(255, 120, 60, 0.06) 0%,
+                            rgba(60, 120, 255, 0.05) 100%
+                        );
+                        mix-blend-mode: overlay;
+                        pointer-events: none;
+                        z-index: 200;
+                        opacity: 0.7;
+                    }
+
+                    .monitor-bezel-frame {
+                        position: absolute;
+                        inset: 0;
+                        pointer-events: none;
+                        z-index: 300;
+                    }
+
+                    .monitor-bezel-frame::before {
+                        content: '';
+                        position: absolute;
+                        inset: 15px;
+                        border: 20px solid;
+                        border-color: #3a3a3a #2a2a2a #1a1a1a #2a2a2a;
+                        border-radius: 15px;
+                        box-shadow: 
+                            inset 0 4px 15px rgba(255,255,255,0.1),
+                            inset 0 -4px 15px rgba(0,0,0,0.8),
+                            0 0 30px rgba(0,0,0,0.5);
+                    }
+
+                    .monitor-bezel-frame::after {
+                        content: '';
+                        position: absolute;
+                        inset: 25px;
+                        border: 5px solid #1a1a1a;
+                        border-radius: 10px;
+                        box-shadow: 
+                            inset 0 2px 5px rgba(0,0,0,0.8),
+                            inset 0 -2px 5px rgba(255,255,255,0.1);
                     }
 
                     .helix-scene {
@@ -607,9 +735,63 @@
                         transform-style: preserve-3d;
                     }
 
+                    .center-logo {
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        width: 120px;
+                        height: 120px;
+                        z-index: 1;
+                        transform: translate(-50%, -50%) translateZ(-200px);
+                        transform-style: preserve-3d;
+                    }
+
+                    .logo-placeholder {
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(45deg, #ff3333, #ff0066);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        font-weight: bold;
+                        color: white;
+                        font-size: 14px;
+                        filter: drop-shadow(0 0 20px rgba(255, 51, 51, 0.6));
+                        animation: logoGlow 3s ease-in-out infinite;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+
+                    .logo-placeholder:hover {
+                        transform: scale(1.1);
+                        filter: drop-shadow(0 0 30px rgba(255, 51, 51, 0.8));
+                    }
+
+                    @keyframes logoGlow {
+                        0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 51, 51, 0.6)); }
+                        50% { filter: drop-shadow(0 0 40px rgba(255, 51, 51, 1)); }
+                    }
+
                     .helix-card {
                         will-change: transform, opacity;
                         backface-visibility: visible;
+                        position: relative;
+                    }
+
+                    /* Ghost card backs - translucent duplicates behind cards */
+                    .helix-card::before {
+                        content: '';
+                        position: absolute;
+                        inset: 2px;
+                        background: linear-gradient(135deg, rgba(26, 26, 46, 0.15), rgba(22, 33, 62, 0.15));
+                        border-radius: 10px;
+                        border: 1px solid rgba(255, 255, 255, 0.02);
+                        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                        transform: translateZ(-10px) scale(0.98);
+                        opacity: 0.2;
+                        z-index: -1;
+                        pointer-events: none;
                     }
 
                     .helix-card.active {
@@ -632,6 +814,15 @@
                         text-align: center;
                         padding: 20px;
                         transition: all 0.3s ease;
+                        /* Motion blur and depth of field based on distance */
+                        filter: blur(var(--depth-blur, 0px));
+                    }
+
+                    /* Motion blur keyframes for scrolling */
+                    @keyframes motion-blur {
+                        0% { filter: blur(0px); }
+                        50% { filter: blur(2px); }
+                        100% { filter: blur(0px); }
                     }
 
                     .card-content:hover {
@@ -649,69 +840,23 @@
                         z-index: 0;
                     }
 
-                    .card-overlay {
-                        position: relative;
-                        z-index: 3;
-                        background: rgba(0, 0, 0, 0.7);
-                        border-radius: 8px;
-                        padding: 15px;
-                        margin: 10px;
-                        backdrop-filter: blur(2px);
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                    }
-
-                    .card-title {
-                        font-size: 16px;
-                        font-weight: bold;
-                        margin-bottom: 10px;
-                        color: #00ffff;
-                    }
-
-                    .card-description {
-                        font-size: 12px;
-                        opacity: 0.8;
-                        line-height: 1.4;
-                        position: relative;
-                        z-index: 2;
-                    }
 
                     .card-cinematic-overlay {
                         position: absolute;
                         inset: 0;
                         background: linear-gradient(
                             45deg,
-                            rgba(6, 182, 212, 0.08) 0%,
-                            rgba(139, 69, 19, 0.08) 100%
+                            rgba(6, 182, 212, 0.12) 0%,
+                            rgba(139, 69, 19, 0.12) 100%
                         );
                         mix-blend-mode: overlay;
                         pointer-events: none;
                         border-radius: 12px;
                         z-index: 1;
+                        opacity: 1;
                     }
 
-                    .card-film-grain {
-                        position: absolute;
-                        inset: 0;
-                        opacity: 0.15;
-                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
-                        pointer-events: none;
-                        animation: cardGrain 8s steps(10) infinite;
-                        mix-blend-mode: overlay;
-                        border-radius: 12px;
-                        z-index: 1;
-                    }
 
-                    @keyframes cardGrain {
-                        0%, 100% { transform: translate(0, 0); }
-                        10% { transform: translate(-2%, -3%); }
-                        50% { transform: translate(-5%, 3%); }
-                        90% { transform: translate(-3%, 2%); }
-                    }
-
-                    .card-title {
-                        position: relative;
-                        z-index: 2;
-                    }
 
                     .helix-orb {
                         will-change: transform, opacity;
@@ -721,8 +866,8 @@
                         width: 100%;
                         height: 100%;
                         border-radius: 50%;
-                        background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.9), rgba(0, 100, 255, 0.4));
-                        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+                        background: radial-gradient(circle at 30% 30%, rgba(255, 50, 50, 0.9), rgba(255, 0, 0, 0.4));
+                        box-shadow: 0 0 20px rgba(255, 50, 50, 0.8);
                         animation: pulse 3s ease-in-out infinite;
                     }
 
