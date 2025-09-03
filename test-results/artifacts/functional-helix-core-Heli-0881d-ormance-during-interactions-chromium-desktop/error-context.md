@@ -41,13 +41,15 @@
         - generic [ref=e71] [cursor=pointer]:
           - generic [ref=e72] [cursor=pointer]: Audio
           - generic [ref=e73] [cursor=pointer]: Visual
-      - generic [ref=e79] [cursor=pointer]:
-        - generic [ref=e80] [cursor=pointer]:
-          - heading "Airtag 1984" [level=3] [ref=e81] [cursor=pointer]
-          - paragraph [ref=e82] [cursor=pointer]: Retro-futuristic concept
-        - generic [ref=e83] [cursor=pointer]:
-          - generic [ref=e84] [cursor=pointer]: Retro
-          - generic [ref=e85] [cursor=pointer]: Future
+      - generic [ref=e75] [cursor=pointer]:
+        - generic [ref=e78] [cursor=pointer]: Video unavailable
+        - generic [ref=e79] [cursor=pointer]:
+          - generic [ref=e80] [cursor=pointer]:
+            - heading "Airtag 1984" [level=3] [ref=e81] [cursor=pointer]
+            - paragraph [ref=e82] [cursor=pointer]: Retro-futuristic concept
+          - generic [ref=e83] [cursor=pointer]:
+            - generic [ref=e84] [cursor=pointer]: Retro
+            - generic [ref=e85] [cursor=pointer]: Future
       - generic [ref=e87] [cursor=pointer]:
         - generic [ref=e90] [cursor=pointer]: Video unavailable
         - generic [ref=e91] [cursor=pointer]:
@@ -417,15 +419,13 @@
           - generic [ref=e575] [cursor=pointer]:
             - generic [ref=e576] [cursor=pointer]: Vue.js
             - generic [ref=e577] [cursor=pointer]: PostgreSQL
-      - generic [ref=e579] [cursor=pointer]:
-        - generic [ref=e582] [cursor=pointer]: Video unavailable
-        - generic [ref=e583] [cursor=pointer]:
-          - generic [ref=e584] [cursor=pointer]:
-            - heading "Weather App" [level=3] [ref=e585] [cursor=pointer]
-            - paragraph [ref=e586] [cursor=pointer]: Real-time weather data
-          - generic [ref=e587] [cursor=pointer]:
-            - generic [ref=e588] [cursor=pointer]: React
-            - generic [ref=e589] [cursor=pointer]: OpenWeather
+      - generic [ref=e583] [cursor=pointer]:
+        - generic [ref=e584] [cursor=pointer]:
+          - heading "Weather App" [level=3] [ref=e585] [cursor=pointer]
+          - paragraph [ref=e586] [cursor=pointer]: Real-time weather data
+        - generic [ref=e587] [cursor=pointer]:
+          - generic [ref=e588] [cursor=pointer]: React
+          - generic [ref=e589] [cursor=pointer]: OpenWeather
       - img
     - generic [ref=e591]:
       - heading "Navigation" [level=3] [ref=e592]

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helix Collection - Choose Your Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.3);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #00ffff;
+        }
+
+        .card p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .features li {
+            padding: 5px 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .features li::before {
+            content: '✨ ';
+            margin-right: 8px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(45deg, #ff00ff, #ff8000);
+        }
+
+        .footer {
+            text-align: center;
+            opacity: 0.6;
+            margin-top: 40px;
+        }
+
+        .tech-stack {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tech-stack h4 {
+            margin-bottom: 15px;
+            color: #ff00ff;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧬 Helix Collection</h1>
+            <p>Choose your preferred helix experience - from clean and simple to fully cinematic with all effects</p>
+        </div>
+
+        <div class="grid">
+            <div class="card" onclick="location.href='helix-simplified.html'">
+                <div class="card-icon">✨</div>
+                <h3>Simplified Helix</h3>
+                <p>Clean, modern helix with essential features and Contentful integration</p>
+                
+                <ul class="features">
+                    <li>Minimal, performant design</li>
+                    <li>Contentful CMS integration</li>
+                    <li>Interactive placement controls</li>
+                    <li>Multiple layout patterns</li>
+                    <li>Real-time customization</li>
+                </ul>
+                
+                <a href="helix-simplified.html" class="btn">Launch Simplified</a>
+            </div>
+
+            <div class="card" onclick="location.href='helix-showcase.html'">
+                <div class="card-icon">🎬</div>
+                <h3>Cinematic Showcase</h3>
+                <p>Full-featured helix with all cinematic effects and advanced controls</p>
+                
+                <ul class="features">
+                    <li>Cinematic vignette & film grain</li>
+                    <li>CRT monitor effects</li>
+                    <li>RGB edge lighting</li>
+                    <li>Ghost card backs</li>
+                    <li>Multiple preset modes</li>
+                </ul>
+                
+                <a href="helix-showcase.html" class="btn secondary">Launch Showcase</a>
+            </div>
+
+            <div class="card" onclick="location.href='index.html'">
+                <div class="card-icon">⚛️</div>
+                <h3>React Development</h3>
+                <p>Full React application with modular components and testing suite</p>
+                
+                <ul class="features">
+                    <li>Modular React components</li>
+                    <li>Advanced dev panels</li>
+                    <li>Performance monitoring</li>
+                    <li>Comprehensive testing</li>
+                    <li>Effect control panels</li>
+                </ul>
+                
+                <a href="index.html" class="btn">Open React App</a>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h4>Built With Modern Technology</h4>
+            <div class="tech-tags">
+                <span class="tech-tag">Vanilla JS</span>
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">Contentful CMS</span>
+                <span class="tech-tag">CSS3 Transforms</span>
+                <span class="tech-tag">WebGL Ready</span>
+                <span class="tech-tag">Responsive Design</span>
+                <span class="tech-tag">Performance Optimized</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Select any version above to explore different helix implementations</p>
+        </div>
+    </div>
+
+    <script>
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '1') location.href = 'helix-simplified.html';
+            if (e.key === '2') location.href = 'helix-showcase.html';
+            if (e.key === '3') location.href = 'index.html';
+        });
+
+        // Add some interactive effects
+        document.querySelectorAll('.card').forEach((card, index) => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = `translateY(-5px) rotateX(5deg) rotateY(${(index % 2 ? 2 : -2)}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>

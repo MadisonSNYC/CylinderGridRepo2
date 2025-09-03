@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helix Cinematic Package - Standalone Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+        }
+
+        #root {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Loading spinner */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ffff;
+            font-size: 18px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 255, 255, 0.3);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Quick controls */
+        .quick-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            z-index: 1000;
+        }
+
+        .quick-controls h3 {
+            color: #00ffff;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .preset-btn {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            margin: 2px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            background: rgba(0, 255, 255, 0.2);
+            border-color: #00ffff;
+        }
+
+        .preset-btn.active {
+            background: rgba(0, 255, 255, 0.3);
+            border-color: #00ffff;
+            color: #00ffff;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="loading">
+            <div class="spinner"></div>
+            Loading Cinematic Helix...
+        </div>
+    </div>
+
+    <!-- Quick Controls -->
+    <div class="quick-controls">
+        <h3>🎬 Cinematic Effects</h3>
+        <button class="preset-btn active" onclick="setPreset('showcase')">Showcase</button>
+        <button class="preset-btn" onclick="setPreset('cinema')">Cinema</button>
+        <button class="preset-btn" onclick="setPreset('monitor')">Monitor</button>
+        <button class="preset-btn" onclick="setPreset('holographic')">Holographic</button>
+        <button class="preset-btn" onclick="setPreset('minimal')">Minimal</button>
+    </div>
+
+    <script type="module">
+        // Standalone Helix Cinematic Component
+        class HelixCinematic {
+            constructor(container, options = {}) {
+                this.container = container;
+                this.options = {
+                    effects: {
+                        cinematic: true,
+                        monitor: true,
+                        logo: true,
+                        lighting: true,
+                        ghostBacks: true,
+                        everyNth: 3,
+                        rgbEdge: true
+                    },
+                    ...options
+                };
+                
+                this.scrollOffset = 0;
+                this.activeIndex = 0;
+                this.projects = this.generateMockProjects();
+                
+                this.init();
+                this.render();
+                this.setupEvents();
+            }
+
+            generateMockProjects() {
+                return Array.from({ length: 12 }, (_, i) => ({
+                    id: i,
+                    title: `Project ${i + 1}`,
+                    description: `Description for project ${i + 1}`,
+                    videoAsset: null,
+                    thumbnail: null
+                }));
+            }
+
+            init() {
+                this.container.innerHTML = `
+                    <div class="helix-cinematic-viewport">
+                        ${this.options.effects.monitor ? this.renderMonitor() : ''}
+                        <div class="helix-scene">
+                            <div class="helix-assembly">
+                                <div class="helix-cards"></div>
+                                ${this.options.effects.logo ? this.renderLogo() : ''}
+                            </div>
+                            ${this.options.effects.lighting ? this.renderLighting() : ''}
+                        </div>
+                        ${this.options.effects.cinematic ? this.renderCinematicEffects() : ''}
+                    </div>
+                `;
+
+                this.addStyles();
+            }
+
+            renderMonitor() {
+                return `
+                    <div class="monitor-frame">
+                        <div class="monitor-bezel"></div>
+                        <div class="monitor-screen">
+                            <div class="scanlines"></div>
+                            <div class="screen-flicker"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderLogo() {
+                return `
+                    <div class="center-logo">
+                        <div class="logo-placeholder">LOGO</div>
+                        <div class="logo-glow"></div>
+                    </div>
+                `;
+            }
+
+            renderLighting() {
+                return `
+                    <div class="lighting-system">
+                        <div class="key-light"></div>
+                        <div class="fill-light"></div>
+                        <div class="rim-light"></div>
+                    </div>
+                `;
+            }
+
+            renderCinematicEffects() {
+                return `
+                    <div class="cinematic-vignette"></div>
+                    <div class="film-grain"></div>
+                `;
+            }
+
+            render() {
+                const cardsContainer = this.container.querySelector('.helix-cards');
+                const repeatTurns = 1.5;
+                const totalCards = this.projects.length * Math.ceil(repeatTurns + 1); // Match original calculation
+                
+                cardsContainer.innerHTML = '';
+                
+                for (let i = 0; i < totalCards; i++) {
+                    const projectIndex = i % this.projects.length;
+                    const project = this.projects[projectIndex];
+                    const isNthCard = this.options.effects.everyNth ? i % this.options.effects.everyNth === 0 : true;
+                    
+                    const card = this.createCard(project, i, totalCards, isNthCard);
+                    cardsContainer.appendChild(card);
+                }
+
+                // Update logo rotation using exact formula from original
+                const logo = this.container.querySelector('.center-logo');
+                if (logo) {
+                    const repeatTurns = 1.5;
+                    const totalProjects = this.projects.length;
+                    const rotationDeg = -((this.scrollOffset * (468 * repeatTurns / totalProjects)) + 0);
+                    logo.style.transform = `translate(-50%, -50%) rotateY(${rotationDeg}deg)`;
+                }
+            }
+
+            createCard(project, index, total, isNthCard) {
+                const card = document.createElement('div');
+                
+                // Match exact original helix configuration
+                const totalProjects = this.projects.length;
+                const radius = 470; // Exact from useHelixConfig
+                const verticalSpan = 650; // Exact from useHelixConfig
+                const repeatTurns = 1.5; // Exact from useHelixConfig
+                
+                // Use exact angle calculation from helixPositionCache
+                const angle = (index / totalProjects) * 468; // 360 * 1.3
+                const currentRotation = this.scrollOffset * (468 * repeatTurns / totalProjects);
+                const cardRotation = angle - currentRotation;
+                
+                // Exact vertical positioning from original
+                const spacingMultiplier = 3.25;
+                const normalizedPosition = index / (total - 1);
+                const totalHeight = verticalSpan * repeatTurns * spacingMultiplier;
+                const yOffset = normalizedPosition * totalHeight - (totalHeight / 2);
+                const scrollY = yOffset - (this.scrollOffset * 13);
+                
+                // Calculate opacity based on position
+                const normalizedAngle = ((angle - currentRotation) % 360 + 360) % 360;
+                const radians = (normalizedAngle * Math.PI) / 180;
+                let opacity = 1;
+                if (normalizedAngle < 45 || normalizedAngle > 315) {
+                    opacity = 1; // Front
+                } else if (normalizedAngle >= 135 && normalizedAngle <= 225) {
+                    opacity = 0.3; // Back
+                } else {
+                    opacity = 0.7; // Sides
+                }
+                
+                // Exact transform order from original HelixNode
+                const transform = `
+                    translate(-50%, -50%)
+                    translateY(${scrollY}px)
+                    rotateY(${cardRotation}deg)
+                    translateZ(${radius}px)
+                `;
+
+                if (!isNthCard) {
+                    // Render orb
+                    card.className = 'helix-orb';
+                    card.innerHTML = `<div class="orb-core"></div>`;
+                } else {
+                    // Render full card with all effects
+                    card.className = `helix-card ${index === this.activeIndex ? 'active' : ''}`;
+                    card.innerHTML = `
+                        <div class="card-wrapper">
+                            ${this.options.effects.rgbEdge ? '<div class="rgb-edge"></div>' : ''}
+                            <div class="card-content">
+                                <div class="card-title">${project.title}</div>
+                                ${this.options.effects.lighting ? '<div class="card-lighting-overlay"></div>' : ''}
+                                ${this.options.effects.cinematic ? '<div class="card-cinematic-overlay"></div>' : ''}
+                                ${this.options.effects.monitor ? '<div class="card-monitor-overlay"></div>' : ''}
+                            </div>
+                            ${this.options.effects.ghostBacks ? '<div class="ghost-card"></div>' : ''}
+                        </div>
+                    `;
+                }
+
+                card.style.cssText = `
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    width: ${isNthCard ? '180px' : '40px'};
+                    height: ${isNthCard ? '320px' : '40px'};
+                    transform: ${transform};
+                    transform-style: preserve-3d;
+                    opacity: ${isNthCard ? opacity : opacity * 0.5};
+                    cursor: pointer;
+                    transition: transform 0.08s ease-out, opacity 0.2s ease;
+                    will-change: transform, opacity;
+                    backface-visibility: visible;
+                `;
+
+                card.addEventListener('click', () => {
+                    this.activeIndex = index;
+                    this.render();
+                });
+
+                return card;
+            }
+
+            setupEvents() {
+                this.container.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const delta = e.deltaY * 0.001;
+                    this.scrollOffset += delta;
+                    this.render();
+                }, { passive: false });
+            }
+
+            updatePreset(presetName) {
+                const presets = {
+                    showcase: {
+                        cinematic: true,
+                        monitor: true,
+                        logo: true,
+                        lighting: true,
+                        ghostBacks: true,
+                        everyNth: 3,
+                        rgbEdge: true
+                    },
+                    cinema: {
+                        cinematic: true,
+                        monitor: false,
+                        logo: true,
+                        lighting: true,
+                        ghostBacks: true,
+                        everyNth: 1,
+                        rgbEdge: true
+                    },
+                    monitor: {
+                        cinematic: false,
+                        monitor: true,
+                        logo: true,
+                        lighting: false,
+                        ghostBacks: false,
+                        everyNth: 3,
+                        rgbEdge: true
+                    },
+                    holographic: {
+                        cinematic: true,
+                        monitor: false,
+                        logo: true,
+                        lighting: true,
+                        ghostBacks: true,
+                        everyNth: 2,
+                        rgbEdge: true
+                    },
+                    minimal: {
+                        cinematic: false,
+                        monitor: false,
+                        logo: false,
+                        lighting: false,
+                        ghostBacks: false,
+                        everyNth: 3,
+                        rgbEdge: false
+                    }
+                };
+
+                this.options.effects = presets[presetName] || presets.showcase;
+                this.init();
+                this.render();
+                this.setupEvents();
+            }
+
+            addStyles() {
+                if (document.getElementById('helix-styles')) return;
+                
+                const style = document.createElement('style');
+                style.id = 'helix-styles';
+                style.textContent = `
+                    .helix-cinematic-viewport {
+                        position: relative;
+                        width: 100%;
+                        height: 100vh;
+                        overflow: hidden;
+                        background: ${this.options.effects.cinematic ? 'radial-gradient(circle at center, #0a0a0f 0%, #000000 100%)' : '#000'};
+                    }
+
+                    .helix-scene {
+                        position: absolute;
+                        inset: 0;
+                        perspective: 3000px;
+                        perspective-origin: 71% 32%;
+                    }
+
+                    .helix-assembly {
+                        position: relative;
+                        width: 500px;
+                        height: 400px;
+                        left: 50%;
+                        top: 50%;
+                        margin-left: -250px;
+                        margin-top: -200px;
+                        transform: rotateX(-10deg) rotateY(0deg) rotateZ(0deg) translateZ(-1200px);
+                        transform-style: preserve-3d;
+                    }
+
+                    .center-logo {
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        width: 150px;
+                        height: 150px;
+                        z-index: 50;
+                        ${this.options.effects.logo ? 'display: block;' : 'display: none;'}
+                    }
+
+                    .logo-placeholder {
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(45deg, #00ffff, #ff00ff);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        font-weight: bold;
+                        color: white;
+                        filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.6));
+                        animation: logo-glow 3s ease-in-out infinite;
+                    }
+
+                    @keyframes logo-glow {
+                        0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.6)); }
+                        50% { filter: drop-shadow(0 0 40px rgba(0, 255, 255, 1)); }
+                    }
+
+                    .helix-card {
+                        will-change: transform, opacity;
+                        backface-visibility: hidden;
+                    }
+
+                    .helix-card.active {
+                        z-index: 100;
+                    }
+
+                    .card-wrapper {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    .card-content {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                        border-radius: 12px;
+                        overflow: hidden;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-size: 14px;
+                        transform-style: preserve-3d;
+                    }
+
+                    .card-cinematic-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(
+                            45deg,
+                            rgba(6, 182, 212, 0.05) 0%,
+                            rgba(139, 69, 19, 0.05) 100%
+                        );
+                        mix-blend-mode: overlay;
+                        pointer-events: none;
+                        border-radius: 12px;
+                    }
+
+                    .card-monitor-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: repeating-linear-gradient(
+                            0deg,
+                            transparent,
+                            transparent 1px,
+                            rgba(0, 255, 255, 0.02) 1px,
+                            rgba(0, 255, 255, 0.02) 2px
+                        );
+                        pointer-events: none;
+                        border-radius: 12px;
+                    }
+
+                    .card-lighting-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: radial-gradient(
+                            circle at 30% 20%,
+                            rgba(255, 255, 255, 0.1) 0%,
+                            transparent 50%
+                        );
+                        pointer-events: none;
+                        border-radius: 12px;
+                    }
+
+                    .rgb-edge {
+                        position: absolute;
+                        inset: -2px;
+                        border-radius: 12px;
+                        background: linear-gradient(45deg, #ff0080, #00ff88, #0080ff, #ff0080);
+                        background-size: 300% 300%;
+                        animation: rgbShift 3s ease infinite;
+                        filter: blur(8px);
+                        opacity: 0.8;
+                        z-index: -1;
+                        ${this.options.effects.rgbEdge ? 'display: block;' : 'display: none;'}
+                    }
+
+                    @keyframes rgbShift {
+                        0% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                        100% { background-position: 0% 50%; }
+                    }
+
+                    .helix-orb {
+                        will-change: transform, opacity;
+                    }
+
+                    .orb-core {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.9), rgba(0, 100, 255, 0.4));
+                        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+                        animation: pulse 3s ease-in-out infinite;
+                    }
+
+                    @keyframes pulse {
+                        0%, 100% { transform: scale(1); }
+                        50% { transform: scale(1.15); }
+                    }
+
+                    .ghost-card {
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+                        border-radius: 12px;
+                        transform: translateZ(-50px) rotateY(180deg) scale(0.95);
+                        opacity: 0.3;
+                        filter: blur(3px);
+                        pointer-events: none;
+                        animation: ghost-float 6s ease-in-out infinite;
+                        ${this.options.effects.ghostBacks ? 'display: block;' : 'display: none;'}
+                    }
+
+                    @keyframes ghost-float {
+                        0%, 100% { 
+                            transform: translateZ(-50px) rotateY(180deg) scale(0.95);
+                            opacity: 0.3;
+                        }
+                        50% { 
+                            transform: translateZ(-60px) rotateY(180deg) scale(0.92);
+                            opacity: 0.2;
+                        }
+                    }
+
+                    .monitor-frame {
+                        position: fixed;
+                        inset: 0;
+                        z-index: 1000;
+                        pointer-events: none;
+                        ${this.options.effects.monitor ? 'display: block;' : 'display: none;'}
+                    }
+
+                    .monitor-bezel {
+                        position: absolute;
+                        inset: 20px;
+                        border: 15px solid;
+                        border-color: #2a2a2a #1a1a1a #0a0a0a #1a1a1a;
+                        border-radius: 15px;
+                        box-shadow: inset 0 2px 10px rgba(0,0,0,0.8), inset 0 -2px 10px rgba(0,0,0,0.8);
+                    }
+
+                    .scanlines::before {
+                        content: '';
+                        position: absolute;
+                        inset: 0;
+                        background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px);
+                        animation: scanlines-move 8s linear infinite;
+                    }
+
+                    @keyframes scanlines-move {
+                        0% { transform: translateY(0); }
+                        100% { transform: translateY(10px); }
+                    }
+
+                    .cinematic-vignette {
+                        position: absolute;
+                        inset: 0;
+                        background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+                        pointer-events: none;
+                        ${this.options.effects.cinematic ? 'display: block;' : 'display: none;'}
+                    }
+
+                    .film-grain {
+                        position: absolute;
+                        inset: 0;
+                        opacity: 0.15;
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+                        pointer-events: none;
+                        animation: grain 8s steps(10) infinite;
+                        ${this.options.effects.cinematic ? 'display: block;' : 'display: none;'}
+                    }
+
+                    @keyframes grain {
+                        0%, 100% { transform: translate(0, 0); }
+                        10% { transform: translate(-5%, -10%); }
+                        50% { transform: translate(-15%, 10%); }
+                        90% { transform: translate(-10%, 10%); }
+                    }
+
+                    .lighting-system {
+                        position: absolute;
+                        inset: 0;
+                        pointer-events: none;
+                        ${this.options.effects.lighting ? 'display: block;' : 'display: none;'}
+                    }
+
+                    .key-light, .fill-light, .rim-light {
+                        position: absolute;
+                        width: 200px;
+                        height: 200px;
+                        border-radius: 50%;
+                        filter: blur(40px);
+                        pointer-events: none;
+                    }
+
+                    .key-light {
+                        top: 20%;
+                        left: 30%;
+                        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+                    }
+
+                    .fill-light {
+                        bottom: 20%;
+                        right: 30%;
+                        background: radial-gradient(circle, rgba(100,200,255,0.1) 0%, transparent 70%);
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Initialize the component
+        let helixInstance;
+        
+        setTimeout(() => {
+            const container = document.getElementById('root');
+            helixInstance = new HelixCinematic(container, {
+                effects: {
+                    cinematic: true,
+                    monitor: true,
+                    logo: true,
+                    lighting: true,
+                    ghostBacks: true,
+                    everyNth: 3,
+                    rgbEdge: true
+                }
+            });
+        }, 500);
+
+        // Global preset function
+        window.setPreset = function(presetName) {
+            // Update button states
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update helix
+            if (helixInstance) {
+                helixInstance.updatePreset(presetName);
+            }
+        };
+    </script>
+</body>
+</html>

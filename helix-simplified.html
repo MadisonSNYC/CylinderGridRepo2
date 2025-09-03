@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplified Helix - Clean & Modern</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+        }
+
+        #root {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Loading spinner */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ffff;
+            font-size: 18px;
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 255, 255, 0.3);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Controls */
+        .helix-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .helix-controls h3 {
+            color: #00ffff;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            color: #ccc;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .control-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .preset-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .preset-btn {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            background: rgba(0, 255, 255, 0.2);
+        }
+
+        .preset-btn.active {
+            background: rgba(0, 255, 255, 0.3);
+            color: #00ffff;
+        }
+
+        .provider-selector {
+            margin-bottom: 15px;
+        }
+
+        select.control-input {
+            cursor: pointer;
+        }
+
+        /* Contentful config */
+        .contentful-config {
+            display: none;
+        }
+
+        .contentful-config.show {
+            display: block;
+        }
+
+        .config-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .config-row .control-input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="loading">
+            <div class="spinner"></div>
+            Loading Simplified Helix...
+        </div>
+    </div>
+
+    <!-- Controls Panel -->
+    <div class="helix-controls">
+        <h3>🧬 Helix Controls</h3>
+        
+        <!-- Content Provider -->
+        <div class="control-group provider-selector">
+            <label>Content Source</label>
+            <select class="control-input" id="providerSelect">
+                <option value="local">Local Data</option>
+                <option value="contentful">Contentful CMS</option>
+            </select>
+        </div>
+
+        <!-- Contentful Configuration -->
+        <div class="contentful-config" id="contentfulConfig">
+            <div class="control-group">
+                <label>Space ID</label>
+                <input type="text" class="control-input" id="spaceId" placeholder="gk8ysqlmr8q0">
+            </div>
+            <div class="control-group">
+                <label>Access Token</label>
+                <input type="text" class="control-input" id="accessToken" placeholder="Your access token">
+            </div>
+            <div class="control-group">
+                <button class="preset-btn" onclick="applyContentfulConfig()">Apply Contentful</button>
+            </div>
+        </div>
+
+        <!-- Placement Mode -->
+        <div class="control-group">
+            <label>Placement Pattern</label>
+            <select class="control-input" id="placementMode">
+                <option value="helix">Classic Helix</option>
+                <option value="cylinder">Cylinder</option>
+                <option value="spiral">Spiral</option>
+                <option value="wave">Wave</option>
+                <option value="grid">Grid</option>
+                <option value="tight" selected>Tight Helix</option>
+                <option value="wide">Wide Helix</option>
+                <option value="tower">Tower</option>
+                <option value="carousel">Carousel</option>
+            </select>
+        </div>
+
+        <!-- Geometry Controls -->
+        <div class="control-group">
+            <label>Radius: <span id="radiusValue">300</span></label>
+            <input type="range" class="control-input" id="radius" min="200" max="800" value="300">
+        </div>
+
+        <div class="control-group">
+            <label>Vertical Span: <span id="verticalSpanValue">500</span></label>
+            <input type="range" class="control-input" id="verticalSpan" min="100" max="1000" value="500">
+        </div>
+
+        <div class="control-group">
+            <label>Turns: <span id="turnsValue">2</span></label>
+            <input type="range" class="control-input" id="turns" min="0.5" max="3" step="0.1" value="2">
+        </div>
+
+        <!-- Card Density -->
+        <div class="control-group">
+            <label>Show Every Nth Card: <span id="everyNthValue">2</span></label>
+            <input type="range" class="control-input" id="everyNth" min="1" max="5" value="2">
+        </div>
+
+        <!-- Quick Presets -->
+        <div class="preset-buttons">
+            <button class="preset-btn active" onclick="applyPreset('default')">Default</button>
+            <button class="preset-btn" onclick="applyPreset('minimal')">Minimal</button>
+            <button class="preset-btn" onclick="applyPreset('showcase')">Showcase</button>
+        </div>
+    </div>
+
+    <!-- Load Contentful SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+
+    <script type="module">
+        // Import our new modular system (simulated for standalone)
+        
+        // Content Provider System
+        class ContentProvider {
+            async getProjects() { throw new Error('Must implement getProjects'); }
+            formatProject(raw) {
+                return {
+                    id: raw.id || String(Date.now()),
+                    title: raw.title || 'Untitled',
+                    description: raw.description || '',
+                    thumbnail: raw.thumbnail || null,
+                    videoAsset: raw.videoAsset || null,
+                    technologies: raw.technologies || [],
+                    url: raw.url || '#',
+                    category: raw.category || 'general',
+                    featured: raw.featured || false,
+                    metadata: raw.metadata || {}
+                };
+            }
+        }
+
+        class LocalContentProvider extends ContentProvider {
+            constructor() {
+                super();
+                this.projects = [
+                    { 
+                        id: '1', 
+                        title: 'Vertical Loop Study', 
+                        description: 'Creative vertical format exploration',
+                        thumbnail: './public/1-22-2022_Vertical.mp4',
+                        videoAsset: './public/1-22-2022_Vertical.mp4',
+                        technologies: ['Video', 'Vertical'],
+                        category: 'loops'
+                    },
+                    { 
+                        id: '2', 
+                        title: 'Seamless Loop Creation', 
+                        description: 'Perfect looping animation study',
+                        thumbnail: './public/2-12-22_Looping.mp4',
+                        videoAsset: './public/2-12-22_Looping.mp4',
+                        technologies: ['Animation', 'Loop'],
+                        category: 'loops'
+                    },
+                    { 
+                        id: '3', 
+                        title: 'March Creative Project', 
+                        description: 'Early 2022 creative exploration',
+                        thumbnail: './public/3-11-22.mp4',
+                        videoAsset: './public/3-11-22.mp4',
+                        technologies: ['Creative', 'Motion'],
+                        category: 'creative'
+                    },
+                    { id: '4', title: 'Abstract Forms 4', description: 'Abstract form studies' },
+                    { id: '5', title: 'Color Theory 5', description: 'Color theory application' },
+                    { id: '6', title: 'Typography Test 6', description: 'Typography experiments' },
+                    { id: '7', title: 'Layout Study 7', description: 'Layout design study' },
+                    { id: '8', title: 'Brand Exploration 8', description: 'Brand identity work' },
+                    { id: '9', title: 'Digital Art 9', description: 'Digital art creation' },
+                    { id: '10', title: 'Interactive Demo 10', description: 'Interactive prototype' },
+                    { id: '11', title: 'Animation Test 11', description: 'Animation testing' },
+                    { id: '12', title: 'Final Project 12', description: 'Final showcase piece' }
+                ];
+            }
+
+            async getProjects() {
+                return this.projects.map(p => this.formatProject(p));
+            }
+        }
+
+        class ContentfulProvider extends ContentProvider {
+            constructor(config = {}) {
+                super();
+                this.spaceId = config.spaceId;
+                this.accessToken = config.accessToken;
+                this.client = null;
+                
+                if (this.spaceId && this.accessToken) {
+                    this.initClient();
+                }
+            }
+
+            initClient() {
+                try {
+                    this.client = contentful.createClient({
+                        space: this.spaceId,
+                        accessToken: this.accessToken
+                    });
+                } catch (error) {
+                    console.error('Failed to init Contentful:', error);
+                }
+            }
+
+            extractRichText(field) {
+                if (!field) return '';
+                if (typeof field === 'string') return field;
+                
+                if (field.nodeType === 'document' && field.content) {
+                    return field.content
+                        .map(node => {
+                            if (node.nodeType === 'paragraph' && node.content) {
+                                return node.content.map(text => text.value || '').join('');
+                            }
+                            return '';
+                        })
+                        .join(' ')
+                        .trim();
+                }
+                return String(field);
+            }
+
+            async getProjects() {
+                if (!this.client) return [];
+
+                try {
+                    const response = await this.client.getEntries({
+                        content_type: 'loop',
+                        include: 2
+                    });
+
+                    return response.items.map(entry => {
+                        const fields = entry.fields;
+                        return this.formatProject({
+                            id: entry.sys.id,
+                            title: this.extractRichText(fields.title),
+                            description: this.extractRichText(fields.summary) || this.extractRichText(fields.client),
+                            thumbnail: fields.coverImage?.fields?.file?.url 
+                                ? `https:${fields.coverImage.fields.file.url}` 
+                                : null,
+                            videoAsset: fields.loopVideo?.fields?.file?.url 
+                                ? `https:${fields.loopVideo.fields.file.url}` 
+                                : null,
+                            technologies: fields.tags || [],
+                            url: `/loop/${fields.slug}`,
+                            featured: fields.featured || false,
+                            metadata: {
+                                slug: fields.slug,
+                                publishedAt: fields.publishedAt
+                            }
+                        });
+                    });
+                } catch (error) {
+                    console.error('Contentful fetch error:', error);
+                    return [];
+                }
+            }
+        }
+
+        // Placement Calculator
+        class PlacementCalculator {
+            constructor(mode = 'helix', config = {}) {
+                this.mode = mode;
+                this.config = this.getModeConfig(mode, config);
+            }
+
+            getModeConfig(mode, overrides) {
+                const modes = {
+                    helix: { radius: 470, verticalSpan: 650, turns: 1.5, spacing: 3.25 },
+                    cylinder: { radius: 500, verticalSpan: 0, turns: 1, spacing: 1 },
+                    spiral: { baseRadius: 300, radiusGrowth: 20, verticalSpan: 800, turns: 2.5, spacing: 2 },
+                    wave: { baseRadius: 470, waveAmplitude: 100, waveFrequency: 0.5, verticalSpan: 400, turns: 1, spacing: 2.5 },
+                    grid: { columns: 4, rowSpacing: 200, columnSpacing: 200, depth: 500 },
+                    tight: { radius: 300, verticalSpan: 500, turns: 2, spacing: 2 },
+                    wide: { radius: 600, verticalSpan: 700, turns: 1, spacing: 4 },
+                    tower: { radius: 250, verticalSpan: 900, turns: 3, spacing: 3 },
+                    carousel: { radius: 500, verticalSpan: 100, turns: 1, spacing: 1 }
+                };
+                
+                return { ...modes[mode], ...overrides };
+            }
+
+            calculateTransform(index, total, scrollOffset) {
+                const { radius, verticalSpan, turns, spacing } = this.config;
+                
+                const angle = (index / total * turns) * 468; // 360 * 1.3
+                const currentRotation = scrollOffset * (468 * turns / total);
+                const cardRotation = angle - currentRotation;
+                
+                const normalizedPosition = index / (total - 1);
+                const totalHeight = verticalSpan * turns * spacing;
+                const yOffset = normalizedPosition * totalHeight - (totalHeight / 2);
+                const scrollY = yOffset - (scrollOffset * 13);
+                
+                return {
+                    transform: `
+                        translate(-50%, -50%)
+                        translateY(${scrollY}px)
+                        rotateY(${cardRotation}deg)
+                        translateZ(${radius}px)
+                    `,
+                    cardRotation
+                };
+            }
+
+            calculateOpacity(cardRotation) {
+                const normalizedAngle = ((cardRotation % 360) + 360) % 360;
+                if (normalizedAngle < 45 || normalizedAngle > 315) return 1;
+                if (normalizedAngle >= 135 && normalizedAngle <= 225) return 0.3;
+                return 0.7;
+            }
+        }
+
+        // Simplified Helix Component
+        class SimplifiedHelix {
+            constructor(container, options = {}) {
+                this.container = container;
+                this.options = {
+                    placementMode: 'tight',
+                    everyNth: 2,
+                    provider: 'local',
+                    effects: {
+                        minimal: true,
+                        hover: true
+                    },
+                    ...options
+                };
+                
+                this.scrollOffset = 0;
+                this.activeIndex = 0;
+                this.projects = [];
+                this.contentProvider = new LocalContentProvider();
+                this.placementCalculator = new PlacementCalculator(this.options.placementMode);
+                
+                this.init();
+            }
+
+            async init() {
+                this.container.innerHTML = `
+                    <div class="helix-viewport">
+                        <div class="helix-scene">
+                            <div class="helix-assembly">
+                                <div class="helix-cards"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                this.addStyles();
+                await this.loadProjects();
+                this.render();
+                this.setupEvents();
+            }
+
+            async loadProjects() {
+                this.projects = await this.contentProvider.getProjects();
+                console.log('Loaded projects:', this.projects.length);
+            }
+
+            render() {
+                const cardsContainer = this.container.querySelector('.helix-cards');
+                const total = this.projects.length * 2; // Show projects twice
+                
+                cardsContainer.innerHTML = '';
+                
+                for (let i = 0; i < total; i++) {
+                    const projectIndex = i % this.projects.length;
+                    const project = this.projects[projectIndex];
+                    const isNthCard = i % this.options.everyNth === 0;
+                    
+                    if (project) {
+                        const card = this.createCard(project, i, total, isNthCard);
+                        cardsContainer.appendChild(card);
+                    }
+                }
+            }
+
+            createCard(project, index, total, isNthCard) {
+                const card = document.createElement('div');
+                const { transform, cardRotation } = this.placementCalculator.calculateTransform(index, total, this.scrollOffset);
+                const opacity = this.placementCalculator.calculateOpacity(cardRotation);
+                
+                if (!isNthCard) {
+                    // Simple orb
+                    card.className = 'helix-orb';
+                    card.innerHTML = `<div class="orb-core"></div>`;
+                    card.style.cssText = `
+                        position: absolute;
+                        left: 50%; top: 50%;
+                        width: 40px; height: 40px;
+                        transform: ${transform};
+                        opacity: ${opacity * 0.5};
+                        cursor: pointer;
+                    `;
+                } else {
+                    // Full card
+                    card.className = `helix-card ${index === this.activeIndex ? 'active' : ''}`;
+                    card.innerHTML = `
+                        <div class="card-content">
+                            ${project.videoAsset ? `
+                                <video class="card-video" autoplay muted loop playsinline>
+                                    <source src="${project.videoAsset}" type="video/mp4">
+                                </video>
+                            ` : ''}
+                            <div class="card-overlay">
+                                <div class="card-title">${project.title}</div>
+                                <div class="card-description">${project.description}</div>
+                            </div>
+                            <div class="card-cinematic-overlay"></div>
+                            <div class="card-film-grain"></div>
+                        </div>
+                    `;
+                    
+                    card.style.cssText = `
+                        position: absolute;
+                        left: 50%; top: 50%;
+                        width: 180px; height: 320px;
+                        transform: ${transform};
+                        opacity: ${opacity};
+                        cursor: pointer;
+                        transition: transform 0.08s ease-out, opacity 0.2s ease;
+                    `;
+                }
+
+                card.addEventListener('click', () => {
+                    this.activeIndex = index;
+                    this.render();
+                });
+
+                return card;
+            }
+
+            updatePlacement(mode, config = {}) {
+                this.placementCalculator = new PlacementCalculator(mode, config);
+                this.render();
+            }
+
+            async switchProvider(type, config = {}) {
+                if (type === 'contentful') {
+                    this.contentProvider = new ContentfulProvider(config);
+                } else {
+                    this.contentProvider = new LocalContentProvider();
+                }
+                
+                await this.loadProjects();
+                this.render();
+            }
+
+            setupEvents() {
+                this.container.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const delta = e.deltaY * 0.001;
+                    this.scrollOffset += delta;
+                    this.render();
+                }, { passive: false });
+            }
+
+            addStyles() {
+                if (document.getElementById('simplified-helix-styles')) return;
+                
+                const style = document.createElement('style');
+                style.id = 'simplified-helix-styles';
+                style.textContent = `
+                    .helix-viewport {
+                        position: relative;
+                        width: 100%;
+                        height: 100vh;
+                        overflow: hidden;
+                        background: radial-gradient(circle at center, #0a0a0f 0%, #000000 100%);
+                    }
+
+                    .helix-scene {
+                        position: absolute;
+                        inset: 0;
+                        perspective: 3000px;
+                        perspective-origin: 71% 32%;
+                    }
+
+                    .helix-assembly {
+                        position: relative;
+                        width: 500px;
+                        height: 400px;
+                        left: 50%;
+                        top: 50%;
+                        margin-left: -250px;
+                        margin-top: -200px;
+                        transform: rotateX(-10deg) rotateY(0deg) rotateZ(0deg) translateZ(-1200px);
+                        transform-style: preserve-3d;
+                    }
+
+                    .helix-card {
+                        will-change: transform, opacity;
+                        backface-visibility: visible;
+                    }
+
+                    .helix-card.active {
+                        z-index: 100;
+                    }
+
+                    .card-content {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                        border-radius: 12px;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        text-align: center;
+                        padding: 20px;
+                        transition: all 0.3s ease;
+                    }
+
+                    .card-content:hover {
+                        box-shadow: 0 10px 50px rgba(0, 150, 255, 0.3);
+                        transform: scale(1.02);
+                    }
+
+                    .card-video {
+                        position: absolute;
+                        inset: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: 12px;
+                        z-index: 0;
+                    }
+
+                    .card-overlay {
+                        position: relative;
+                        z-index: 3;
+                        background: rgba(0, 0, 0, 0.7);
+                        border-radius: 8px;
+                        padding: 15px;
+                        margin: 10px;
+                        backdrop-filter: blur(2px);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+
+                    .card-title {
+                        font-size: 16px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                        color: #00ffff;
+                    }
+
+                    .card-description {
+                        font-size: 12px;
+                        opacity: 0.8;
+                        line-height: 1.4;
+                        position: relative;
+                        z-index: 2;
+                    }
+
+                    .card-cinematic-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(
+                            45deg,
+                            rgba(6, 182, 212, 0.08) 0%,
+                            rgba(139, 69, 19, 0.08) 100%
+                        );
+                        mix-blend-mode: overlay;
+                        pointer-events: none;
+                        border-radius: 12px;
+                        z-index: 1;
+                    }
+
+                    .card-film-grain {
+                        position: absolute;
+                        inset: 0;
+                        opacity: 0.15;
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+                        pointer-events: none;
+                        animation: cardGrain 8s steps(10) infinite;
+                        mix-blend-mode: overlay;
+                        border-radius: 12px;
+                        z-index: 1;
+                    }
+
+                    @keyframes cardGrain {
+                        0%, 100% { transform: translate(0, 0); }
+                        10% { transform: translate(-2%, -3%); }
+                        50% { transform: translate(-5%, 3%); }
+                        90% { transform: translate(-3%, 2%); }
+                    }
+
+                    .card-title {
+                        position: relative;
+                        z-index: 2;
+                    }
+
+                    .helix-orb {
+                        will-change: transform, opacity;
+                    }
+
+                    .orb-core {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.9), rgba(0, 100, 255, 0.4));
+                        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+                        animation: pulse 3s ease-in-out infinite;
+                    }
+
+                    @keyframes pulse {
+                        0%, 100% { transform: scale(1); }
+                        50% { transform: scale(1.15); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Global instance
+        let helixInstance;
+        
+        // Control handlers
+        window.applyPreset = function(preset) {
+            // Update UI
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Apply preset and update controls
+            if (helixInstance) {
+                switch (preset) {
+                    case 'minimal':
+                        helixInstance.updatePlacement('cylinder', { radius: 400 });
+                        helixInstance.options.everyNth = 3;
+                        // Update UI controls
+                        document.getElementById('placementMode').value = 'cylinder';
+                        document.getElementById('everyNth').value = 3;
+                        document.getElementById('everyNthValue').textContent = 3;
+                        break;
+                    case 'showcase':
+                        helixInstance.updatePlacement('helix', { radius: 600, turns: 2 });
+                        helixInstance.options.everyNth = 1;
+                        // Update UI controls
+                        document.getElementById('placementMode').value = 'helix';
+                        document.getElementById('everyNth').value = 1;
+                        document.getElementById('everyNthValue').textContent = 1;
+                        break;
+                    default: // 'default' - tight helix with every 2 cards
+                        helixInstance.updatePlacement('tight');
+                        helixInstance.options.everyNth = 2;
+                        // Update UI controls
+                        document.getElementById('placementMode').value = 'tight';
+                        document.getElementById('everyNth').value = 2;
+                        document.getElementById('everyNthValue').textContent = 2;
+                }
+                helixInstance.render();
+            }
+        };
+
+        window.applyContentfulConfig = async function() {
+            const spaceId = document.getElementById('spaceId').value;
+            const accessToken = document.getElementById('accessToken').value;
+            
+            if (helixInstance && spaceId && accessToken) {
+                await helixInstance.switchProvider('contentful', { spaceId, accessToken });
+            }
+        };
+
+        // Initialize
+        setTimeout(async () => {
+            const container = document.getElementById('root');
+            helixInstance = new SimplifiedHelix(container);
+            
+            // Setup control listeners
+            const controls = {
+                providerSelect: (e) => {
+                    const isContentful = e.target.value === 'contentful';
+                    document.getElementById('contentfulConfig').classList.toggle('show', isContentful);
+                },
+                
+                placementMode: (e) => {
+                    if (helixInstance) {
+                        helixInstance.updatePlacement(e.target.value);
+                    }
+                },
+                
+                radius: (e) => {
+                    document.getElementById('radiusValue').textContent = e.target.value;
+                    if (helixInstance) {
+                        helixInstance.updatePlacement(helixInstance.placementCalculator.mode, { radius: parseInt(e.target.value) });
+                    }
+                },
+                
+                verticalSpan: (e) => {
+                    document.getElementById('verticalSpanValue').textContent = e.target.value;
+                    if (helixInstance) {
+                        helixInstance.updatePlacement(helixInstance.placementCalculator.mode, { verticalSpan: parseInt(e.target.value) });
+                    }
+                },
+                
+                turns: (e) => {
+                    document.getElementById('turnsValue').textContent = e.target.value;
+                    if (helixInstance) {
+                        helixInstance.updatePlacement(helixInstance.placementCalculator.mode, { turns: parseFloat(e.target.value) });
+                    }
+                },
+                
+                everyNth: (e) => {
+                    document.getElementById('everyNthValue').textContent = e.target.value;
+                    if (helixInstance) {
+                        helixInstance.options.everyNth = parseInt(e.target.value);
+                        helixInstance.render();
+                    }
+                }
+            };
+
+            // Attach event listeners
+            Object.keys(controls).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('change', controls[id]);
+                    element.addEventListener('input', controls[id]);
+                }
+            });
+        }, 500);
+    </script>
+</body>
+</html>

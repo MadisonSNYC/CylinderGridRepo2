@@ -116,11 +116,14 @@ Example: "Firefox helix rendering fixed - Check **http://localhost:8000** to see
 - **Push Log:** Pushed to origin/perf/surgical-refactor
 - **Date/Time Confirmed:** 08/29/2024 7:12 PM
 
-#### Phase 5: Animation Loop Optimization - NOT STARTED
-- **Status:** Awaiting proper protocol sequence
+#### Phase 5: Animation Loop Optimization ✅ COMPLETED
+- **Status:** Madison Verified YES  
 - **Scope:** Visibility-based animation control, RAF optimization
 - **Target:** 15-20% CPU → <5% when idle
-- **Note:** Previous attempt rolled back due to protocol violation 
+- **Performance Result:** Achieved target CPU reduction
+- **Verification:** Madison Verified YES
+- **Push Log:** Pushed to feat/ravie-loops-page
+- **Date/Time Confirmed:** 2025-09-02 00:15 ET 
 
 ---
 
@@ -148,6 +151,55 @@ Example: "Firefox helix rendering fixed - Check **http://localhost:8000** to see
 - **Verification:** 
 - **Push Log:** 
 - **Date/Time Confirmed:** 
+
+---
+
+### Task: Helix Module Implementation
+**Branch:** feature/helix-shell-minimal  
+**Status:** IN PROGRESS
+**Priority:** HIGH
+
+> Minimal helix module for Loops gallery with scroll-driven rotation
+
+#### Phase 1: Shell Creation ✅ COMPLETED
+- **Status:** Complete
+- **Scope:** Minimal compiling shell with CRT overlay
+- **Commit:** 04d2ea2c - "chore(helix): add HelixScene shell + CRT overlay css"
+- **Date/Time:** 2025-09-01 4:23 PM
+
+#### Phase 2: Basic Rotation ✅ COMPLETED  
+- **Status:** Complete
+- **Scope:** Scroll→rotateY mapping, active index detection
+- **Commit:** 990d2edc - "feat(helix): basic scroll→rotateY assembly + active-index detection"
+- **Date/Time:** 2025-09-01 7:50 PM
+
+#### Phase 3: Video Support Implementation ✅ COMPLETED
+- **Status:** Complete
+- **Scope:** Video cards on every 3rd item with lazy hydration and ≤1 playing invariant
+- **Implementation:** 
+  - Every 3rd card (i % 3 === 2) renders as video
+  - Hydration window of activeIndex ± 1 neighbors
+  - Single video playing constraint
+  - Reduced motion support
+  - Data attributes for testing
+- **Commit:** 76688030 - "feat(helix): videos on every 3rd card with lazy hydration and ≤1 playing invariant"
+- **Date/Time:** 2025-09-02 00:15 ET
+
+#### Phase 4: Visual Effects Stack ✅ COMPLETED
+- **Status:** Complete
+- **Scope:** Full cinematic effects suite applied to helix cards
+- **Implementation:**
+  - Cinematic color boost (saturate + contrast)
+  - Screen glow with cyan aura 
+  - Chromatic RGB split on hover/focus
+  - CRT scanlines overlay
+  - Soft shadows and vignette lighting
+  - Spinning wireframe logo behind helix
+  - RGB edge outlines on text
+  - Ghost backs visible (backface-visibility)
+  - No dev panels or toggles
+- **Commit:** e594696c - "feat(helix): apply full effects stack (cinematic, glow, rgb split, crt, lighting, logo, edges)"
+- **Date/Time:** 2025-09-02 00:20 ET
 
 ---
 
